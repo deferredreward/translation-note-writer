@@ -589,10 +589,24 @@ python main.py --debug --dry-run
 
 ### Dry Run Mode
 
-Test without making actual changes:
+The `--dry-run` flag enables a safe testing mode that:
+- Prevents all AI API calls
+- Prevents any changes to Google Sheets
+- Shows detailed information about what would happen
+- Logs what templates would be used
+- Shows what prompts would be sent
+- Simulates the entire processing flow
 
+This is perfect for:
+- Testing configuration changes
+- Verifying template matching
+- Checking prompt construction
+- Debugging without using API credits
+- Validating sheet access
+
+Example:
 ```bash
-python main.py --dry-run
+python main.py --mode once --dry-run
 ```
 
 ## 📝 Sheet Format
