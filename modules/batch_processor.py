@@ -787,7 +787,7 @@ class BatchProcessor:
                 self.logger.info(f"No {text_type} cache found for {user}/{book}, fetching...")
                 
                 # Fetch biblical text for the specific book
-                biblical_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book)
+                biblical_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book, user=user)
                 if biblical_data:
                     # We trust fetch_biblical_text to return data for the correct book or log errors
                     self.cache_manager.set_biblical_text_for_user(text_type, user, book, biblical_data)

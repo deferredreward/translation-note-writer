@@ -154,10 +154,11 @@ class ConfigManager:
             'support_references_sheet': self.get('google_sheets.support_references_sheet'),
             'templates_sheet': self.get('google_sheets.templates_sheet'),
             'system_prompts_sheet': self.get('google_sheets.system_prompts_sheet'),
-            'main_sheet_name': self.get('google_sheets.main_sheet_name', 'AI notes'),
-            'ult_sheet_name': self.get('google_sheets.ult_sheet_name', 'ULT'),
-            'suggestions_sheet_name': self.get('google_sheets.suggestions_sheet_name', 'suggested notes'),
-            'templates_sheet_name': self.get('google_sheets.templates_sheet_name', 'AI templates - Use this one'),
+            'main_tab_name': self.get('google_sheets.main_tab_name', 'AI notes'),
+            'ult_tab_name': self.get('google_sheets.ult_tab_name', 'ULT'),
+            'ust_tab_name': self.get('google_sheets.ust_tab_name', 'UST'),
+            'suggestions_tab_name': self.get('google_sheets.suggestions_tab_name', 'suggested notes'),
+            'templates_tab_name': self.get('google_sheets.templates_tab_name', 'AI templates - Use this one'),
         }
     
     def get_cache_config(self) -> Dict[str, Any]:
@@ -205,6 +206,21 @@ class ConfigManager:
             'from_email': self.get('email.from_email'),
             'to_email': self.get('email.to_email'),
             'password': self.get('email.password'),
+        }
+    
+    def get_timing_config(self) -> Dict[str, Any]:
+        """Get timing-specific configuration."""
+        return {
+            'work_check_interval': self.get('timing.work_check_interval', 60),
+            'work_check_minimum_interval': self.get('timing.work_check_minimum_interval', 5),
+            'error_retry_delay': self.get('timing.error_retry_delay', 10),
+            'suggestion_poll_interval': self.get('timing.suggestion_poll_interval', 30),
+            'suggestion_max_wait_minutes': self.get('timing.suggestion_max_wait_minutes', 30),
+            'loop_sleep_interval': self.get('timing.loop_sleep_interval', 1),
+            'shutdown_grace_period': self.get('timing.shutdown_grace_period', 2),
+            'retry_delay_brief': self.get('timing.retry_delay_brief', 5),
+            'api_rate_limit_delay': self.get('timing.api_rate_limit_delay', 2),
+            'sheet_operation_delay': self.get('timing.sheet_operation_delay', 3),
         }
     
     def is_debug_mode(self) -> bool:
@@ -265,11 +281,12 @@ class ConfigManager:
             # Log error but don't raise - return None to indicate failure
             return None 
     
-    def get_editor_name_for_sheet(self, sheet_id: str) -> str:
+    def get_editor_name_for_sheet(self, sheet_id: str, include_raw_id: bool = False) -> str:
         """Get the friendly editor name for a given sheet ID.
         
         Args:
             sheet_id: The Google Sheet ID
+            include_raw_id: If True, include the raw editor ID in parentheses
             
         Returns:
             Friendly editor name or the sheet ID if not found
@@ -280,10 +297,38 @@ class ConfigManager:
         # Find the editor key for this sheet ID
         for editor_key, sid in sheet_ids.items():
             if sid == sheet_id:
-                return editor_names.get(editor_key, editor_key.capitalize())
+                friendly_name = editor_names.get(editor_key, editor_key.capitalize())
+                if include_raw_id:
+                    return f"{friendly_name} ({editor_key})"
+                return friendly_name
         
         # If not found, return a truncated sheet ID for debugging
         return f"Unknown({sheet_id[:8]})"
+    
+    def get_friendly_name_for_user(self, user: str) -> str:
+        """Get the friendly name for a user/editor ID.
+        
+        Args:
+            user: The raw editor ID (e.g., 'editor1')
+            
+        Returns:
+            Friendly name for the user
+        """
+        editor_names = self.get('google_sheets.editor_names', {})
+        return editor_names.get(user, user.capitalize())
+    
+    def get_friendly_name_with_id(self, user: str) -> str:
+        """Get the friendly name with raw ID for a user/editor ID.
+        
+        Args:
+            user: The raw editor ID (e.g., 'editor1')
+            
+        Returns:
+            Friendly name with raw ID in parentheses (e.g., 'chris (editor1)')
+        """
+        editor_names = self.get('google_sheets.editor_names', {})
+        friendly_name = editor_names.get(user, user.capitalize())
+        return f"{friendly_name} ({user})"
     
     def get_all_editor_info(self) -> Dict[str, Dict[str, str]]:
         """Get all editor information (IDs and names) in a structured format.

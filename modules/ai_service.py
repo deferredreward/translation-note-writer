@@ -6,6 +6,7 @@ Handles interactions with Anthropic's Claude API using batch processing and prom
 import json
 import time
 import logging
+import os
 from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime, timedelta
 import anthropic
@@ -19,7 +20,7 @@ class AIService:
     """Handles AI interactions with batch processing and prompt caching."""
     
     def __init__(self, config: ConfigManager, cache_manager: CacheManager):
-        """Initialize the AI service.
+        """Initialize the AI service with configuration.
         
         Args:
             config: Configuration manager
@@ -29,20 +30,31 @@ class AIService:
         self.cache_manager = cache_manager
         self.logger = logging.getLogger(__name__)
         
-        # Initialize Anthropic client
+        # Get configuration
         anthropic_config = config.get_anthropic_config()
-        if not anthropic_config['api_key']:
-            raise ValueError("Anthropic API key not configured")
+        timing_config = config.get_timing_config()
         
-        self.client = anthropic.Anthropic(api_key=anthropic_config['api_key'])
-        self.model = anthropic_config['model']
+        # Set up Anthropic configuration
+        self.api_key = anthropic_config.get('api_key') or os.getenv('ANTHROPIC_API_KEY')
+        self.model = anthropic_config.get('model', 'claude-3-5-sonnet-20241022')
         self.batch_size = anthropic_config['batch_size']
-        self.enable_prompt_caching = anthropic_config['enable_prompt_caching']
+        self.enable_prompt_caching = anthropic_config.get('enable_prompt_caching', True)
+        
+        # Timing configuration
+        self.error_retry_delay = timing_config['error_retry_delay']
+        
+        if not self.api_key:
+            raise ValueError("Anthropic API key not found in configuration or environment variables")
+        
+        # Initialize Anthropic client
+        self.client = anthropic.Anthropic(api_key=self.api_key)
         
         # Initialize prompt manager
         self.prompt_manager = PromptManager(config, cache_manager)
         
         self.logger.info(f"AI Service initialized with model: {self.model}")
+        if self.enable_prompt_caching:
+            self.logger.info("Prompt caching enabled")
     
     def create_batch_requests(self, items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Create batch requests for Anthropic API.
@@ -642,7 +654,7 @@ class AIService:
                 
             except Exception as e:
                 self.logger.error(f"Error checking batch status: {e}")
-                time.sleep(60)  # Wait longer on error
+                time.sleep(self.error_retry_delay)  # Use configurable error retry delay
         
         raise TimeoutError(f"Batch {batch_id} did not complete within {timeout_hours} hours")
     

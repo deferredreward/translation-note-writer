@@ -7,17 +7,21 @@ google_sheets:
   credentials_file: "config/google_credentials.json"
   
 
-  # Sheet names/tabs
-  main_sheet_name: "AI notes"  # gid=0
-  ult_sheet_name: "ULT"  # gid=1625709554
-  suggestions_sheet_name: "suggested notes"  # gid=1733484713
-  templates_sheet_name: "AI templates - Use this one!"  # gid=1419396008
+  # Tab names
+  main_tab_name: "AI notes"
+  ult_tab_name: "ULT"  # The ULT tab within each editor's sheet
+  ust_tab_name: "UST"  # The UST tab within each editor's sheet
+  suggestions_tab_name: "suggested notes" 
+  templates_tab_name: "AI templates - Use this one!"
 
 # Anthropic Configuration
 anthropic:
   # Your Anthropic API key (set in .env file)
   model: "claude-3-5-sonnet-20241022"
-  
+  #model: "claude-3-5-haiku-20241022"
+  #model: "claude-3-haiku-20240307"
+
+
   # Batch processing settings
   batch_size: 2  # Process 2 items at a time to avoid Google Sheets API limits
   max_batch_requests: 100  # Max requests per batch (API limit is 100,000)
@@ -34,6 +38,26 @@ anthropic:
   # Prompt caching settings
   enable_prompt_caching: true
   cache_ttl_minutes: 5  # Anthropic cache TTL is 5 minutes
+
+# Timing Configuration - Allows admins to adjust all timing behavior
+timing:
+  # Main processing timing
+  work_check_interval: 60  # How often to check for new work (in seconds)
+  work_check_minimum_interval: 5  # Minimum time between work checks (in seconds)
+  error_retry_delay: 10  # How long to wait after errors before retrying (in seconds)
+  
+  # Suggestion processing timing
+  suggestion_poll_interval: 120  # How often to check suggestion batch status (in seconds)
+  suggestion_max_wait_minutes: 30  # Maximum wait time for suggestion batches (in minutes)
+  
+  # General operation timing
+  loop_sleep_interval: 1  # Small sleep to prevent busy waiting in main loops (in seconds)
+  shutdown_grace_period: 2  # Time to wait for operations to finish during shutdown (in seconds)
+  retry_delay_brief: 5  # Brief pause before retrying operations (in seconds)
+  
+  # API and sheet operation timing
+  api_rate_limit_delay: 2  # Delay between API calls to avoid rate limits (in seconds)
+  sheet_operation_delay: 3  # Delay between sheet operations (in seconds)
 
 # Processing Configuration
 processing:
@@ -76,8 +100,6 @@ cache:
   force_anthropic_cache_update: true  # Update Anthropic cache when content changes
   
   # Cache file names
-  ult_cache_file: "ult_chapters.json"
-  ust_cache_file: "ust_chapters.json"
   templates_cache_file: "templates.json"
   support_refs_cache_file: "support_references.json"
   system_prompts_cache_file: "system_prompts.json"

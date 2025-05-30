@@ -75,7 +75,7 @@ class SheetManager:
         """
         try:
             # Get the main sheet data
-            sheet_name = self.sheets_config['main_sheet_name']
+            sheet_name = self.sheets_config['main_tab_name']
             escaped_sheet_name = self._escape_sheet_name(sheet_name)
             range_name = f"{escaped_sheet_name}!A:Z"  # Get all columns
             
@@ -190,7 +190,7 @@ class SheetManager:
             return
         
         try:
-            sheet_name = self.sheets_config['main_sheet_name']
+            sheet_name = self.sheets_config['main_tab_name']
             
             # Define allowed columns and their letters
             allowed_columns = {
@@ -389,19 +389,20 @@ class SheetManager:
             return f"'{escaped_name}'"
         return sheet_name
 
-    def fetch_biblical_text(self, text_type: str, book_code: str) -> Optional[Dict[str, Any]]:
+    def fetch_biblical_text(self, text_type: str, book_code: str, user: str = None) -> Optional[Dict[str, Any]]:
         """Fetch biblical text for a specific book.
         
         Args:
             text_type: 'ULT' or 'UST'
             book_code: The 3-letter book code (e.g., 'GEN', 'NUM')
+            user: Username to fetch from user's specific sheet (optional)
             
         Returns:
             Biblical text data or None
         """
         try:
             # Attempt to fetch from specific sheet tabs first
-            data = self._fetch_from_sheet_tabs(text_type, book_code)
+            data = self._fetch_from_sheet_tabs(text_type, book_code, user=user)
             if data:
                 return data
             
@@ -419,34 +420,49 @@ class SheetManager:
             self.logger.error(f"Error fetching biblical text for {book_code} ({text_type}): {e}")
             return None
 
-    def _fetch_from_sheet_tabs(self, text_type: str, book_code: str) -> Optional[Dict[str, Any]]:
+    def _fetch_from_sheet_tabs(self, text_type: str, book_code: str, user: str = None) -> Optional[Dict[str, Any]]:
         """Fetch biblical text from specific sheet tabs for ULT or UST.
         
         Args:
             text_type: 'ULT' or 'UST'
             book_code: The 3-letter book code
+            user: Username to fetch from user's specific sheet (optional)
             
         Returns:
             Biblical text data or None
         """
-        # Determine sheet and tab name based on text_type
-        if text_type == 'ULT':
-            sheet_key = 'ult_sheet'
-            default_tab_name = 'ULT Content'
-        elif text_type == 'UST':
-            sheet_key = 'ust_sheet'
-            default_tab_name = 'UST Content'
+        # If user is provided, use their specific sheet
+        if user:
+            sheet_id = self.sheets_config.get('sheet_ids', {}).get(user)
+            if not sheet_id:
+                self.logger.info(f"No sheet ID configured for user '{user}'. Cannot fetch from sheet tabs.")
+                return None
+            # Use the configured tab name from config, or default to just the text type
+            tab_name = self.sheets_config.get(f'{text_type.lower()}_sheet_name', text_type)
+            self.logger.info(f"DEBUG: User-specific fetch - user='{user}' -> sheet_id='{sheet_id}', looking for tab='{tab_name}'")
         else:
-            self.logger.error(f"Invalid text_type for fetching biblical text: {text_type}")
-            return None
+            # Legacy: try to find a global ULT/UST sheet (this path shouldn't be used anymore)
+            if text_type == 'ULT':
+                sheet_key = 'ult_sheet'
+                default_tab_name = 'ULT'
+            elif text_type == 'UST':
+                sheet_key = 'ust_sheet'
+                default_tab_name = 'UST'
+            else:
+                self.logger.error(f"Invalid text_type for fetching biblical text: {text_type}")
+                return None
 
-        sheet_id = self.sheets_config.get(sheet_key)
-        tab_name = self.sheets_config.get(f'{text_type.lower()}_tab_name', default_tab_name)
+            sheet_id = self.sheets_config.get(sheet_key)
+            tab_name = self.sheets_config.get(f'{text_type.lower()}_tab_name', default_tab_name)
+            self.logger.warning(f"DEBUG: Legacy fetch (shouldn't happen) - sheet_key='{sheet_key}', sheet_id='{sheet_id}', tab_name='{tab_name}'")
 
-        self.logger.info(f"DEBUG: Looking for {text_type} sheet with sheet_key='{sheet_key}', sheet_id='{sheet_id}', tab_name='{tab_name}'")
+        self.logger.info(f"DEBUG: Fetching {text_type} for {book_code} from user='{user}', sheet_id='{sheet_id}', tab='{tab_name}'")
 
         if not sheet_id:
-            self.logger.info(f"{text_type} sheet ID not configured ('{sheet_key}'). Cannot fetch from sheet tabs.")
+            if user:
+                self.logger.info(f"No sheet ID configured for user '{user}'. Cannot fetch from sheet tabs.")
+            else:
+                self.logger.info(f"{text_type} sheet ID not configured. Cannot fetch from sheet tabs.")
             return None
             
         self.logger.info(f"Fetching {text_type} for {book_code} from sheet: {sheet_id}, tab: {tab_name}")
@@ -1015,7 +1031,7 @@ class SheetManager:
         """
         try:
             # Get the main sheet data
-            sheet_name = self.sheets_config['main_sheet_name']
+            sheet_name = self.sheets_config['main_tab_name']
             escaped_sheet_name = self._escape_sheet_name(sheet_name)
             range_name = f"{escaped_sheet_name}!A:Z"  # Get all columns
             

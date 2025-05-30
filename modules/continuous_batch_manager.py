@@ -132,10 +132,20 @@ class ContinuousBatchManager:
         
         # Get configuration
         anthropic_config = config.get_anthropic_config()
+        timing_config = config.get_timing_config()
+        
         self.batch_size = anthropic_config['batch_size']
         self.max_concurrent_batches = anthropic_config['max_concurrent_batches']
         self.batch_timeout_hours = anthropic_config['batch_timeout_hours']
         self.poll_interval = self.config.get('anthropic.batch_group_poll_interval', 30)
+        
+        # Timing configuration
+        self.work_check_interval = timing_config['work_check_interval']
+        self.work_check_minimum_interval = timing_config['work_check_minimum_interval']
+        self.error_retry_delay = timing_config['error_retry_delay']
+        self.suggestion_poll_interval = timing_config['suggestion_poll_interval']
+        self.suggestion_max_wait_minutes = timing_config['suggestion_max_wait_minutes']
+        self.loop_sleep_interval = timing_config['loop_sleep_interval']
         
         # Running state
         self.running_batches: Dict[str, RunningBatch] = {}  # batch_id -> RunningBatch
@@ -156,6 +166,7 @@ class ContinuousBatchManager:
         self.work_checker_thread = None
         
         self.logger.info(f"Continuous batch manager initialized - max concurrent: {self.max_concurrent_batches}")
+        self.logger.info(f"Work check interval: {self.work_check_interval}s, minimum: {self.work_check_minimum_interval}s")
     
     def start(self):
         """Start the continuous batch processing."""
@@ -236,12 +247,12 @@ class ContinuousBatchManager:
                 self._scan_all_sheets_for_work()
                 self._process_work_queue()
                 
-                # Sleep for the poll interval
-                time.sleep(max(5, self.poll_interval // 6))  # Check for new work more frequently
+                # Sleep for the configured work check interval
+                time.sleep(self.work_check_interval)
                 
             except Exception as e:
                 self.logger.error(f"Error in work checker thread: {e}")
-                time.sleep(10)  # Wait longer on error
+                time.sleep(self.error_retry_delay)
     
     def _scan_all_sheets_for_work(self):
         """Scan all configured user sheets for pending work."""
@@ -269,16 +280,19 @@ class ContinuousBatchManager:
                 continue
             
             try:
+                # Get friendly name with raw ID for logging
+                friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+                
                 # First check for suggestion requests (this can also cause permission errors)
                 try:
                     self._check_and_process_suggestion_requests(sheet_id, user)
                 except Exception as e:
                     if self._is_permission_error(e):
-                        self.logger.warning(f"Permission error during suggestion check for {user}")
+                        self.logger.warning(f"Permission error during suggestion check for {friendly_name_with_id}")
                         self._block_sheet_for_permission_error(sheet_id, user)
                         continue
                     else:
-                        self.logger.warning(f"Error checking suggestion requests for {user}: {e}")
+                        self.logger.warning(f"Error checking suggestion requests for {friendly_name_with_id}: {e}")
                 
                 # Step 1: Convert SRef values if needed
                 if support_references and auto_convert_sref:
@@ -288,10 +302,10 @@ class ContinuousBatchManager:
                             updates_needed = self.sheet_manager.convert_sref_values(all_items, support_references)
                             if updates_needed and not self.config.get('debug.dry_run', False):
                                 self.sheet_manager.batch_update_rows(sheet_id, updates_needed)
-                                self.logger.debug(f"Updated {len(updates_needed)} SRef values for {user}")
+                                self.logger.debug(f"Updated {len(updates_needed)} SRef values for {friendly_name_with_id}")
                     except Exception as e:
                         if self._is_permission_error(e):
-                            self.logger.warning(f"Permission error during SRef conversion for {user}")
+                            self.logger.warning(f"Permission error during SRef conversion for {friendly_name_with_id}")
                             self._block_sheet_for_permission_error(sheet_id, user)
                             continue
                 
@@ -300,11 +314,11 @@ class ContinuousBatchManager:
                     pending_items = self.sheet_manager.get_pending_work(sheet_id)
                 except Exception as e:
                     if self._is_permission_error(e):
-                        self.logger.warning(f"Permission error during get_pending_work for {user}")
+                        self.logger.warning(f"Permission error during get_pending_work for {friendly_name_with_id}")
                         self._block_sheet_for_permission_error(sheet_id, user)
                         continue
                     else:
-                        self.logger.error(f"Error getting pending work for {user}: {e}")
+                        self.logger.error(f"Error getting pending work for {friendly_name_with_id}: {e}")
                         continue
                 
                 if pending_items:
@@ -316,7 +330,7 @@ class ContinuousBatchManager:
                             if row_id not in self.rows_in_progress:
                                 filtered_items.append(item)
                             else:
-                                self.logger.debug(f"Skipping row {item.get('row', 'unknown')} for {user} - already being processed")
+                                self.logger.debug(f"Skipping row {item.get('row', 'unknown')} for {friendly_name_with_id} - already being processed")
                     
                     if filtered_items:
                         # Detect the book for this user
@@ -336,13 +350,14 @@ class ContinuousBatchManager:
                         # Only add if we don't already have work queued for this user
                         if not self._has_queued_work_for_user(user):
                             self.work_queue.put(work)
-                            self.logger.info(f"Queued {len(filtered_items)} items for {user} (filtered from {len(pending_items)} pending)")
+                            self.logger.info(f"Queued {len(filtered_items)} items for {friendly_name_with_id} (filtered from {len(pending_items)} pending)")
             
             except Exception as e:
+                friendly_name_with_id = self.config.get_friendly_name_with_id(user)
                 if self._is_permission_error(e):
                     self._block_sheet_for_permission_error(sheet_id, user)
                 else:
-                    self.logger.error(f"Error scanning work for {user}: {e}")
+                    self.logger.error(f"Error scanning work for {friendly_name_with_id}: {e}")
     
     def _get_row_identifier(self, sheet_id: str, item: Dict[str, Any]) -> str:
         """Create a unique identifier for a row.
@@ -460,9 +475,9 @@ class ContinuousBatchManager:
         
         try:
             # Get friendly name for logging
-            friendly_name = self.config.get_editor_name_for_sheet(sheet_id)
+            friendly_name_with_id = self.config.get_friendly_name_with_id(user)
             
-            self.logger.info(f"Processing {len(items)} programmatic items for {friendly_name}")
+            self.logger.info(f"Processing {len(items)} programmatic items for {friendly_name_with_id}")
             
             # Process each item
             updates = []
@@ -478,12 +493,12 @@ class ContinuousBatchManager:
                         }
                         updates.append(update_data)
                 except Exception as e:
-                    self.logger.error(f"Error processing programmatic item {item.get('row', 'unknown')} for {friendly_name}: {e}")
+                    self.logger.error(f"Error processing programmatic item {item.get('row', 'unknown')} for {friendly_name_with_id}: {e}")
             
             # Update the sheet with all results
             if updates:
                 success_count = self.sheet_manager.update_sheet_with_results(sheet_id, updates)
-                self.logger.info(f"Updated {len(updates)} programmatic items for {friendly_name}")
+                self.logger.info(f"Updated {len(updates)} programmatic items for {friendly_name_with_id}")
                 
                 # Call completion callback if provided
                 if self.completion_callback:
@@ -498,18 +513,18 @@ class ContinuousBatchManager:
                 for item in items:
                     row_id = self._get_row_identifier(sheet_id, item)
                     self.rows_in_progress.discard(row_id)
-                    self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after programmatic processing for {friendly_name}")
+                    self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after programmatic processing for {friendly_name_with_id}")
     
     def _submit_ai_batches(self, items: List[Dict[str, Any]], user: str, sheet_id: str):
         """Submit AI batches for the given items."""
         try:
             # Get friendly name for logging
-            friendly_name = self.config.get_editor_name_for_sheet(sheet_id)
+            friendly_name_with_id = self.config.get_friendly_name_with_id(user)
             
             # Detect book from items
             user_detected, book = self.cache_manager.detect_user_book_from_items(items)
             if not book:
-                self.logger.warning(f"Could not detect book from items for {friendly_name}")
+                self.logger.warning(f"Could not detect book from items for {friendly_name_with_id}")
                 return
             
             # Ensure biblical text is cached
@@ -524,11 +539,11 @@ class ContinuousBatchManager:
                     # Create batch requests
                     requests = self._create_user_batch_requests(batch_items, user, book)
                     if not requests:
-                        self.logger.warning(f"No valid requests for {friendly_name} batch {batch_num}")
+                        self.logger.warning(f"No valid requests for {friendly_name_with_id} batch {batch_num}")
                         continue
                     
                     # Submit the batch
-                    self.logger.debug(f"Submitting AI batch {batch_num} for {friendly_name} ({len(requests)} requests)")
+                    self.logger.debug(f"Submitting AI batch {batch_num} for {friendly_name_with_id} ({len(requests)} requests)")
                     batch_id = self.ai_service.submit_batch(requests)
                     
                     # Track the running batch
@@ -545,10 +560,10 @@ class ContinuousBatchManager:
                     with self.lock:
                         self.running_batches[batch_id] = running_batch
                     
-                    self.logger.info(f"Submitted AI batch {batch_num} for {friendly_name} (ID: {batch_id}, {len(batch_items)} items)")
+                    self.logger.info(f"Submitted AI batch {batch_num} for {friendly_name_with_id} (ID: {batch_id}, {len(batch_items)} items)")
                     batch_num += 1
                 except Exception as e:
-                    self.logger.error(f"Error submitting batch for {friendly_name}: {e}")
+                    self.logger.error(f"Error submitting batch for {friendly_name_with_id}: {e}")
                     # Unmark rows since batch submission failed
                     with self.lock:
                         for item in batch_items:
@@ -556,7 +571,7 @@ class ContinuousBatchManager:
                             self.rows_in_progress.discard(row_id)
             
         except Exception as e:
-            self.logger.error(f"Error submitting batch for {friendly_name}: {e}")
+            self.logger.error(f"Error submitting batch for {friendly_name_with_id}: {e}")
             # Unmark rows since batch submission failed
             with self.lock:
                 for item in items:
@@ -639,8 +654,8 @@ class ContinuousBatchManager:
                         
                         if batch_status.processing_status == 'ended':
                             # Batch completed successfully
-                            friendly_name = self.config.get_editor_name_for_sheet(batch_info.sheet_id)
-                            self.logger.info(f"Batch {batch_id} for {friendly_name} completed")
+                            friendly_name_with_id = self.config.get_friendly_name_with_id(batch_info.user)
+                            self.logger.info(f"Batch {batch_id} for {friendly_name_with_id} completed")
                             
                             # Process results
                             self._process_completed_batch(batch_id, batch_info, batch_status)
@@ -648,15 +663,15 @@ class ContinuousBatchManager:
                         
                         elif batch_status.processing_status in ['canceled', 'expired']:
                             # Batch failed
-                            friendly_name = self.config.get_editor_name_for_sheet(batch_info.sheet_id)
-                            self.logger.error(f"Batch {batch_id} for {friendly_name} failed: {batch_status.processing_status}")
+                            friendly_name_with_id = self.config.get_friendly_name_with_id(batch_info.user)
+                            self.logger.error(f"Batch {batch_id} for {friendly_name_with_id} failed: {batch_status.processing_status}")
                             
                             # Unmark the rows since they failed
                             with self.lock:
                                 for item in batch_info.items:
                                     row_id = self._get_row_identifier(batch_info.sheet_id, item)
                                     self.rows_in_progress.discard(row_id)
-                                    self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after batch {batch_id} failure for {friendly_name}")
+                                    self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after batch {batch_id} failure for {friendly_name_with_id}")
                             
                             completed_batches.append(batch_id)
                         
@@ -664,15 +679,15 @@ class ContinuousBatchManager:
                             # Still processing - check for timeout
                             elapsed = datetime.now() - batch_info.submitted_at
                             if elapsed > timedelta(hours=self.batch_timeout_hours):
-                                friendly_name = self.config.get_editor_name_for_sheet(batch_info.sheet_id)
-                                self.logger.error(f"Batch {batch_id} for {friendly_name} timed out")
+                                friendly_name_with_id = self.config.get_friendly_name_with_id(batch_info.user)
+                                self.logger.error(f"Batch {batch_id} for {friendly_name_with_id} timed out")
                                 
                                 # Unmark the rows since they timed out
                                 with self.lock:
                                     for item in batch_info.items:
                                         row_id = self._get_row_identifier(batch_info.sheet_id, item)
                                         self.rows_in_progress.discard(row_id)
-                                        self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after batch {batch_id} timeout for {friendly_name}")
+                                        self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after batch {batch_id} timeout for {friendly_name_with_id}")
                                 
                                 completed_batches.append(batch_id)
                     
@@ -693,13 +708,13 @@ class ContinuousBatchManager:
             
             except Exception as e:
                 self.logger.error(f"Error in batch monitor: {e}")
-                time.sleep(10)
+                time.sleep(self.error_retry_delay)
     
     def _process_completed_batch(self, batch_id: str, batch_info: RunningBatch, batch_status):
         """Process a completed batch and update the sheet."""
         try:
             # Get friendly name for logging
-            friendly_name = self.config.get_editor_name_for_sheet(batch_info.sheet_id)
+            friendly_name_with_id = self.config.get_friendly_name_with_id(batch_info.user)
             
             # Get results
             raw_results = self.ai_service.get_batch_results(batch_status)
@@ -708,10 +723,10 @@ class ContinuousBatchManager:
             # Update sheet with results
             success_count = self._update_sheet_with_results(processed_results, batch_info.sheet_id)
             
-            self.logger.info(f"Processed batch {batch_id} for {friendly_name}: {success_count}/{len(batch_info.items)} items")
+            self.logger.info(f"Processed batch {batch_id} for {friendly_name_with_id}: {success_count}/{len(batch_info.items)} items")
             
         except Exception as e:
-            friendly_name = self.config.get_editor_name_for_sheet(batch_info.sheet_id)
+            friendly_name_with_id = self.config.get_friendly_name_with_id(batch_info.user)
             self.logger.error(f"Error processing completed batch {batch_id}: {e}")
         
         finally:
@@ -720,7 +735,7 @@ class ContinuousBatchManager:
                 for item in batch_info.items:
                     row_id = self._get_row_identifier(batch_info.sheet_id, item)
                     self.rows_in_progress.discard(row_id)
-                    self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after batch {batch_id} completion for {friendly_name}")
+                    self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after batch {batch_id} completion for {friendly_name_with_id}")
     
     def _ensure_biblical_text_cached(self, user: str, book: str):
         """Ensure biblical text is cached for the user and book."""
@@ -739,7 +754,7 @@ class ContinuousBatchManager:
                 self.logger.debug(f"Caching {text_type} for {user}/{book}")
                 
                 try:
-                    biblical_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book)
+                    biblical_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book, user=user)
                     if biblical_data:
                         self.cache_manager.set_biblical_text_for_user(text_type, user, book, biblical_data)
                         self.logger.info(f"Successfully cached {text_type} for {user}/{book}.")
@@ -906,15 +921,15 @@ class ContinuousBatchManager:
         if datetime.now() >= blocked_until:
             # Block has expired, remove it
             del self.blocked_sheets[sheet_id]
-            friendly_name = self.config.get_editor_name_for_sheet(sheet_id)
-            self.logger.info(f"Permission block expired for {friendly_name} - resuming sheet monitoring")
+            friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+            self.logger.info(f"Permission block expired for {friendly_name_with_id} - resuming sheet monitoring")
             return False
         
         # Still blocked
         remaining = blocked_until - datetime.now()
         remaining_minutes = remaining.total_seconds() / 60
-        friendly_name = self.config.get_editor_name_for_sheet(sheet_id)
-        self.logger.debug(f"Skipping {friendly_name} sheet - blocked for {remaining_minutes:.1f} more minutes due to permission error")
+        friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+        self.logger.debug(f"Skipping {friendly_name_with_id} sheet - blocked for {remaining_minutes:.1f} more minutes due to permission error")
         return True
     
     def _block_sheet_for_permission_error(self, sheet_id: str, user: str):
@@ -922,9 +937,9 @@ class ContinuousBatchManager:
         blocked_until = datetime.now() + timedelta(hours=self.permission_block_hours)
         self.blocked_sheets[sheet_id] = blocked_until
         
-        friendly_name = self.config.get_editor_name_for_sheet(sheet_id)
-        self.logger.warning(f"Snoozing {friendly_name}'s sheet (ID: {sheet_id}) for {self.permission_block_hours} hour(s) due to permission error.")
-        self.logger.warning(f"Will retry {friendly_name}'s sheet at {blocked_until.strftime('%Y-%m-%d %H:%M:%S')}")
+        friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+        self.logger.warning(f"Snoozing {friendly_name_with_id}'s sheet (ID: {sheet_id}) for {self.permission_block_hours} hour(s) due to permission error.")
+        self.logger.warning(f"Will retry {friendly_name_with_id}'s sheet at {blocked_until.strftime('%Y-%m-%d %H:%M:%S')}")
     
     def _is_permission_error(self, error: Exception) -> bool:
         """Check if an error is a permission-related error.
@@ -956,18 +971,21 @@ class ContinuousBatchManager:
             if not self._has_suggestion_request(sheet_id):
                 return
             
-            self.logger.info(f"Found suggestion request for {user}")
+            # Get friendly name for logging
+            friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+            self.logger.info(f"Found suggestion request for {friendly_name_with_id}")
             
             # Check if other work is in progress
             if self._is_other_work_in_progress(sheet_id):
-                self.logger.info(f"Other work in progress for {user}, skipping suggestions")
+                self.logger.info(f"Other work in progress for {friendly_name_with_id}, skipping suggestions")
                 return
             
             # Process the suggestion request
             self._process_suggestion_request(sheet_id, user)
             
         except Exception as e:
-            self.logger.error(f"Error checking suggestion requests for {user}: {e}")
+            friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+            self.logger.error(f"Error checking suggestion requests for {friendly_name_with_id}: {e}")
 
     def _has_suggestion_request(self, sheet_id: str) -> bool:
         """Check if there's a suggestion request (YES in suggested notes tab, column D, row 2).
@@ -1035,7 +1053,8 @@ class ContinuousBatchManager:
 
     def _process_suggestion_request(self, sheet_id: str, user: str):
         """Process suggestion request for a user's sheet."""
-        self.logger.info(f"Processing suggestion request for {user} (Sheet: {sheet_id})")
+        friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+        self.logger.info(f"Processing suggestion request for {friendly_name_with_id} (Sheet: {sheet_id})")
         
         try:
             # Step 1: Fetch existing notes first. This will be used for book/chapter detection and for the prompt.
@@ -1047,7 +1066,7 @@ class ContinuousBatchManager:
             for batch_info in self.running_batches.values():
                 if batch_info.user == user and batch_info.book:
                     current_book_for_user = batch_info.book
-                    self.logger.info(f"Found current book '{current_book_for_user}' for user '{user}' from running batches for suggestions.")
+                    self.logger.info(f"Found current book '{current_book_for_user}' for user '{friendly_name_with_id}' from running batches for suggestions.")
                     break
             
             if not current_book_for_user and existing_notes:
@@ -1055,13 +1074,13 @@ class ContinuousBatchManager:
                 _, detected_book = self.cache_manager.detect_user_book_from_items(existing_notes)
                 if detected_book:
                     current_book_for_user = detected_book
-                    self.logger.info(f"Detected book '{current_book_for_user}' for user '{user}' from existing notes for suggestions.")
+                    self.logger.info(f"Detected book '{current_book_for_user}' for user '{friendly_name_with_id}' from existing notes for suggestions.")
 
             if not current_book_for_user:
                 # Fallback to a default book if no other info is available
                 default_suggestion_book = self.config.get('suggestions.default_book', 'GEN') # Default to GEN if not configured
                 current_book_for_user = default_suggestion_book
-                self.logger.warning(f"Could not determine current book for {user} for suggestions, defaulting to '{current_book_for_user}'.")
+                self.logger.warning(f"Could not determine current book for {friendly_name_with_id} for suggestions, defaulting to '{current_book_for_user}'.")
             
             target_book = current_book_for_user
 
@@ -1081,20 +1100,20 @@ class ContinuousBatchManager:
                             self.logger.debug(f"Could not parse chapter from Ref '{ref}' in existing notes.")
                 if max_chapter_found > 0:
                     target_chapter = max_chapter_found
-                    self.logger.info(f"Determined target chapter for suggestions for {user} as {target_chapter} from existing notes (book: {target_book}).")
+                    self.logger.info(f"Determined target chapter for suggestions for {friendly_name_with_id} as {target_chapter} from existing notes (book: {target_book}).")
                 else:
-                    self.logger.info(f"No valid chapter found in existing notes for {user}, using default chapter {target_chapter} for suggestions (book: {target_book}).")
+                    self.logger.info(f"No valid chapter found in existing notes for {friendly_name_with_id}, using default chapter {target_chapter} for suggestions (book: {target_book}).")
             else:
-                self.logger.info(f"No existing notes found for {user}, using default chapter {target_chapter} for suggestions (book: {target_book}).")
+                self.logger.info(f"No existing notes found for {friendly_name_with_id}, using default chapter {target_chapter} for suggestions (book: {target_book}).")
 
-            self.logger.info(f"Proceeding with suggestion generation for {user} - {target_book} chapter {target_chapter}")
+            self.logger.info(f"Proceeding with suggestion generation for {friendly_name_with_id} - {target_book} chapter {target_chapter}")
 
             # Step 4: Fetch ULT and UST text for the determined target chapter
             ult_text = self._get_chapter_text(target_book, target_chapter, 'ULT', user)
             ust_text = self._get_chapter_text(target_book, target_chapter, 'UST', user)
             
             if not ult_text or not ust_text:
-                self.logger.error(f"Could not get ULT/UST text for {target_book} chapter {target_chapter} for user {user}. Aborting suggestion.")
+                self.logger.error(f"Could not get ULT/UST text for {target_book} chapter {target_chapter} for user {friendly_name_with_id}. Aborting suggestion.")
                 self._turn_off_suggestion_request(sheet_id) # Turn off to prevent loops
                 return
 
@@ -1109,18 +1128,18 @@ class ContinuousBatchManager:
             
             if suggestions:
                 self._write_suggestions_to_sheet(sheet_id, suggestions)
-                self.logger.info(f"Wrote {len(suggestions)} suggestions to sheet for {user}")
+                self.logger.info(f"Wrote {len(suggestions)} suggestions to sheet for {friendly_name_with_id}")
             else:
-                self.logger.info(f"No new suggestions generated for {user}")
+                self.logger.info(f"No new suggestions generated for {friendly_name_with_id}")
             
         except Exception as e:
-            self.logger.error(f"Error processing suggestion request for {user}: {e}")
+            self.logger.error(f"Error processing suggestion request for {friendly_name_with_id}: {e}")
             import traceback
             self.logger.error(traceback.format_exc())
         finally:
             # Turn off the request flag in the sheet to prevent re-processing immediately
             self._turn_off_suggestion_request(sheet_id)
-            self.logger.info(f"Turned off suggestion request for {user} sheet {sheet_id}")
+            self.logger.info(f"Turned off suggestion request for {friendly_name_with_id} sheet {sheet_id}")
 
     def _get_existing_notes(self, sheet_id: str) -> List[Dict[str, Any]]:
         """Get existing notes from AI notes tab.
@@ -1193,76 +1212,78 @@ class ContinuousBatchManager:
             Chapter text or None if not found
         """
         sheet_id = self.config.get('google_sheets.sheet_ids', {}).get(user)
+        friendly_name_with_id = self.config.get_friendly_name_with_id(user)
+        
         if not sheet_id:
             self.logger.warning(f"No sheet_id for user {user}, cannot get chapter text or handle permissions.")
             return None
 
         if self._is_sheet_blocked(sheet_id, user):
-            self.logger.debug(f"Skipping _get_chapter_text for {text_type} {book} Ch {chapter} for {user} as sheet {sheet_id} is blocked.")
+            self.logger.debug(f"Skipping _get_chapter_text for {text_type.upper()} {book} Ch {chapter} for {friendly_name_with_id} as sheet {sheet_id} is blocked.")
             return None
 
         try:
             biblical_text_data = self.cache_manager.get_biblical_text_for_user(text_type, user, book)
             
             if not biblical_text_data:
-                self.logger.info(f"{text_type.upper()} for {book} not cached for user {user}, fetching...")
-                fetched_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book)
+                self.logger.info(f"{text_type.upper()} for {book} not cached for {friendly_name_with_id}, fetching...")
+                fetched_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book, user=user)
                 if fetched_data:
                     self.cache_manager.set_biblical_text_for_user(text_type, user, book, fetched_data)
                     biblical_text_data = fetched_data
-                    self.logger.info(f"Successfully fetched and cached {text_type.upper()} for {user}/{book}.")
+                    self.logger.info(f"Successfully fetched and cached {text_type.upper()} for {friendly_name_with_id}.")
                 else:
-                    self.logger.warning(f"Failed to fetch {text_type.upper()} for {book} for user {user}.")
+                    self.logger.warning(f"Failed to fetch {text_type.upper()} for {book} for {friendly_name_with_id}.")
                     return None # Failed to fetch, data remains unavailable
             
             if not biblical_text_data:
-                self.logger.error(f"Cache and fetch ultimately failed for {text_type.upper()} {book} for user {user}.")
+                self.logger.error(f"Cache and fetch ultimately failed for {text_type.upper()} {book} for {friendly_name_with_id}.")
                 return None
 
             if biblical_text_data.get('book') != book:
-                self.logger.error(f"CRITICAL: Biblical text data for user {user} is for book '{biblical_text_data.get('book')}', not '{book}'. Clearing cache.")
+                self.logger.error(f"CRITICAL: Biblical text data for {friendly_name_with_id} is for book '{biblical_text_data.get('book')}', not '{book}'. Clearing cache.")
                 self.cache_manager.clear_user_cache(user, book=book)
                 return None 
             
             chapters_list = biblical_text_data.get('chapters', [])
-            self.logger.info(f"DEBUG: Biblical text data for {user}/{book} has {len(chapters_list)} chapters")
+            self.logger.info(f"DEBUG: Biblical text data for {friendly_name_with_id}/{book} has {len(chapters_list)} chapters")
             available_chapters = [ch.get('chapter') for ch in chapters_list]
-            self.logger.info(f"DEBUG: Available chapters for {user}/{book} {text_type.upper()}: {sorted(available_chapters)}")
+            self.logger.info(f"DEBUG: Available chapters for {friendly_name_with_id}/{book} {text_type.upper()}: {sorted(available_chapters)}")
             self.logger.info(f"DEBUG: Looking for chapter {chapter}")
             
             # Check if the requested chapter is missing from the cache
             if chapter not in available_chapters:
-                self.logger.warning(f"Chapter {chapter} not found in cached {text_type.upper()} for {user}/{book}. Attempting to refresh cache...")
+                self.logger.warning(f"Chapter {chapter} not found in cached {text_type.upper()} for {friendly_name_with_id}/{book}. Attempting to refresh cache...")
                 
                 # Clear the current cache and fetch fresh data
                 self.cache_manager.clear_user_cache(user, book=book)
                 
                 try:
-                    fetched_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book)
+                    fetched_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book, user=user)
                     if fetched_data:
                         self.cache_manager.set_biblical_text_for_user(text_type, user, book, fetched_data)
                         biblical_text_data = fetched_data
-                        self.logger.info(f"Successfully refreshed {text_type.upper()} cache for {user}/{book}.")
+                        self.logger.info(f"Successfully refreshed {text_type.upper()} cache for {friendly_name_with_id}/{book}.")
                         
                         # Update our local variables with the refreshed data
                         chapters_list = biblical_text_data.get('chapters', [])
                         available_chapters = [ch.get('chapter') for ch in chapters_list]
-                        self.logger.info(f"DEBUG: After refresh, {user}/{book} {text_type.upper()} has {len(chapters_list)} chapters: {sorted(available_chapters)}")
+                        self.logger.info(f"DEBUG: After refresh, {friendly_name_with_id}/{book} {text_type.upper()} has {len(chapters_list)} chapters: {sorted(available_chapters)}")
                     else:
-                        self.logger.error(f"Failed to refresh {text_type.upper()} for {book} for user {user}.")
+                        self.logger.error(f"Failed to refresh {text_type.upper()} for {book} for {friendly_name_with_id}.")
                         return None
                 except SheetPermissionError as e:
-                    self.logger.error(f"Permission error while refreshing {text_type.upper()} cache for {user}/{book}: {e}")
+                    self.logger.error(f"Permission error while refreshing {text_type.upper()} cache for {friendly_name_with_id}/{book}: {e}")
                     self._block_sheet_for_permission_error(sheet_id, user)
                     return None
                 except Exception as e:
-                    self.logger.error(f"Error refreshing {text_type.upper()} cache for {user}/{book}: {e}")
+                    self.logger.error(f"Error refreshing {text_type.upper()} cache for {friendly_name_with_id}/{book}: {e}")
                     return None
             
             for chapter_data in chapters_list:
                 if chapter_data.get('chapter') == chapter:
                     verses = chapter_data.get('verses', [])
-                    self.logger.info(f"DEBUG: Found chapter {chapter} with {len(verses)} verses")
+                    self.logger.info(f"DEBUG: Found chapter {chapter} with {len(verses)} verses for {friendly_name_with_id}")
                     chapter_text_content = f"{book}\n"
                     for verse_item in verses:
                         verse_num = verse_item.get('number', 0)
@@ -1270,17 +1291,17 @@ class ContinuousBatchManager:
                         chapter_text_content += f"{chapter}:{verse_num} {content}\n"
                     return chapter_text_content.strip()
             
-            self.logger.warning(f"Chapter {chapter} not found in {text_type.upper()} for book {book} (user: {user})")
+            self.logger.warning(f"Chapter {chapter} not found in {text_type.upper()} for book {book} ({friendly_name_with_id})")
             self.logger.warning(f"DEBUG: Available chapters were: {sorted(available_chapters)}")
             return None
             
         except SheetPermissionError as e:
-            self.logger.error(f"Permission error in _get_chapter_text for {user}/{book} Ch {chapter} ({text_type}): {e}")
+            self.logger.error(f"Permission error in _get_chapter_text for {friendly_name_with_id}/{book} Ch {chapter} ({text_type}): {e}")
             if sheet_id: # Should always have sheet_id from above
                 self._block_sheet_for_permission_error(sheet_id, user)
             return None # Cannot proceed
         except Exception as e:
-            self.logger.error(f"Error getting {text_type.upper()} chapter text for {book} Ch {chapter} (user: {user}): {e}")
+            self.logger.error(f"Error getting {text_type.upper()} chapter text for {book} Ch {chapter} ({friendly_name_with_id}): {e}")
             import traceback
             self.logger.error(traceback.format_exc())
             return None
@@ -1469,8 +1490,8 @@ class ContinuousBatchManager:
             self.logger.info("=== END FULL PROMPT ===")
             
             # Wait for batch to complete (polling)
-            max_wait_time = 30 * 60  # 30 minutes
-            poll_interval = 30  # 30 seconds
+            max_wait_time = self.suggestion_max_wait_minutes * 60  # Convert minutes to seconds
+            poll_interval = self.suggestion_poll_interval
             elapsed = 0
             
             while elapsed < max_wait_time:
