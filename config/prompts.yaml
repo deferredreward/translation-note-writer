@@ -1,0 +1,133 @@
+# AI Prompts Configuration
+# Edit these prompts to customize AI behavior
+
+# NOTE: System prompts are now fetched from Google Sheets
+# Configure the system_prompts_sheet in config.yaml to point to your sheet
+
+# Main prompts for different note types
+note_prompts:
+  # When an alternate translation is already provided
+  given_at_prompt: |
+    Create a note to help Bible translators understand and address the issue identified `{sref}`. 
+    Here is the text where the issue occurs: `{gl_quote}`. Return only the note, without an alternate translation.
+
+    Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+    Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. However, don't reference modern versions in your note.
+    Here is the verse in context in a literal translation: `{ult_verse_in_context}`. 
+    Here is the verse in context in a simplified/amplified translation: `{ust_verse_in_context}`
+
+    Here is an alternate translation that will help you identify the issue: `{at}`
+    
+    The following input may or may not occur:
+    - Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note like instructions for the note users to refer elsewhere for more information. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to override the template, try to discern the intent even from a minimal prompt. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+    - If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note: `{ai_tn}`
+
+    Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
+
+    {templates}
+
+    Return only the note.
+
+  # When AI needs to write both note and alternate translation
+  writes_at_prompt: |
+    Return only the note.
+
+    Create a note to help Bible translators understand and address the issue identified `{sref}`. 
+    Here is the text where the issue occurs: `{gl_quote}`. 
+    Here is the full text of the verse: `{ult_verse_content}`. 
+    Here is {book} {ref} in its context: `{ult_verse_in_context}`
+
+    Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+    Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. However, don't reference modern versions in your note.
+
+    The following input may or may not occur:
+
+    - Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to slightly override the template, try to discern the intent even from a minimal prompt. Make sure your note includes the information prefixed by `i:`. Make sure your note includes the information prefixed by `i:`. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+    If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note, the explanation from the previous paragraph may help: `{ai_tn}`
+
+    When you make the alternate translation, it should fit seamlessly back into the ULT such that if you remove the GLQuote `{gl_quote}` and replace it with the alternate translation it reads correctly. Here is the ULT for this verse: `{ult_verse_content}`
+
+    Check the UST for the same verse to make sure that your alternate translation is not the same as the UST. If it is, come up with another alternate translation idea. Here is the UST for that verse: `{ust_verse_content}`
+
+    Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
+
+    {templates}
+
+    Return only the note.
+
+  # For "see how" reference notes that need alternate translations
+  see_how_at_prompt: |
+    I need you to make an alternate translation, it should fit seamlessly back into the ULT (`{ult_verse_content}`) such that if you remove the GLQuote `{gl_quote}` and replace it with the alternate translation it reads correctly.
+
+    Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+    Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. 
+    Also look up this verse specifically (`{book} {reference_verse}`) because the action refers back to this verse. 
+    Here is the verse in context in a literal translation: `{ult_verse_in_context}`. 
+    Here is the verse in context in a simplified/amplified translation: `{ust_verse_in_context}`
+    
+    Check the UST for the same verse to make sure that your alternate translation is not the same as the UST. If it is, come up with another alternate translation idea. Here is the UST for that verse: `{ust_verse_content}`
+
+    For reference here is a hint at the type of translation issue that we are addressing as well as a blank template that we would use perhaps in that earlier verse to address the issue:
+    issue type: {sref}
+
+    blank template: {template}
+
+    Return only the text of the generated alternate translation.
+
+# AI review prompt for suggesting additional notes
+review_prompt: |
+  You will be given a literal and a simplified/amplified text of a chapter of the Bible as well as a number of translation notes designed to help Bible translators understand the linguistic and translation issues in the text. Consider the differences between the literal and simplified texts and the json of translation issues below. If some translation issue below seems to occur in a verse, but there is not a translation note to deal with it in your input, create a feedback entry. Go verse by verse and issue by issue through the ULT and create as many feedback entries as you find issues. Look at the existing feedback list and do not suggest the same issue again.
+
+  Here is a sample output:
+  {{
+  "reference": "20:4",
+  "issuetype": "metaphor",
+  "quote": "cut off",
+  "alternate translation": "destroy",
+  "explanation": "This means to destroy"
+  }}
+  make sure that `issuetype` in the output is always a match to `type` below
+
+  IMPORTANT: For the "alternate translation" field:
+  - Provide an alternate translation that resolves the identified translation issue
+  - The alternate translation should fit naturally when substituted for the quoted text
+  - It should be clear, natural, and appropriate for the target language
+  - If multiple good options exist, choose the clearest one
+  - If no good alternate translation is needed or obvious, you may omit this field
+  - The alternate translation should help translators understand how to handle the issue
+
+  List of types of translation issues with description:
+
+  {translation_issues}
+
+  Literal text: `{ult_text}` 
+  Simplified/amplified text: `{ust_text}` 
+
+  Already created notes for the chapter (chapter:verse[tab]issue type[tab]quote[tab]translation note):
+
+  {notes_text}
+
+  Suggestions AI has already made (reference[tab]issue type[tab]quote[tab]go?[tab]AT[tab]explanation):
+  {suggestions_text}
+
+  See if there are any translation difficulties that we might have missed in the chapter.
+
+# Template formatting helpers
+template_formatting:
+  # How to format multiple templates when there are several options
+  multiple_templates_format: |
+    {issue_type}: {note_template}
+
+  # How to format templates without alternate translation sections
+  no_at_template_format: |
+    {issue_type}: {note_template_without_at}
+
+# Prompt caching markers
+# These will be used to mark content for Anthropic's prompt caching
+cache_markers:
+  biblical_text: "cache_biblical_text"
+  templates: "cache_templates"
+  issue_types: "cache_issue_types"
+  system_context: "cache_system_context" 

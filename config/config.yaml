@@ -1,0 +1,124 @@
+# Translation Notes AI Configuration
+# Edit this file to customize your setup
+
+# Google Sheets Configuration
+google_sheets:
+  # Your Google Sheets API credentials file path
+  credentials_file: "config/google_credentials.json"
+  
+
+  # Sheet names/tabs
+  main_sheet_name: "AI notes"  # gid=0
+  ult_sheet_name: "ULT"  # gid=1625709554
+  suggestions_sheet_name: "suggested notes"  # gid=1733484713
+  templates_sheet_name: "AI templates - Use this one!"  # gid=1419396008
+
+# Anthropic Configuration
+anthropic:
+  # Your Anthropic API key (set in .env file)
+  model: "claude-3-5-sonnet-20241022"
+  
+  # Batch processing settings
+  batch_size: 2  # Process 2 items at a time to avoid Google Sheets API limits
+  max_batch_requests: 100  # Max requests per batch (API limit is 100,000)
+  max_concurrent_batches: 8  # Max batches to process simultaneously
+  batch_timeout_hours: 1  # How long to wait for batch completion
+  
+  # Batch response polling settings
+  batch_poll_interval: 60  # How often to check batch status (in seconds)
+  batch_group_poll_interval: 60  # How often to check when waiting for multiple batches (in seconds)
+  
+  # Template validation settings
+  pause_on_missing_templates: true  # Pause and ask for confirmation before sending AI requests when templates are missing
+  
+  # Prompt caching settings
+  enable_prompt_caching: true
+  cache_ttl_minutes: 5  # Anthropic cache TTL is 5 minutes
+
+# Processing Configuration
+processing:
+  # Processing mode
+  use_continuous_batch_processing: true  # Use the new continuous batch manager (vs legacy synchronous)
+  
+  # How often to check for new work (in seconds) - only used in legacy mode
+  poll_interval: 60  # Check every minute like n8n
+  
+  # Permission error handling
+  permission_block_hours: 1  # How many hours to block a sheet after 403 permission denied error
+  
+  # Columns to watch for changes
+  watch_columns: ["Go?", "SRef"]
+  
+  # Processing filters
+  process_go_values: ["*"]  # "*" means any non-empty value triggers processing
+                            # Or specify exact values like: ["YES", "GO", "READY"]
+  skip_go_values: ["AI"]    # Skip rows where Go? contains these values (case-insensitive)
+  skip_ai_completed: true   # Skip rows where Go? = "AI" (legacy setting)
+  
+  # SRef conversion settings
+  auto_convert_sref: true   # Automatically convert short SRef values to full support reference names
+                           # This happens BEFORE template matching and AI processing
+
+# Caching Configuration
+cache:
+  # Local cache directory
+  cache_dir: "cache"
+  
+  # Cache refresh intervals (in minutes)
+  biblical_text_refresh: 60  # Refresh ULT/UST data every hour
+  templates_refresh: 1440    # Refresh templates daily (24 hours)
+  support_refs_refresh: 525600  # Refresh support references yearly (365 days * 24 hours * 60 minutes)
+                                # Support references rarely change (maybe 2x per year)
+                                # Use --force-refresh or --clear-cache to update manually
+  
+  # Content-based caching settings
+  enable_content_comparison: true  # Compare content hashes to detect changes
+  force_anthropic_cache_update: true  # Update Anthropic cache when content changes
+  
+  # Cache file names
+  ult_cache_file: "ult_chapters.json"
+  ust_cache_file: "ust_chapters.json"
+  templates_cache_file: "templates.json"
+  support_refs_cache_file: "support_references.json"
+  system_prompts_cache_file: "system_prompts.json"
+
+# Logging Configuration
+logging:
+  # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  level: "INFO"
+  
+  # Log file settings
+  log_dir: "logs"
+  log_file: "translation_notes.log"
+  max_log_size_mb: 10
+  backup_count: 5
+  
+  # Error notification settings
+  email_errors: true
+  email_cooldown_minutes: 10  # Only send one error email per 10 minutes
+  max_errors_per_email: 10    # Max errors to include in one email
+
+# Email Configuration (for error notifications)
+email:
+  # SMTP settings (configure in .env file)
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  use_tls: true
+  
+  # Email addresses
+  from_email: ""  # Set in .env
+  to_email: ""    # Set in .env
+
+# Development/Debug Settings
+debug:
+  # Enable debug mode
+  enabled: false
+  
+  # Dry run mode (don't actually update sheets)
+  dry_run: false
+  
+  # Verbose logging
+  verbose: false
+  
+  # Save API responses for debugging
+  save_api_responses: false 

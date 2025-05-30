@@ -1,0 +1,57 @@
+# Cache and logs
+cache/
+logs/
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables and sensitive configuration
+.env
+.env.local
+.env.production
+.env.staging
+
+# Google credentials
+google_credentials.json
+config/google_credentials.json
+
+# Data files
+*.tsv
+*.pdf
+*.txt
+*.usfm
+*.bak
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
