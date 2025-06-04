@@ -484,7 +484,7 @@ class ContinuousBatchManager:
             for item in items:
                 try:
                     # Generate the programmatic note
-                    note = self.ai_service.generate_programmatic_note(item)
+                    note = self._generate_programmatic_note(item)
                     if note:
                         update_data = {
                             'row': item['row'],
@@ -497,8 +497,30 @@ class ContinuousBatchManager:
             
             # Update the sheet with all results
             if updates:
-                success_count = self.sheet_manager.update_sheet_with_results(sheet_id, updates)
-                self.logger.info(f"Updated {len(updates)} programmatic items for {friendly_name_with_id}")
+                # For programmatic items, we can update directly since they're already processed
+                if not self.config.get('debug.dry_run', False):
+                    try:
+                        # Convert to the format expected by batch_update_rows
+                        sheet_updates = []
+                        for update in updates:
+                            update_data = {
+                                'row_number': update['row'],
+                                'updates': {
+                                    'Go?': update['go_value'],
+                                    'AI TN': update['ai_tn']
+                                }
+                            }
+                            sheet_updates.append(update_data)
+                        
+                        self.sheet_manager.batch_update_rows(sheet_id, sheet_updates, self.completion_callback)
+                        success_count = len(sheet_updates)
+                    except Exception as e:
+                        self.logger.error(f"Error updating sheet with programmatic results: {e}")
+                        success_count = 0
+                else:
+                    success_count = len(updates)
+                
+                self.logger.info(f"Updated {success_count} programmatic items for {friendly_name_with_id}")
                 
                 # Call completion callback if provided
                 if self.completion_callback:

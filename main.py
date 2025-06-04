@@ -261,7 +261,7 @@ class TranslationNotesAI:
                     break
                 
                 # Get friendly name for logging
-                friendly_name = self.config.get_editor_name_for_sheet(sheet_id)
+                friendly_name = self.config.get_friendly_name_with_id(editor_key)
                 
                 # Check if sheet is blocked
                 if self._is_sheet_blocked(sheet_id, editor_key):
@@ -398,7 +398,8 @@ class TranslationNotesAI:
         """Block a sheet due to permission errors."""
         block_until = datetime.now() + timedelta(hours=self.permission_block_hours)
         self.blocked_sheets[sheet_id] = block_until
-        self.logger.warning(f"Blocked {editor_name} for {self.permission_block_hours} hour(s) due to permission error")
+        friendly_name_with_id = self.config.get_friendly_name_with_id(editor_name)
+        self.logger.warning(f"Blocked {friendly_name_with_id} for {self.permission_block_hours} hour(s) due to permission error")
     
     def _is_permission_error(self, error: Exception) -> bool:
         """Check if an error is a permission-related error."""
@@ -515,7 +516,7 @@ class TranslationNotesAI:
             total_converted = 0
             
             for editor_key, sheet_id in sheet_ids.items():
-                friendly_name = self.config.get_editor_name_for_sheet(sheet_id)
+                friendly_name = self.config.get_friendly_name_with_id(editor_key)
                 self.logger.info(f"Converting SRef values for {friendly_name}...")
                 self._convert_sref_values_for_sheet(sheet_id, friendly_name)
                 
