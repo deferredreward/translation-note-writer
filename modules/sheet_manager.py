@@ -1125,9 +1125,6 @@ class SheetManager:
             'question': 'figs-rquestion'
         }
         
-        # Create a set of all valid support reference issues for validation
-        valid_issues = {ref['Issue'] for ref in support_references if ref.get('Issue')}
-        
         updates_needed = []
         
         for item in items:
@@ -1145,14 +1142,18 @@ class SheetManager:
                 updated_sref = short_to_full_mapping[sref_lower]
                 self.logger.debug(f"Converted short form '{sref_value}' to '{updated_sref}'")
             
-            # Then, check if the current SRef matches any support reference
-            # Look for partial matches in support references
-            for ref in support_references:
-                ref_issue = ref.get('Issue', '')
-                if ref_issue and sref_value.lower() in ref_issue.lower():
-                    updated_sref = ref_issue
+            # Then, find a matching support reference item where Issue includes the SRef
+            if updated_sref:
+                matched_item = None
+                for ref in support_references:
+                    ref_issue = ref.get('Issue', '')
+                    if ref_issue and updated_sref in ref_issue:
+                        matched_item = ref
+                        break
+                
+                if matched_item:
+                    updated_sref = matched_item['Issue']
                     self.logger.debug(f"Found support reference match: '{sref_value}' -> '{updated_sref}'")
-                    break
             
             # Only add to updates if the SRef actually changed
             if updated_sref != original_sref:

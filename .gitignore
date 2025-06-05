@@ -11,6 +11,7 @@ env/
 .env.local
 .env.production
 .env.staging
+note_writer_AI_checks_for_more_notes_all_editors(1).json
 
 # Google credentials
 google_credentials.json
