@@ -309,9 +309,13 @@ class ContinuousBatchManager:
                             self._block_sheet_for_permission_error(sheet_id, user)
                             continue
                 
-                # Step 2: Get pending work
+                # Step 2: Get pending work (with optional limit)
                 try:
-                    pending_items = self.sheet_manager.get_pending_work(sheet_id)
+                    processing_config = self.config.get_processing_config()
+                    max_items = processing_config.get('max_items_per_work_cycle', 0)
+                    max_items = max_items if max_items > 0 else None  # Convert 0 to None for no limit
+                    
+                    pending_items = self.sheet_manager.get_pending_work(sheet_id, max_items=max_items)
                 except Exception as e:
                     if self._is_permission_error(e):
                         self.logger.warning(f"Permission error during get_pending_work for {friendly_name_with_id}")

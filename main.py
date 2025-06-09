@@ -320,8 +320,12 @@ class TranslationNotesAI:
         if auto_convert_sref:
             self._convert_sref_values_for_sheet(sheet_id, editor_name)
         
-        # Get and process pending work
-        pending_items = self.sheet_manager.get_pending_work(sheet_id)
+        # Get and process pending work (with optional limit)
+        processing_config = self.config.get_processing_config()
+        max_items = processing_config.get('max_items_per_work_cycle', 0)
+        max_items = max_items if max_items > 0 else None  # Convert 0 to None for no limit
+        
+        pending_items = self.sheet_manager.get_pending_work(sheet_id, max_items=max_items)
         if pending_items:
             self.logger.info(f"Found {len(pending_items)} pending items for {editor_name}")
             

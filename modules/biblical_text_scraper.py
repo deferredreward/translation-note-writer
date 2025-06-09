@@ -159,71 +159,81 @@ class BiblicalTextScraper:
         Returns:
             True if checkbox was found and checked
         """
-        try:
-            # Wait for the page to fully load
-            time.sleep(2)
-            
-            # Look for USFM checkbox - try multiple selectors
-            selectors = [
-                "input[type='checkbox'][value='usfm']",
-                "input[type='checkbox']#usfm",
-                "input[type='checkbox'][name='usfm']",
-                "//input[@type='checkbox' and contains(@id, 'usfm')]",
-                "//input[@type='checkbox' and contains(@name, 'usfm')]",
-                "//input[@type='checkbox' and contains(@value, 'usfm')]",
-                "//label[contains(text(), 'USFM')]/input[@type='checkbox']",
-                "//label[contains(text(), 'usfm')]/input[@type='checkbox']"
-            ]
-            
-            checkbox = None
-            for selector in selectors:
-                try:
-                    if selector.startswith('//'):
-                        # XPath selector
-                        checkbox = driver.find_element(By.XPATH, selector)
-                    else:
-                        # CSS selector
-                        checkbox = driver.find_element(By.CSS_SELECTOR, selector)
-                    
-                    if checkbox:
-                        self.logger.debug(f"Found USFM checkbox with selector: {selector}")
-                        break
-                except NoSuchElementException:
-                    continue
-            
-            if not checkbox:
-                # Try to find any checkbox near "USFM" text
-                try:
-                    usfm_elements = driver.find_elements(By.XPATH, "//*[contains(text(), 'USFM') or contains(text(), 'usfm')]")
-                    for element in usfm_elements:
-                        # Look for nearby checkbox
-                        parent = element.find_element(By.XPATH, "./..")
-                        checkbox = parent.find_element(By.CSS_SELECTOR, "input[type='checkbox']")
+        retries = 5
+        for i in range(retries):
+            try:
+                # Wait for the page to fully load, increasing wait time with each retry
+                wait_time = 10 + (i * 5)
+                self.logger.info(f"Attempt {i+1}/{retries}: Waiting up to {wait_time} seconds for USFM checkbox.")
+                
+                # Look for USFM checkbox - try multiple selectors
+                selectors = [
+                    "input[type='checkbox'][value='usfm']",
+                    "input[type='checkbox']#usfm",
+                    "input[type='checkbox'][name='usfm']",
+                    "//input[@type='checkbox' and contains(@id, 'usfm')]",
+                    "//input[@type='checkbox' and contains(@name, 'usfm')]",
+                    "//input[@type='checkbox' and contains(@value, 'usfm')]",
+                    "//label[contains(text(), 'USFM')]/input[@type='checkbox']",
+                    "//label[contains(text(), 'usfm')]/input[@type='checkbox']"
+                ]
+                
+                checkbox = None
+                for selector in selectors:
+                    try:
+                        wait = WebDriverWait(driver, wait_time)
+                        if selector.startswith('//'):
+                            # XPath selector
+                            condition = EC.presence_of_element_located((By.XPATH, selector))
+                        else:
+                            # CSS selector
+                            condition = EC.presence_of_element_located((By.CSS_SELECTOR, selector))
+                        
+                        checkbox = wait.until(condition)
+                        
                         if checkbox:
-                            self.logger.debug("Found USFM checkbox near USFM text")
+                            self.logger.debug(f"Found USFM checkbox with selector: {selector}")
                             break
-                except NoSuchElementException:
-                    pass
-            
-            if checkbox:
-                # Check if it's already checked
-                if not checkbox.is_selected():
-                    # Click to check it
-                    driver.execute_script("arguments[0].click();", checkbox)
-                    self.logger.info("USFM checkbox checked")
+                    except TimeoutException:
+                        continue
+                
+                if not checkbox:
+                    # Try to find any checkbox near "USFM" text
+                    try:
+                        usfm_elements = driver.find_elements(By.XPATH, "//*[contains(text(), 'USFM') or contains(text(), 'usfm')]")
+                        for element in usfm_elements:
+                            # Look for nearby checkbox
+                            parent = element.find_element(By.XPATH, "./..")
+                            checkbox = parent.find_element(By.CSS_SELECTOR, "input[type='checkbox']")
+                            if checkbox:
+                                self.logger.debug("Found USFM checkbox near USFM text")
+                                break
+                    except NoSuchElementException:
+                        pass
+                
+                if checkbox:
+                    # Check if it's already checked
+                    if not checkbox.is_selected():
+                        # Click to check it
+                        driver.execute_script("arguments[0].click();", checkbox)
+                        self.logger.info("USFM checkbox checked")
+                    else:
+                        self.logger.info("USFM checkbox was already checked")
+                    
+                    # Wait for content to update
+                    time.sleep(2)
+                    return True
                 else:
-                    self.logger.info("USFM checkbox was already checked")
-                
-                # Wait for content to update
-                time.sleep(2)
-                return True
-            else:
-                self.logger.warning("USFM checkbox not found")
-                return False
-                
-        except Exception as e:
-            self.logger.error(f"Error checking USFM checkbox: {e}")
-            return False
+                    self.logger.warning(f"USFM checkbox not found on attempt {i+1}")
+                    
+            except Exception as e:
+                self.logger.error(f"Error checking USFM checkbox on attempt {i+1}: {e}")
+
+            if i < retries - 1:
+                time.sleep(5)  # Wait before next retry
+
+        self.logger.error("USFM checkbox not found after all retries.")
+        return False
     
     def _extract_usfm_content(self, driver: webdriver.Chrome) -> Optional[str]:
         """Extract USFM content from the page.

@@ -179,9 +179,12 @@ class ConfigManager:
         """Get processing-specific configuration."""
         return {
             'poll_interval': self.get('processing.poll_interval', 60),
+            'max_items_per_work_cycle': self.get('processing.max_items_per_work_cycle', 0),  # 0 means no limit
             'watch_columns': self.get('processing.watch_columns', ['Go?', 'SRef']),
             'process_go_values': self.get('processing.process_go_values', ['YES', 'GO']),
+            'skip_go_values': self.get('processing.skip_go_values', ['AI']),
             'skip_ai_completed': self.get('processing.skip_ai_completed', True),
+            'auto_convert_sref': self.get('processing.auto_convert_sref', True),
         }
     
     def get_logging_config(self) -> Dict[str, Any]:

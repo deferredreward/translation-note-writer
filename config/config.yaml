@@ -70,6 +70,12 @@ processing:
   # Permission error handling
   permission_block_hours: 1  # How many hours to block a sheet after 403 permission denied error
   
+  # Work processing limits
+  max_items_per_work_cycle: 8  # Maximum number of items to process per work check cycle
+                               # This prevents overwhelming the system with too many simultaneous requests
+                               # With batch_size=2 and max_concurrent_batches=8, this creates up to 8 AI requests
+                               # Set to 0 or remove to process all pending items at once (original behavior)
+  
   # Columns to watch for changes
   watch_columns: ["Go?", "SRef"]
   

@@ -658,31 +658,49 @@ class AIService:
         
         raise TimeoutError(f"Batch {batch_id} did not complete within {timeout_hours} hours")
     
-    def get_batch_results(self, batch: Any) -> List[Dict[str, Any]]:
-        """Get results from a completed batch.
-        
-        Args:
-            batch: Completed batch object
-            
-        Returns:
-            List of results
+    def get_batch_results(self, batch: Any) -> List[Any]:
         """
-        try:
-            if not batch.results_url:
-                raise ValueError("Batch has no results URL")
+        Retrieves the results for a completed batch job.
+        This function polls for the results URL to be available and then fetches the results.
+        """
+        max_retries = 5
+        retry_delay_seconds = 5
+        retries = 0
+
+        while retries < max_retries:
+            # First, check that the batch is actually complete, using the correct attribute.
+            if batch.processing_status != 'ended':
+                self.logger.warning(f"Batch {batch.id} is not completed. Status: {batch.processing_status}")
+                return []
+
+            # If it's complete, check if the results_url is populated.
+            if hasattr(batch, 'results_url') and batch.results_url:
+                break
+
+            # If not, wait and retry.
+            retries += 1
+            if retries >= max_retries:
+                self.logger.error(f"Batch {batch.id} is completed but results URL not found after {max_retries} retries. Giving up.")
+                return []
+
+            self.logger.info(f"Batch {batch.id} is completed but no results URL yet. Retrying in {retry_delay_seconds}s... ({retries}/{max_retries})")
+            time.sleep(retry_delay_seconds)
             
-            # Get results using the batch results API
+            # Refresh the batch status from the API
+            batch = self.get_batch_status(batch.id)
+
+        # Now, fetch the results using the results() endpoint.
+        try:
             results = []
             for result in self.client.beta.messages.batches.results(batch.id):
                 results.append(result)
             
             self.logger.info(f"Retrieved {len(results)} results from batch {batch.id}")
             return results
-            
         except Exception as e:
-            self.logger.error(f"Error getting batch results: {e}")
-            raise
-    
+            self.logger.error(f"Error fetching results for batch {batch.id} using results() endpoint: {e}")
+            return []
+
     def process_batch_results(self, results: List[Any], original_items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Process batch results and match them with original items.
         

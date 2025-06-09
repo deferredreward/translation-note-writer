@@ -64,11 +64,12 @@ class SheetManager:
             self.logger.error(f"Failed to initialize Google Sheets service: {e}")
             raise
     
-    def get_pending_work(self, sheet_id: str) -> List[Dict[str, Any]]:
+    def get_pending_work(self, sheet_id: str, max_items: Optional[int] = None) -> List[Dict[str, Any]]:
         """Get pending work items from a sheet.
         
         Args:
             sheet_id: Google Sheets ID
+            max_items: Maximum number of items to return (None for no limit)
             
         Returns:
             List of pending work items
@@ -140,13 +141,22 @@ class SheetManager:
                         # Validate required fields
                         if self._validate_item(item):
                             pending_items.append(item)
+                            
+                            # Check if we've reached the max items limit
+                            if max_items and len(pending_items) >= max_items:
+                                self.logger.debug(f"Reached max items limit ({max_items}) for sheet {sheet_id}")
+                                break
                         else:
                             self.logger.warning(f"Invalid item in row {i}: missing required fields")
                 
                 except Exception as e:
                     self.logger.error(f"Error processing row {i}: {e}")
             
-            self.logger.debug(f"Found {len(pending_items)} pending items in sheet {sheet_id}")
+            total_found = len(pending_items)
+            if max_items and total_found >= max_items:
+                self.logger.debug(f"Limited to first {total_found} of available pending items in sheet {sheet_id}")
+            else:
+                self.logger.debug(f"Found {total_found} pending items in sheet {sheet_id}")
             return pending_items
             
         except HttpError as e:
@@ -237,11 +247,18 @@ class SheetManager:
                     'data': data
                 }
                 
-                self.service.spreadsheets().values().batchUpdate(
-                    spreadsheetId=sheet_id,
-                    body=body
-                ).execute()
-                
+                try:
+                    self.logger.debug(f"Attempting to batch update sheet {sheet_id} with body: {body}")
+                    self.service.spreadsheets().values().batchUpdate(
+                        spreadsheetId=sheet_id,
+                        body=body
+                    ).execute()
+                except Exception as e:
+                    import traceback
+                    self.logger.error(f"Full traceback of sheet update error: {traceback.format_exc()}")
+                    self.logger.error(f"Error batch updating rows in sheet {sheet_id}: {e}")
+                    raise
+
                 self.logger.info(f"Successfully updated {len(data)} cells in {len(updates)} rows (only allowed columns: D, F, I)")
                 
                 # Call completion callback if provided
@@ -254,9 +271,9 @@ class SheetManager:
                 self.logger.warning("No valid updates for allowed columns")
             
         except Exception as e:
-            self.logger.error(f"Error batch updating rows in sheet {sheet_id}: {e}")
+            self.logger.error(f"Error preparing batch update for sheet {sheet_id}: {e}")
             raise
-
+    
     def _get_headers_once(self, sheet_id: str, sheet_name: str) -> List[str]:
         """Get headers for a sheet in a single API call and cache them.
         
