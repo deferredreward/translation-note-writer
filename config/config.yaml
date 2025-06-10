@@ -22,10 +22,12 @@ anthropic:
   #model: "claude-3-haiku-20240307"
 
 
-  # Batch processing settings
-  batch_size: 2  # Process 2 items at a time to avoid Google Sheets API limits
+  # Batch processing settings - Controls how many rows are processed simultaneously
+  # CALCULATION: max_concurrent_batches × batch_size = total concurrent rows
+  # CURRENT SETUP: 2 batches × 4 rows each = 8 rows processed simultaneously
+  batch_size: 2  # Number of rows per batch sent to AI
+  max_concurrent_batches: 4  # Number of batches that can run at the same time
   max_batch_requests: 100  # Max requests per batch (API limit is 100,000)
-  max_concurrent_batches: 8  # Max batches to process simultaneously
   batch_timeout_hours: 1  # How long to wait for batch completion
   
   # Batch response polling settings
@@ -70,11 +72,14 @@ processing:
   # Permission error handling
   permission_block_hours: 1  # How many hours to block a sheet after 403 permission denied error
   
-  # Work processing limits
-  max_items_per_work_cycle: 8  # Maximum number of items to process per work check cycle
-                               # This prevents overwhelming the system with too many simultaneous requests
-                               # With batch_size=2 and max_concurrent_batches=8, this creates up to 8 AI requests
+  # Work processing limits - Controls how much work is picked up each cycle
+  # NOTE: This works together with the batch settings above
+  # FLOW: Every 60 seconds, pick up max_items_per_work_cycle rows → group into batches → process
+  # CURRENT SETUP: Pick up 2 rows → create 1 batch of 2 rows → can have up to 2 batches running
+  # RESULT: Up to 4 rows being processed simultaneously (2 batches × 2 rows each)
+  max_items_per_work_cycle: 12  # Maximum rows to pick up from sheets per work check cycle
                                # Set to 0 or remove to process all pending items at once (original behavior)
+                               # Higher values = more aggressive processing, lower values = more conservative
   
   # Columns to watch for changes
   watch_columns: ["Go?", "SRef"]
