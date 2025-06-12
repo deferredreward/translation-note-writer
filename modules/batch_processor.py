@@ -15,6 +15,7 @@ from .config_manager import ConfigManager
 from .ai_service import AIService
 from .sheet_manager import SheetManager
 from .cache_manager import CacheManager
+from .text_utils import find_matches
 
 
 def _post_process_text(text: str) -> str:
@@ -152,12 +153,24 @@ class BatchProcessor:
         
         self.logger.info(f"=== SEPARATING {len(items)} ITEMS BY PROCESSING TYPE ===")
         
+        tw_headwords = None
+
         for item in items:
             explanation = item.get('Explanation', '').strip()
             at = item.get('AT', '').strip()
+            gl_quote = item.get('GLQuote', '')
             ref = item.get('Ref', 'unknown')
-            
-            # Check if this is a "see how" note with AT filled
+
+            if 'translate-unknown' in explanation.lower():
+                if tw_headwords is None:
+                    tw_headwords = self.cache_manager.load_tw_headwords()
+                matches = find_matches(gl_quote, tw_headwords)
+                if matches:
+                    item['tw_matches'] = matches
+                    self.logger.info(f"PROGRAMMATIC: {ref} - translate-unknown headword matches {matches}")
+                    programmatic_items.append(item)
+                    continue
+
             if explanation.lower().startswith('see how') and at:
                 self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' with AT provided")
                 self.logger.debug(f"  Explanation: {explanation}")

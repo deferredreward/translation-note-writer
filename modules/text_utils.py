@@ -4,7 +4,7 @@ Handles text formatting, cleaning, and transformation operations.
 """
 
 import re
-from typing import Optional
+from typing import Optional, List
 
 
 def post_process_text(text: str) -> str:
@@ -240,5 +240,23 @@ def mask_sensitive_content(text: str) -> str:
     
     # Mask potential passwords (password= patterns)
     masked = re.sub(r'(password\s*[=:]\s*)[^\s]+', r'\1[REDACTED]', masked, flags=re.IGNORECASE)
-    
-    return masked 
+
+    return masked
+
+
+def find_matches(text: str, words: List[str]) -> List[str]:
+    """Find exact word matches from a list within the given text."""
+    if not text or not words:
+        return []
+
+    text_lower = text.lower()
+    matches = []
+
+    for word in words:
+        if not word:
+            continue
+        pattern = r'\b{}\b'.format(re.escape(word.lower()))
+        if re.search(pattern, text_lower):
+            matches.append(word)
+
+    return matches

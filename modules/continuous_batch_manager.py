@@ -17,6 +17,7 @@ from .config_manager import ConfigManager
 from .ai_service import AIService
 from .sheet_manager import SheetManager, SheetPermissionError
 from .cache_manager import CacheManager
+from .text_utils import find_matches
 
 
 def _post_process_text(text: str) -> str:
@@ -460,11 +461,22 @@ class ContinuousBatchManager:
         programmatic_items = []
         ai_items = []
         
+        tw_headwords = None
+
         for item in items:
             explanation = item.get('Explanation', '').strip()
             at = item.get('AT', '').strip()
-            
-            # Check if this is a "see how" note with AT filled
+            gl_quote = item.get('GLQuote', '')
+
+            if 'translate-unknown' in explanation.lower():
+                if tw_headwords is None:
+                    tw_headwords = self.cache_manager.load_tw_headwords()
+                matches = find_matches(gl_quote, tw_headwords)
+                if matches:
+                    item['tw_matches'] = matches
+                    programmatic_items.append(item)
+                    continue
+
             if explanation.lower().startswith('see how') and at:
                 programmatic_items.append(item)
             else:
