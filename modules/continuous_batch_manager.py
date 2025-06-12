@@ -796,25 +796,35 @@ class ContinuousBatchManager:
                     # Potentially break or continue depending on desired resilience for other errors
     
     def _generate_programmatic_note(self, item: Dict[str, Any]) -> str:
-        """Generate a note programmatically for 'see how' items."""
+        """Generate a note programmatically for 'see how' or 'translate-unknown' items."""
         explanation = item.get('Explanation', '').strip()
         at = item.get('AT', '').strip()
-        
+
         if explanation.lower().startswith('see how') and at:
             ref_match = explanation.replace('see how ', '').strip()
-            
+
             if ':' in ref_match:
                 chapter, verse = ref_match.split(':', 1)
                 note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
             else:
                 note = f"See how you translated the similar expression in {ref_match}."
-            
+
             # Add alternate translation
             formatted_at = self._format_alternate_translation(at)
             note += formatted_at
-            
+
             return _post_process_text(note)
-        
+
+        # Handle translate-unknown programmatically using TW headwords
+        if 'translate-unknown' in explanation.lower():
+            quote = item.get('GLQuote', '').strip()
+            if quote:
+                from .tw_search import load_tw_headwords, find_matches
+                tw_entries = load_tw_headwords(str(self.cache_manager.cache_dir))
+                matches = find_matches(quote, tw_entries)
+                if matches:
+                    return f"TW found: {', '.join(matches)}"
+
         return ""
     
     def _format_alternate_translation(self, at: str) -> str:

@@ -591,3 +591,16 @@ class CacheManager:
         """
         self.set_cached_data(cache_key, data)
         return True 
+    def load_tw_headwords(self) -> list:
+        """Load translation word headwords from cache directory."""
+        path = self.cache_dir / "tw_headwords.json"
+        if not path.exists():
+            self.logger.warning(f"TW headwords cache not found: {path}")
+            return []
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            self.logger.error(f"Error loading TW headwords: {e}")
+            return []
+
