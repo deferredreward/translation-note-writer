@@ -41,6 +41,7 @@ class CacheManager:
         # Initialize metadata and content hash tracking
         self.cache_metadata = self._load_cache_metadata()
         self.content_hashes = self._load_content_hashes()
+        self._tw_headwords: Optional[List[str]] = None
         
         self.logger.info(f"Cache manager initialized with directory: {self.cache_dir}")
     
@@ -454,6 +455,26 @@ class CacheManager:
         self.logger.info("Force refreshing support references cache")
         result = self._refresh_cache('support_references', force=True)
         return result is not None
+
+    def load_tw_headwords(self) -> List[str]:
+        """Load translationWords headwords from cache directory."""
+        if self._tw_headwords is not None:
+            return self._tw_headwords
+
+        try:
+            path = self.cache_dir / 'tw_headwords.json'
+            if not path.exists():
+                self.logger.warning(f"TW headwords file not found: {path}")
+                self._tw_headwords = []
+                return self._tw_headwords
+
+            with open(path, 'r', encoding='utf-8') as f:
+                self._tw_headwords = json.load(f) or []
+            return self._tw_headwords
+        except Exception as e:
+            self.logger.error(f"Error loading TW headwords: {e}")
+            self._tw_headwords = []
+            return self._tw_headwords
     
     def clear_cache(self, cache_key: Optional[str] = None):
         """Clear cache data.
