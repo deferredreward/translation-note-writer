@@ -41,7 +41,6 @@ class CacheManager:
         # Initialize metadata and content hash tracking
         self.cache_metadata = self._load_cache_metadata()
         self.content_hashes = self._load_content_hashes()
-        self._tw_headwords: Optional[List[str]] = None
         
         self.logger.info(f"Cache manager initialized with directory: {self.cache_dir}")
     
@@ -456,25 +455,7 @@ class CacheManager:
         result = self._refresh_cache('support_references', force=True)
         return result is not None
 
-    def load_tw_headwords(self) -> List[str]:
-        """Load translationWords headwords from cache directory."""
-        if self._tw_headwords is not None:
-            return self._tw_headwords
 
-        try:
-            path = self.cache_dir / 'tw_headwords.json'
-            if not path.exists():
-                self.logger.warning(f"TW headwords file not found: {path}")
-                self._tw_headwords = []
-                return self._tw_headwords
-
-            with open(path, 'r', encoding='utf-8') as f:
-                self._tw_headwords = json.load(f) or []
-            return self._tw_headwords
-        except Exception as e:
-            self.logger.error(f"Error loading TW headwords: {e}")
-            self._tw_headwords = []
-            return self._tw_headwords
     
     def clear_cache(self, cache_key: Optional[str] = None):
         """Clear cache data.
@@ -612,15 +593,31 @@ class CacheManager:
         """
         self.set_cached_data(cache_key, data)
         return True 
-    def load_tw_headwords(self) -> list:
-        """Load translation word headwords from cache directory."""
-        path = self.cache_dir / "tw_headwords.json"
-        if not path.exists():
-            self.logger.warning(f"TW headwords cache not found: {path}")
-            return []
+    def load_tw_headwords(self) -> List[Dict[str, Any]]:
+        """Load Translation Words headwords from cache or fallback.
+
+        First checks ``cache_dir/tw_headwords.json``. If not found, tries
+        ``data/tw_headwords.json`` at the project root.
+
+        Returns:
+            List of headword dictionaries or an empty list if no file exists.
+        """
         try:
-            with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)
+            headwords_file = self.cache_dir / "tw_headwords.json"
+            if headwords_file.exists():
+                with open(headwords_file, "r", encoding="utf-8") as f:
+                    return json.load(f)
+
+            project_root = Path(__file__).resolve().parent.parent
+            fallback_file = project_root / "data" / "tw_headwords.json"
+            if fallback_file.exists():
+                with open(fallback_file, "r", encoding="utf-8") as f:
+                    return json.load(f)
+
+            self.logger.warning(
+                "TW headwords file not found in cache or data directory"
+            )
+            return []
         except Exception as e:
             self.logger.error(f"Error loading TW headwords: {e}")
             return []
