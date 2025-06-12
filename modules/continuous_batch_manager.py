@@ -1145,11 +1145,19 @@ class ContinuousBatchManager:
 
             # Step 5: Get other necessary data (existing_notes already fetched)
             existing_suggestions = self._get_existing_suggestions(sheet_id)
-            translation_issues = self._get_translation_issue_descriptions() # This is global
+            translation_issues = self._get_translation_issue_descriptions()  # This is global
+            tw_headwords = self._get_tw_headwords()
 
             # Step 6: Generate AI suggestions
             suggestions = self._generate_ai_suggestions(
-                ult_text, ust_text, existing_notes, existing_suggestions, translation_issues, target_book, target_chapter
+                ult_text,
+                ust_text,
+                existing_notes,
+                existing_suggestions,
+                translation_issues,
+                tw_headwords,
+                target_book,
+                target_chapter,
             )
             
             if suggestions:
@@ -1399,9 +1407,25 @@ class ContinuousBatchManager:
             self.logger.error(f"Error loading translation issue descriptions: {e}")
             return []
 
-    def _generate_ai_suggestions(self, ult_text: str, ust_text: str, existing_notes: List[Dict[str, Any]], 
-                               existing_suggestions: List[Dict[str, Any]], translation_issues: List[Dict[str, Any]],
-                               book: str, chapter: int) -> List[Dict[str, Any]]:
+    def _get_tw_headwords(self) -> List[Dict[str, Any]]:
+        """Get translation words headwords using the cache manager."""
+        try:
+            return self.cache_manager.load_tw_headwords()
+        except Exception as e:
+            self.logger.error(f"Error loading TW headwords: {e}")
+            return []
+
+    def _generate_ai_suggestions(
+        self,
+        ult_text: str,
+        ust_text: str,
+        existing_notes: List[Dict[str, Any]],
+        existing_suggestions: List[Dict[str, Any]],
+        translation_issues: List[Dict[str, Any]],
+        tw_headwords: List[Dict[str, Any]],
+        book: str,
+        chapter: int,
+    ) -> List[Dict[str, Any]]:
         """Generate AI suggestions for missing translation notes.
         
         Args:
@@ -1410,6 +1434,7 @@ class ContinuousBatchManager:
             existing_notes: List of existing notes for the target chapter
             existing_suggestions: List of existing suggestions
             translation_issues: List of translation issue descriptions
+            tw_headwords: List of translation word headwords
             book: The target book for which suggestions are being made
             chapter: The target chapter for which suggestions are being made
             

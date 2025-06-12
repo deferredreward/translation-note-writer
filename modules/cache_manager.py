@@ -590,4 +590,33 @@ class CacheManager:
             True if data was updated
         """
         self.set_cached_data(cache_key, data)
-        return True 
+        return True
+
+    def load_tw_headwords(self) -> List[Dict[str, Any]]:
+        """Load Translation Words headwords from cache or fallback.
+
+        First checks ``cache_dir/tw_headwords.json``. If not found, tries
+        ``data/tw_headwords.json`` at the project root.
+
+        Returns:
+            List of headword dictionaries or an empty list if no file exists.
+        """
+        try:
+            headwords_file = self.cache_dir / "tw_headwords.json"
+            if headwords_file.exists():
+                with open(headwords_file, "r", encoding="utf-8") as f:
+                    return json.load(f)
+
+            project_root = Path(__file__).resolve().parent.parent
+            fallback_file = project_root / "data" / "tw_headwords.json"
+            if fallback_file.exists():
+                with open(fallback_file, "r", encoding="utf-8") as f:
+                    return json.load(f)
+
+            self.logger.warning(
+                "TW headwords file not found in cache or data directory"
+            )
+            return []
+        except Exception as e:
+            self.logger.error(f"Error loading TW headwords: {e}")
+            return []
