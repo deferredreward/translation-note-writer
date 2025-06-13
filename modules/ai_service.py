@@ -29,6 +29,7 @@ class AIService:
         self.config = config
         self.cache_manager = cache_manager
         self.logger = logging.getLogger(__name__)
+        self.disabled = self.config.is_ai_disabled()
         
         # Get configuration
         anthropic_config = config.get_anthropic_config()
@@ -42,16 +43,21 @@ class AIService:
         
         # Timing configuration
         self.error_retry_delay = timing_config['error_retry_delay']
-        
-        if not self.api_key:
-            raise ValueError("Anthropic API key not found in configuration or environment variables")
-        
-        # Initialize Anthropic client
-        self.client = anthropic.Anthropic(api_key=self.api_key)
-        
+
         # Initialize prompt manager
         self.prompt_manager = PromptManager(config, cache_manager)
-        
+
+        if self.disabled:
+            self.client = None
+            self.logger.info("AI Service is disabled - no API calls will be made")
+            return
+
+        if not self.api_key:
+            raise ValueError("Anthropic API key not found in configuration or environment variables")
+
+        # Initialize Anthropic client
+        self.client = anthropic.Anthropic(api_key=self.api_key)
+
         self.logger.info(f"AI Service initialized with model: {self.model}")
         if self.enable_prompt_caching:
             self.logger.info("Prompt caching enabled")
@@ -583,6 +589,10 @@ class AIService:
         Returns:
             Batch ID
         """
+        if self.disabled:
+            self.logger.info("AI disabled: submit_batch skipped")
+            return "disabled"
+
         try:
             batch = self.client.beta.messages.batches.create(
                 requests=requests
@@ -604,6 +614,12 @@ class AIService:
         Returns:
             Batch object with current status
         """
+        if self.disabled:
+            self.logger.info("AI disabled: get_batch_status returning dummy status")
+            from types import SimpleNamespace
+            counts = SimpleNamespace(processing=0, succeeded=0, errored=0, canceled=0, expired=0)
+            return SimpleNamespace(id=batch_id, processing_status='ended', request_counts=counts, results_url=None)
+
         try:
             batch = self.client.beta.messages.batches.retrieve(batch_id)
             return batch
@@ -622,6 +638,12 @@ class AIService:
         Returns:
             Completed batch object
         """
+        if self.disabled:
+            self.logger.info("AI disabled: wait_for_batch_completion returning dummy status")
+            from types import SimpleNamespace
+            counts = SimpleNamespace(processing=0, succeeded=0, errored=0, canceled=0, expired=0)
+            return SimpleNamespace(id=batch_id, processing_status='ended', request_counts=counts, results_url=None)
+
         start_time = datetime.now()
         timeout = timedelta(hours=timeout_hours)
         
@@ -663,6 +685,10 @@ class AIService:
         Retrieves the results for a completed batch job.
         This function polls for the results URL to be available and then fetches the results.
         """
+        if self.disabled:
+            self.logger.info("AI disabled: get_batch_results returning empty list")
+            return []
+
         max_retries = 5
         retry_delay_seconds = 5
         retries = 0

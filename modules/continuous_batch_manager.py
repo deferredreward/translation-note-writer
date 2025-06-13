@@ -17,6 +17,7 @@ from .config_manager import ConfigManager
 from .ai_service import AIService
 from .sheet_manager import SheetManager, SheetPermissionError
 from .cache_manager import CacheManager
+from .tw_search import find_matches
 
 
 def _post_process_text(text: str) -> str:
@@ -460,11 +461,23 @@ class ContinuousBatchManager:
         programmatic_items = []
         ai_items = []
         
+        tw_headwords = None
+
         for item in items:
             explanation = item.get('Explanation', '').strip()
+            sref = item.get('SRef', '').strip()
             at = item.get('AT', '').strip()
-            
-            # Check if this is a "see how" note with AT filled
+            gl_quote = item.get('GLQuote', '')
+
+            if 'translate-unknown' in explanation.lower() or 'translate-unknown' in sref.lower():
+                if tw_headwords is None:
+                    tw_headwords = self.cache_manager.load_tw_headwords()
+                matches = find_matches(gl_quote, tw_headwords)
+                if matches:
+                    item['tw_matches'] = matches
+                    programmatic_items.append(item)
+                    continue
+
             if explanation.lower().startswith('see how') and at:
                 programmatic_items.append(item)
             else:
@@ -796,25 +809,35 @@ class ContinuousBatchManager:
                     # Potentially break or continue depending on desired resilience for other errors
     
     def _generate_programmatic_note(self, item: Dict[str, Any]) -> str:
-        """Generate a note programmatically for 'see how' items."""
+        """Generate a note programmatically for 'see how' or 'translate-unknown' items."""
         explanation = item.get('Explanation', '').strip()
         at = item.get('AT', '').strip()
-        
+
         if explanation.lower().startswith('see how') and at:
             ref_match = explanation.replace('see how ', '').strip()
-            
+
             if ':' in ref_match:
                 chapter, verse = ref_match.split(':', 1)
                 note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
             else:
                 note = f"See how you translated the similar expression in {ref_match}."
-            
+
             # Add alternate translation
             formatted_at = self._format_alternate_translation(at)
             note += formatted_at
-            
+
             return _post_process_text(note)
-        
+
+        # Handle translate-unknown programmatically using TW headwords
+        if 'translate-unknown' in explanation.lower() or 'translate-unknown' in item.get('SRef', '').lower():
+            quote = item.get('GLQuote', '').strip()
+            if quote:
+                from .tw_search import load_tw_headwords, find_matches
+                tw_entries = load_tw_headwords(str(self.cache_manager.cache_dir))
+                matches = find_matches(quote, tw_entries)
+                if matches:
+                    return f"TW found: {', '.join(matches)}"
+
         return ""
     
     def _format_alternate_translation(self, at: str) -> str:

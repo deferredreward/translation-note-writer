@@ -5,6 +5,7 @@ Handles argument parsing and command execution.
 
 import argparse
 import sys
+import os
 from datetime import datetime
 from typing import Dict, Any, Optional
 import logging
@@ -31,6 +32,7 @@ class TranslationNotesAICLI:
 Examples:
   %(prog)s --mode continuous                    # Run continuous monitoring
   %(prog)s --mode once --dry-run               # Test run without changes
+  %(prog)s --mode once --noai                 # Run without making AI calls
   %(prog)s --cache-status                      # Show cache information
   %(prog)s --convert-sref                      # Convert SRef values
   %(prog)s --status                            # Show system status
@@ -59,9 +61,14 @@ Examples:
             help='Enable debug logging'
         )
         config_group.add_argument(
-            '--dry-run', 
-            action='store_true', 
+            '--dry-run',
+            action='store_true',
             help='Dry run mode - no actual updates to sheets'
+        )
+        config_group.add_argument(
+            '--noai',
+            action='store_true',
+            help='Disable all AI API calls for testing'
         )
         
         # Processing options
@@ -158,6 +165,9 @@ Examples:
         """
         # Build configuration overrides
         config_overrides = self._build_config_overrides(args)
+
+        if args.noai:
+            os.environ['ANTHROPIC_DISABLED'] = '1'
         
         # Initialize application
         try:
@@ -204,7 +214,10 @@ Examples:
         
         if args.dry_run:
             overrides['debug.dry_run'] = True
-        
+
+        if args.noai:
+            overrides['anthropic.disabled'] = True
+
         return overrides
     
     def _handle_utility_commands(self, app, args: argparse.Namespace) -> bool:
