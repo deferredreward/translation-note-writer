@@ -12,6 +12,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Tuple
 
+from scripts.extract_tw_headwords import extract_headwords
+
 from .config_manager import ConfigManager
 
 
@@ -603,7 +605,9 @@ class CacheManager:
            base file exists.
         3. If a fallback file in ``data/tw_headwords.json`` exists, copy it to a
            timestamped cache file and return its contents.
-        4. If nothing is found, create an empty timestamped cache file and
+        4. If the fallback file is missing, attempt to generate it using
+           ``scripts.extract_tw_headwords``.
+        5. If extraction fails, create an empty timestamped cache file and
            return an empty list.
 
         Returns:
@@ -641,9 +645,19 @@ class CacheManager:
                     data = json.load(f)
             else:
                 self.logger.warning(
-                    "TW headwords file not found; creating empty cache"
+                    "TW headwords file not found; attempting extraction"
                 )
-                data = []
+                repo_path = project_root.parent / "en_tw_repo"
+                try:
+                    data = extract_headwords(str(repo_path))
+                    self.logger.info(
+                        f"Extracted {len(data)} TW headwords from {repo_path}"
+                    )
+                except Exception as e:
+                    self.logger.error(
+                        f"Error extracting TW headwords: {e}; creating empty cache"
+                    )
+                    data = []
 
             # Create a timestamped cache file
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
