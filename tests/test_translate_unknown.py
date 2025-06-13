@@ -29,8 +29,15 @@ def test_translate_unknown_handling():
     cache_dir = os.path.join(os.path.dirname(__file__), 'cache')
     os.makedirs(cache_dir, exist_ok=True)
     tw_path = os.path.join(cache_dir, 'tw_headwords.json')
+    # TWL headwords are stored as dictionaries with article info
     with open(tw_path, 'w', encoding='utf-8') as f:
-        json.dump(["faithful"], f)
+        json.dump([
+            {
+                "twarticle": "faithful",
+                "file": "faithful.md",
+                "headwords": ["faithful"]
+            }
+        ], f)
 
     config = ConfigManager()
     config.set('cache.cache_dir', cache_dir)
