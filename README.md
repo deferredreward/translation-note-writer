@@ -129,6 +129,9 @@ venv\Scripts\activate     # Windows
 # Test run (dry run mode)
 python main.py --mode once --dry-run --debug
 
+# Disable AI calls entirely
+python main.py --mode once --noai
+
 # Start continuous monitoring
 python main.py --mode continuous
 ```
