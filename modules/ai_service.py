@@ -7,6 +7,7 @@ import json
 import time
 import logging
 import os
+import re
 from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime, timedelta
 import anthropic
@@ -242,6 +243,10 @@ class AIService:
             gl_quote = biblical_text['ult_verse_content']
             self.logger.info(f"Using entire verse text as GLQuote: {gl_quote[:100]}...")
         
+        # Parse explanation for info and template cues
+        explanation_raw = item.get('Explanation', '')
+        clean_explanation, info_text, template_text = self._parse_explanation(explanation_raw)
+
         # Prepare template variables
         template_vars = {
             'book': item.get('Book', ''),
@@ -249,7 +254,9 @@ class AIService:
             'sref': item.get('SRef', ''),
             'gl_quote': gl_quote,  # Use potentially modified GLQuote
             'at': item.get('AT', ''),
-            'explanation': item.get('Explanation', ''),
+            'explanation': clean_explanation,
+            'info': info_text,
+            'template': template_text,
             'ai_tn': item.get('AI TN', ''),
             'templates': self._format_templates(templates),
             **biblical_text
@@ -579,6 +586,44 @@ class AIService:
             formatted.append(f"{issue_type}: {note_template}")
         
         return '\n\n'.join(formatted)
+
+    def _parse_explanation(self, explanation: str) -> Tuple[str, str, str]:
+        """Parse the explanation column for info and template cues.
+
+        Args:
+            explanation: Raw explanation text from the sheet
+
+        Returns:
+            Tuple of (clean_explanation, info_text, template_text)
+        """
+        if not explanation:
+            return "", "", ""
+
+        parts = re.split(r"\s*(?=[it]:)", explanation)
+        info_segments = []
+        template_segments = []
+        remaining = []
+
+        for part in parts:
+            if part.startswith("i:"):
+                info_segments.append(part[2:].strip())
+            elif part.startswith("t:"):
+                template_segments.append(part[2:].strip())
+            else:
+                if part.strip():
+                    remaining.append(part.strip())
+
+        info_text = ""
+        if info_segments:
+            info_text = "Be sure the note includes this information: " + " ".join(info_segments)
+
+        template_text = ""
+        if template_segments:
+            template_text = "In this instance, check for and use the " + " and ".join(template_segments) + " template"
+
+        clean_explanation = " ".join(remaining)
+
+        return clean_explanation, info_text, template_text
     
     def submit_batch(self, requests: List[Dict[str, Any]]) -> str:
         """Submit a batch of requests to Anthropic.
