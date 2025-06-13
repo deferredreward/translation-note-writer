@@ -15,7 +15,7 @@ from .config_manager import ConfigManager
 from .ai_service import AIService
 from .sheet_manager import SheetManager
 from .cache_manager import CacheManager
-from .text_utils import find_matches
+from .tw_search import find_matches
 
 
 def _post_process_text(text: str) -> str:
