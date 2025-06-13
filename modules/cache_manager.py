@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import hashlib
+import shutil
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Tuple
@@ -594,13 +595,19 @@ class CacheManager:
         self.set_cached_data(cache_key, data)
         return True 
     def load_tw_headwords(self) -> List[Dict[str, Any]]:
-        """Load Translation Words headwords from cache or fallback.
+        """Load Translation Words headwords from cache or create a placeholder.
 
-        First checks ``cache_dir/tw_headwords.json``. If not found, tries
-        ``data/tw_headwords.json`` at the project root.
+        The method attempts the following, in order:
+        1. Load ``cache_dir/tw_headwords.json`` if it exists.
+        2. Load the newest ``tw_headwords_*.json`` file in ``cache_dir`` if no
+           base file exists.
+        3. If a fallback file in ``data/tw_headwords.json`` exists, copy it to a
+           timestamped cache file and return its contents.
+        4. If nothing is found, create an empty timestamped cache file and
+           return an empty list.
 
         Returns:
-            List of headword dictionaries or an empty list if no file exists.
+            List of headword dictionaries, or an empty list if no data is found.
         """
         try:
             headwords_file = self.cache_dir / "tw_headwords.json"
@@ -608,16 +615,46 @@ class CacheManager:
                 with open(headwords_file, "r", encoding="utf-8") as f:
                     return json.load(f)
 
-            project_root = Path(__file__).resolve().parent.parent
-            fallback_file = project_root / "data" / "tw_headwords.json"
-            if fallback_file.exists():
-                with open(fallback_file, "r", encoding="utf-8") as f:
+            # Look for timestamped cache files
+            timestamped_files = sorted(
+                self.cache_dir.glob("tw_headwords_*.json"),
+                key=lambda p: p.stat().st_mtime,
+                reverse=True,
+            )
+            if timestamped_files:
+                latest = timestamped_files[0]
+                # Copy latest to base filename for future lookups
+                try:
+                    shutil.copy(latest, headwords_file)
+                except Exception as e:
+                    self.logger.debug(
+                        f"Could not copy {latest.name} to {headwords_file.name}: {e}"
+                    )
+                with open(latest, "r", encoding="utf-8") as f:
                     return json.load(f)
 
-            self.logger.warning(
-                "TW headwords file not found in cache or data directory"
-            )
-            return []
+            project_root = Path(__file__).resolve().parent.parent
+            fallback_file = project_root / "data" / "tw_headwords.json"
+
+            if fallback_file.exists():
+                with open(fallback_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            else:
+                self.logger.warning(
+                    "TW headwords file not found; creating empty cache"
+                )
+                data = []
+
+            # Create a timestamped cache file
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            ts_file = self.cache_dir / f"tw_headwords_{timestamp}.json"
+            try:
+                with open(ts_file, "w", encoding="utf-8") as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                shutil.copy(ts_file, headwords_file)
+            except Exception as e:
+                self.logger.debug(f"Could not write TW headwords cache: {e}")
+            return data
         except Exception as e:
             self.logger.error(f"Error loading TW headwords: {e}")
             return []
