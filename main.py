@@ -92,6 +92,8 @@ class TranslationNotesAI:
             
             # Initialize AI service
             self.ai_service = AIService(self.config, self.cache_manager)
+            if self.ai_service.disabled:
+                self.logger.warning("AI service is disabled. No API calls will be made.")
             
             # Initialize batch processors
             self.batch_processor = BatchProcessor(

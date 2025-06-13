@@ -48,6 +48,7 @@ class ConfigManager:
         # Map environment variables to config keys
         env_mappings = {
             'ANTHROPIC_API_KEY': 'anthropic.api_key',
+            'ANTHROPIC_DISABLED': 'anthropic.disabled',
             'EMAIL_FROM': 'email.from_email',
             'EMAIL_TO': 'email.to_email',
             'EMAIL_PASSWORD': 'email.password',
@@ -64,9 +65,9 @@ class ConfigManager:
             env_value = os.getenv(env_var)
             if env_value is not None:
                 # Handle boolean values
-                if env_var in ['DRY_RUN']:
+                if env_var in ['DRY_RUN', 'ANTHROPIC_DISABLED']:
                     env_value = env_value.lower() in ('true', '1', 'yes', 'on')
-                
+
                 self.set(config_key, env_value)
         
         # Load editor sheet IDs and names from environment variables
@@ -233,6 +234,10 @@ class ConfigManager:
     def is_dry_run(self) -> bool:
         """Check if dry run mode is enabled."""
         return self.get('debug.dry_run', False)
+
+    def is_ai_disabled(self) -> bool:
+        """Check if Anthropic API usage is disabled."""
+        return self.get('anthropic.disabled', False)
     
     def reload(self):
         """Reload configuration from file."""
