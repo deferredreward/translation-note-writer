@@ -157,11 +157,12 @@ class BatchProcessor:
 
         for item in items:
             explanation = item.get('Explanation', '').strip()
+            sref = item.get('SRef', '').strip()
             at = item.get('AT', '').strip()
             gl_quote = item.get('GLQuote', '')
             ref = item.get('Ref', 'unknown')
 
-            if 'translate-unknown' in explanation.lower():
+            if 'translate-unknown' in explanation.lower() or 'translate-unknown' in sref.lower():
                 if tw_headwords is None:
                     tw_headwords = self.cache_manager.load_tw_headwords()
                 matches = find_matches(gl_quote, tw_headwords)
@@ -253,10 +254,22 @@ class BatchProcessor:
             note += formatted_at
             
             # Apply post-processing to clean up the note
+
             processed_note = _post_process_text(note)
-            
+
             self.logger.info(f"Generated programmatic note for {item.get('Ref', 'unknown')}: {processed_note}")
             return processed_note
+
+        # Handle translate-unknown using pre-matched TW headwords
+        if ('translate-unknown' in explanation.lower() or
+                'translate-unknown' in item.get('SRef', '').lower()):
+            matches = item.get('tw_matches') or []
+            if matches:
+                note = f"TW found: {', '.join(matches)}"
+                processed_note = _post_process_text(note)
+                self.logger.info(
+                    f"Generated translate-unknown note for {item.get('Ref', 'unknown')}: {processed_note}")
+                return processed_note
         
         return ""
 

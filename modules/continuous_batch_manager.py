@@ -465,10 +465,11 @@ class ContinuousBatchManager:
 
         for item in items:
             explanation = item.get('Explanation', '').strip()
+            sref = item.get('SRef', '').strip()
             at = item.get('AT', '').strip()
             gl_quote = item.get('GLQuote', '')
 
-            if 'translate-unknown' in explanation.lower():
+            if 'translate-unknown' in explanation.lower() or 'translate-unknown' in sref.lower():
                 if tw_headwords is None:
                     tw_headwords = self.cache_manager.load_tw_headwords()
                 matches = find_matches(gl_quote, tw_headwords)
@@ -828,7 +829,7 @@ class ContinuousBatchManager:
             return _post_process_text(note)
 
         # Handle translate-unknown programmatically using TW headwords
-        if 'translate-unknown' in explanation.lower():
+        if 'translate-unknown' in explanation.lower() or 'translate-unknown' in item.get('SRef', '').lower():
             quote = item.get('GLQuote', '').strip()
             if quote:
                 from .tw_search import load_tw_headwords, find_matches
