@@ -469,7 +469,7 @@ class ContinuousBatchManager:
             at = item.get('AT', '').strip()
             gl_quote = item.get('GLQuote', '')
 
-            if 'translate-unknown' in explanation.lower() or 'translate-unknown' in sref.lower():
+            if 'TWN' not in explanation and 'translate-unknown' in sref.lower():
                 if tw_headwords is None:
                     tw_headwords = self.cache_manager.load_tw_headwords()
                 matches = find_matches(gl_quote, tw_headwords)
@@ -760,7 +760,9 @@ class ContinuousBatchManager:
             processed_results = self.ai_service.process_batch_results(raw_results, batch_info.items)
             
             # Update sheet with results
+            self.logger.info(f"About to update sheet for batch {batch_id}...")
             success_count = self._update_sheet_with_results(processed_results, batch_info.sheet_id)
+            self.logger.info(f"Sheet update call completed for batch {batch_id}.")
             
             self.logger.info(f"Processed batch {batch_id} for {friendly_name_with_id}: {success_count}/{len(batch_info.items)} items")
             
@@ -818,6 +820,11 @@ class ContinuousBatchManager:
 
             if ':' in ref_match:
                 chapter, verse = ref_match.split(':', 1)
+                # Prepend zero if chapter or verse length equals one
+                if len(chapter) == 1:
+                    chapter = f"0{chapter}"
+                if len(verse) == 1:
+                    verse = f"0{verse}"
                 note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
             else:
                 note = f"See how you translated the similar expression in {ref_match}."
@@ -829,13 +836,13 @@ class ContinuousBatchManager:
             return _post_process_text(note)
 
         # Handle translate-unknown programmatically using TW headwords
-        if 'translate-unknown' in explanation.lower() or 'translate-unknown' in item.get('SRef', '').lower():
+        if 'TWN' not in explanation and 'translate-unknown' in item.get('SRef', '').lower():
             quote = item.get('GLQuote', '').strip()
             if quote:
                 from .tw_search import load_tw_headwords, find_matches
                 tw_entries = load_tw_headwords(str(self.cache_manager.cache_dir))
                 matches = find_matches(quote, tw_entries)
-                if matches:
+                if matches  and "TWN" not in explanation:
                     return f"TW found: {', '.join(matches)}"
 
         return ""
@@ -914,6 +921,11 @@ class ContinuousBatchManager:
                 if ':' in explanation.replace('see how ', '').strip():
                     ref_match = explanation.replace('see how ', '').strip()
                     chapter, verse = ref_match.split(':', 1)
+                    # Prepend zero if chapter or verse length equals one
+                    if len(chapter) == 1:
+                        chapter = f"0{chapter}"
+                    if len(verse) == 1:
+                        verse = f"0{verse}"
                     note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
                 else:
                     note = ai_output
@@ -953,7 +965,9 @@ class ContinuousBatchManager:
         
         if updates:
             try:
+                self.logger.info(f"Calling sheet_manager.batch_update_rows for {len(updates)} updates.")
                 self.sheet_manager.batch_update_rows(sheet_id, updates, self.completion_callback)
+                self.logger.info("Finished sheet_manager.batch_update_rows call.")
                 return len(updates)
             except Exception as e:
                 self.logger.error(f"Error updating sheet: {e}")

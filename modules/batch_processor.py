@@ -162,7 +162,7 @@ class BatchProcessor:
             gl_quote = item.get('GLQuote', '')
             ref = item.get('Ref', 'unknown')
 
-            if 'translate-unknown' in explanation.lower() or 'translate-unknown' in sref.lower():
+            if 'TWN' not in explanation.lower() and 'translate-unknown' in sref.lower():
                 if tw_headwords is None:
                     tw_headwords = self.cache_manager.load_tw_headwords()
                 matches = find_matches(gl_quote, tw_headwords)
@@ -171,7 +171,6 @@ class BatchProcessor:
                     self.logger.info(f"PROGRAMMATIC: {ref} - translate-unknown headword matches {matches}")
                     programmatic_items.append(item)
                     continue
-
             if explanation.lower().startswith('see how') and at:
                 self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' with AT provided")
                 self.logger.debug(f"  Explanation: {explanation}")
@@ -245,6 +244,11 @@ class BatchProcessor:
             
             if ':' in ref_match:
                 chapter, verse = ref_match.split(':', 1)
+                # Prepend zero if chapter or verse length equals one
+                if len(chapter) == 1:
+                    chapter = f"0{chapter}"
+                if len(verse) == 1:
+                    verse = f"0{verse}"
                 note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
             else:
                 note = f"See how you translated the similar expression in {ref_match}."
@@ -261,7 +265,7 @@ class BatchProcessor:
             return processed_note
 
         # Handle translate-unknown using pre-matched TW headwords
-        if ('translate-unknown' in explanation.lower() or
+        if ('TWN' not in explanation and
                 'translate-unknown' in item.get('SRef', '').lower()):
             matches = item.get('tw_matches') or []
             if matches:
