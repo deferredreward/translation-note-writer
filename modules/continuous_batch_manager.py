@@ -17,77 +17,16 @@ from .config_manager import ConfigManager
 from .ai_service import AIService
 from .sheet_manager import SheetManager, SheetPermissionError
 from .cache_manager import CacheManager
-from .tw_search import find_matches
+from .processing_utils import (
+    post_process_text, separate_items_by_processing_type,
+    format_alternate_translation, generate_programmatic_note,
+    clean_ai_output, determine_note_type, format_final_note,
+    prepare_update_data, ensure_biblical_text_cached,
+    should_include_alternate_translation, get_row_identifier
+)
 
 
-def _post_process_text(text: str) -> str:
-    """Post-process text by removing curly braces and converting straight quotes to smart quotes.
-    
-    Args:
-        text: Input text to process
-        
-    Returns:
-        Processed text with curly braces removed and smart quotes
-    """
-    if not text:
-        return text
-    
-    original_text = text
-    
-    # Remove all curly braces
-    processed = text.replace('{', '').replace('}', '')
-    
-    # Convert straight quotes to smart quotes
-    # This handles nested quotes and alternates between single and double quotes appropriately
-    
-    # First handle double quotes
-    # Use a simple state machine to alternate between opening and closing quotes
-    result = []
-    in_double_quotes = False
-    i = 0
-    
-    while i < len(processed):
-        char = processed[i]
-        
-        if char == '"':
-            if in_double_quotes:
-                # Closing double quote
-                result.append('\u201D')  # RIGHT DOUBLE QUOTATION MARK
-                in_double_quotes = False
-            else:
-                # Opening double quote
-                result.append('\u201C')  # LEFT DOUBLE QUOTATION MARK
-                in_double_quotes = True
-        elif char == "'":
-            # For single quotes, check context to determine if it's an apostrophe or quote
-            if i > 0 and processed[i-1].isalnum():
-                # Likely an apostrophe (preceded by alphanumeric)
-                result.append('\u2019')  # RIGHT SINGLE QUOTATION MARK (apostrophe)
-            elif i < len(processed) - 1 and processed[i+1].isalnum():
-                # Likely opening single quote (followed by alphanumeric)
-                result.append('\u2018')  # LEFT SINGLE QUOTATION MARK
-            else:
-                # Default to closing single quote
-                result.append('\u2019')  # RIGHT SINGLE QUOTATION MARK
-        else:
-            result.append(char)
-        
-        i += 1
-    
-    final_text = ''.join(result)
-    
-    # Log post-processing changes for debugging
-    if original_text != final_text:
-        # Use a logger from the module (we can't access self.logger here)
-        import logging
-        logger = logging.getLogger(__name__)
-        logger.info(f"POST-PROCESS: '{original_text[:100]}...' -> '{final_text[:100]}...'")
-        if '{' in original_text or '}' in original_text:
-            logger.info(f"POST-PROCESS: Removed curly braces from text")
-        if '"' in original_text or "'" in original_text:
-            logger.info(f"POST-PROCESS: Converted straight quotes to smart quotes")
-    
-    return final_text
+# _post_process_text function moved to processing_utils.py as post_process_text
 
 
 @dataclass
@@ -204,8 +143,9 @@ class ContinuousBatchManager:
         
         # Clear rows in progress
         with self.lock:
+            cleared_count = len(self.rows_in_progress)
             self.rows_in_progress.clear()
-            self.logger.info("Cleared all rows in progress")
+            self.logger.info(f"Cleared {cleared_count} rows from in_progress tracking")
         
         self.logger.info("Continuous batch processing stopped")
     
@@ -374,11 +314,7 @@ class ContinuousBatchManager:
         Returns:
             Unique identifier string
         """
-        row_number = (item.get('row') or 
-                     item.get('row # for n8n hide, don\'t delete') or
-                     item.get('row_number') or
-                     'unknown')
-        return f"{sheet_id}:{row_number}"
+        return get_row_identifier(sheet_id, item)
     
     def _has_queued_work_for_user(self, user: str) -> bool:
         """Check if there's already work queued for this user."""
@@ -430,15 +366,15 @@ class ContinuousBatchManager:
     def _process_pending_work(self, work: PendingWork):
         """Process pending work by creating and submitting batches."""
         try:
-            # Mark all rows as being processed
+            # Separate items by processing type first (before marking as in progress)
+            programmatic_items, ai_items = self._separate_items_by_processing_type(work.items)
+            
+            # Mark only the items we're actually going to process
             with self.lock:
-                for item in work.items:
+                for item in programmatic_items + ai_items:
                     row_id = self._get_row_identifier(work.sheet_id, item)
                     self.rows_in_progress.add(row_id)
                     self.logger.debug(f"Marked row {item.get('row', 'unknown')} as being processed for {work.user}")
-            
-            # Separate items by processing type
-            programmatic_items, ai_items = self._separate_items_by_processing_type(work.items)
             
             # Process programmatic items immediately (they don't need AI batches)
             if programmatic_items:
@@ -450,7 +386,7 @@ class ContinuousBatchManager:
         
         except Exception as e:
             self.logger.error(f"Error processing pending work for {work.user}: {e}")
-            # If there's an error, make sure to unmark the rows
+            # If there's an error, make sure to unmark ALL rows that might have been marked
             with self.lock:
                 for item in work.items:
                     row_id = self._get_row_identifier(work.sheet_id, item)
@@ -458,45 +394,7 @@ class ContinuousBatchManager:
     
     def _separate_items_by_processing_type(self, items: List[Dict[str, Any]]) -> tuple:
         """Separate items into programmatic vs AI processing."""
-        programmatic_items = []
-        ai_items = []
-        
-        tw_headwords = None
-
-        for item in items:
-            explanation = item.get('Explanation', '').strip()
-            sref = item.get('SRef', '').strip()
-            at = item.get('AT', '').strip()
-            gl_quote = item.get('GLQuote', '')
-            ref = item.get('Ref', 'unknown')
-
-            if 'TWN' not in explanation and 'translate-unknown' in sref.lower():
-                if tw_headwords is None:
-                    tw_headwords = self.cache_manager.load_tw_headwords()
-                matches = find_matches(gl_quote, tw_headwords)
-                if matches:
-                    item['tw_matches'] = matches
-                    programmatic_items.append(item)
-                    continue
-
-            if explanation.lower().startswith('see how'):
-                templates = self.ai_service._get_templates_for_item(item)
-                needs_at = self._should_include_alternate_translation(templates)
-                
-                if not needs_at:
-                    self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' does not require an alternate translation based on templates.")
-                    programmatic_items.append(item)
-                else:
-                    if at:
-                        self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' has a provided alternate translation.")
-                        programmatic_items.append(item)
-                    else:
-                        self.logger.info(f"AI NEEDED: {ref} - 'see how' requires an alternate translation, but it is missing.")
-                        ai_items.append(item)
-            else:
-                ai_items.append(item)
-        
-        return programmatic_items, ai_items
+        return separate_items_by_processing_type(items, self.ai_service, self.cache_manager, self.logger)
     
     def _should_include_alternate_translation(self, templates: List[Dict[str, Any]]) -> bool:
         """Check if any template contains "Alternate translation".
@@ -507,11 +405,7 @@ class ContinuousBatchManager:
         Returns:
             True if alternate translation should be included
         """
-        for template in templates:
-            note_template = template.get('note_template', '')
-            if 'Alternate translation' in note_template:
-                return True
-        return False
+        return should_include_alternate_translation(templates)
 
     def _process_programmatic_items_immediately(self, items: List[Dict[str, Any]], user: str, sheet_id: str):
         """Process programmatic items immediately without batching."""
@@ -840,139 +734,24 @@ class ContinuousBatchManager:
     
     def _generate_programmatic_note(self, item: Dict[str, Any]) -> str:
         """Generate a note programmatically for 'see how' or 'translate-unknown' items."""
-        explanation = item.get('Explanation', '').strip()
-        at = item.get('AT', '').strip()
-
-        if explanation.lower().startswith('see how'):
-            ref_match = explanation.replace('see how ', '').strip()
-
-            if ':' in ref_match:
-                chapter, verse = ref_match.split(':', 1)
-                note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter.zfill(2)}/{verse.zfill(2)}.md)."
-            else:
-                note = f"See how you translated the similar expression in {ref_match}."
-
-            # Add alternate translation
-            formatted_at = self._format_alternate_translation(at)
-            note += formatted_at
-
-            return _post_process_text(note)
-
-        # Handle translate-unknown programmatically using TW headwords
-        if 'TWN' not in explanation and 'translate-unknown' in item.get('SRef', '').lower():
-            quote = item.get('GLQuote', '').strip()
-            if quote:
-                from .tw_search import load_tw_headwords, find_matches
-                tw_entries = load_tw_headwords(str(self.cache_manager.cache_dir))
-                matches = find_matches(quote, tw_entries)
-                if matches  and "TWN" not in explanation:
-                    return f"TW found: {', '.join(matches)}"
-
-        return ""
+        return generate_programmatic_note(item, self.logger)
     
     def _format_alternate_translation(self, at: str) -> str:
         """Format the alternate translation text."""
-        if not at.strip():
-            return ""
-        
-        if '/' in at:
-            parts = [part.strip() for part in at.split('/') if part.strip()]
-            formatted_parts = [f"[{part}]" for part in parts]
-            return f" Alternate translation: {' or '.join(formatted_parts)}"
-        else:
-            return f" Alternate translation: [{at.strip()}]"
+        return format_alternate_translation(at)
     
     def _prepare_update_data(self, original_item: Dict[str, Any], ai_output: str) -> Optional[Dict[str, Any]]:
         """Prepare update data for a sheet row."""
-        try:
-            row_number = (original_item.get('row') or 
-                         original_item.get('row # for n8n hide, don\'t delete') or
-                         original_item.get('row_number'))
-            
-            if not row_number:
-                self.logger.warning(f"No row number found in original item")
-                return None
-            
-            # Log the original AI output for debugging
-            ref = original_item.get('Ref', 'unknown')
-            self.logger.info(f"Processing AI output for {ref} (row {row_number}): {ai_output[:100]}{'...' if len(ai_output) > 100 else ''}")
-            
-            # Clean the AI output
-            cleaned_output = self._clean_ai_output(ai_output)
-            self.logger.info(f"Cleaned AI output for {ref}: {cleaned_output[:100]}{'...' if len(cleaned_output) > 100 else ''}")
-            
-            # Format the final note
-            final_note = self._format_final_note(original_item, cleaned_output)
-            self.logger.info(f"Final formatted note for {ref}: {final_note[:200]}{'...' if len(final_note) > 200 else ''}")
-            
-            return {
-                'row_number': row_number,
-                'updates': {
-                    'Go?': 'AI',
-                    'AI TN': final_note
-                }
-            }
-        except Exception as e:
-            self.logger.error(f"Error in _prepare_update_data: {e}")
-            import traceback
-            self.logger.error(f"Traceback: {traceback.format_exc()}")
-            return None
+        return prepare_update_data(original_item, ai_output, self.logger)
     
     def _clean_ai_output(self, output: str) -> str:
         """Clean AI output by removing quotes and extra whitespace."""
-        # Remove surrounding quotes
-        cleaned = output.strip()
-        if cleaned.startswith('"') and cleaned.endswith('"'):
-            cleaned = cleaned[1:-1]
-        elif cleaned.startswith("'") and cleaned.endswith("'"):
-            cleaned = cleaned[1:-1]
-        
-        # Remove trailing newlines
-        cleaned = cleaned.rstrip('\n')
-        
-        return cleaned
+        return clean_ai_output(output)
     
     def _format_final_note(self, original_item: Dict[str, Any], ai_output: str) -> str:
         """Format the final note based on the item type."""
-        try:
-            explanation = original_item.get('Explanation', '').strip()
-            at = original_item.get('AT', '').strip()
-            
-            # Determine note type
-            if explanation.lower().startswith('see how'):
-                # For "see how" notes, format the reference
-                if ':' in explanation.replace('see how ', '').strip():
-                    ref_match = explanation.replace('see how ', '').strip()
-                    chapter, verse = ref_match.split(':', 1)
-                    # Prepend zero if chapter or verse length equals one
-                    if len(chapter) == 1:
-                        chapter = f"0{chapter}"
-                    if len(verse) == 1:
-                        verse = f"0{verse}"
-                    note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
-                else:
-                    note = ai_output
-                
-                # Add alternate translation if provided
-                if at:
-                    formatted_at = self._format_alternate_translation(at)
-                    note += formatted_at
-                
-                return _post_process_text(note)
-            
-            else:
-                # Regular AI note - append AT if provided
-                note = ai_output
-                
-                if at:
-                    formatted_at = self._format_alternate_translation(at)
-                    note += formatted_at
-                
-                return _post_process_text(note)
-                
-        except Exception as e:
-            self.logger.error(f"Error formatting final note: {e}")
-            return _post_process_text(ai_output)
+        note_type = determine_note_type(original_item)
+        return format_final_note(original_item, ai_output, note_type, self.logger)
     
     def _update_sheet_with_results(self, results: List[Dict[str, Any]], sheet_id: str) -> int:
         """Update the sheet with batch results."""
@@ -1717,12 +1496,12 @@ class ContinuousBatchManager:
                 
                 # Apply post-processing to text fields
                 row_data = [
-                    _post_process_text(suggestion.get('reference', '')),
-                    _post_process_text(suggestion.get('issuetype', '')),
-                    _post_process_text(suggestion.get('quote', '')),
+                    post_process_text(suggestion.get('reference', '')),
+                    post_process_text(suggestion.get('issuetype', '')),
+                    post_process_text(suggestion.get('quote', '')),
                     '',  # Go? column (column D) - leave empty
-                    _post_process_text(alternate_translation),  # AT column (column E) - get from suggestion
-                    _post_process_text(suggestion.get('explanation', ''))
+                    post_process_text(alternate_translation),  # AT column (column E) - get from suggestion
+                    post_process_text(suggestion.get('explanation', ''))
                 ]
                 values_to_write.append(row_data)
             
