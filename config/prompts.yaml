@@ -21,6 +21,8 @@ note_prompts:
     The following input may or may not occur:
     - Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note like instructions for the note users to refer elsewhere for more information. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to override the template, try to discern the intent even from a minimal prompt. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
 
+    {info}
+
     - If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note: `{ai_tn}`
 
     Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
@@ -44,6 +46,8 @@ note_prompts:
     The following input may or may not occur:
 
     - Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to slightly override the template, try to discern the intent even from a minimal prompt. Make sure your note includes the information prefixed by `i:`. Make sure your note includes the information prefixed by `i:`. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+    {info}
 
     If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note, the explanation from the previous paragraph may help: `{ai_tn}`
 

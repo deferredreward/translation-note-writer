@@ -1105,8 +1105,7 @@ class SheetManager:
             List of items that need SRef updates
         """
         # Create mapping for short forms to full forms
-        short_to_full_mapping = {
-            'you': 'figs-you',
+        short_to_full_mapping = {            
             'explicit': 'figs-explicit', 
             'pronouns': 'writing-pronouns',
             'quotations': 'figs-quotations',
@@ -1165,6 +1164,9 @@ class SheetManager:
                 for ref in support_references:
                     ref_issue = ref.get('Issue', '')
                     if ref_issue and updated_sref in ref_issue:
+                        # Special case: prevent figs-explicit from becoming figs-explicitinfo
+                        if updated_sref == 'figs-explicit' and 'figs-explicitinfo' in ref_issue:
+                            continue
                         matched_item = ref
                         break
                 
