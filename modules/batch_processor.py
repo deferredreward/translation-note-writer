@@ -171,13 +171,23 @@ class BatchProcessor:
                     self.logger.info(f"PROGRAMMATIC: {ref} - translate-unknown headword matches {matches}")
                     programmatic_items.append(item)
                     continue
-            if explanation.lower().startswith('see how') and at:
-                self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' with AT provided")
-                self.logger.debug(f"  Explanation: {explanation}")
-                self.logger.debug(f"  AT: {at}")
-                programmatic_items.append(item)
+            
+            if explanation.lower().startswith('see how'):
+                templates = self.ai_service._get_templates_for_item(item)
+                needs_at = self._should_include_alternate_translation(templates)
+
+                if not needs_at:
+                    self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' does not require an alternate translation based on templates.")
+                    programmatic_items.append(item)
+                else:
+                    if at:
+                        self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' has a provided alternate translation.")
+                        programmatic_items.append(item)
+                    else:
+                        self.logger.info(f"AI NEEDED: {ref} - 'see how' requires an alternate translation, but it is missing.")
+                        ai_items.append(item)
             else:
-                self.logger.info(f"AI NEEDED: {ref} - explanation: '{explanation[:50]}...', AT: '{at[:30]}...'")
+                self.logger.info(f"AI NEEDED: {ref} - General case: explanation: '{explanation[:50]}...'")
                 ai_items.append(item)
         
         self.logger.info(f"SEPARATION COMPLETE: {len(programmatic_items)} programmatic, {len(ai_items)} need AI")
@@ -238,18 +248,14 @@ class BatchProcessor:
         explanation = item.get('Explanation', '').strip()
         at = item.get('AT', '').strip()
         
-        if explanation.lower().startswith('see how') and at:
+        if explanation.lower().startswith('see how'):
             # Extract the reference (e.g., "see how 20:3" -> "20:3")
             ref_match = explanation.replace('see how ', '').strip()
             
             if ':' in ref_match:
                 chapter, verse = ref_match.split(':', 1)
                 # Prepend zero if chapter or verse length equals one
-                if len(chapter) == 1:
-                    chapter = f"0{chapter}"
-                if len(verse) == 1:
-                    verse = f"0{verse}"
-                note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
+                note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter.zfill(2)}/{verse.zfill(2)}.md)."
             else:
                 note = f"See how you translated the similar expression in {ref_match}."
             
