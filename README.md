@@ -10,6 +10,8 @@ A Python application that automates the creation of Bible translation notes usin
 - **Error Handling**: Robust error handling with email notifications
 - **Configurable**: Easily customizable prompts and settings
 - **Multiple Editors**: Supports multiple editor sheets simultaneously
+- **Intelligent Template Selection**: Dynamic system prompt selection and template type filtering
+- **Enhanced Instruction Following**: Improved AI adherence to `t:` template hints and `i:` required information
 
 ## 🚀 Quick Start
 
@@ -234,6 +236,16 @@ The system handles three types of translation notes:
 - **Given AT**: When an alternate translation is already provided
 - **Writes AT**: When the AI needs to create both the note and alternate translation
 - **See How**: Reference notes that point to similar expressions in other verses
+
+### Intelligent Template Selection
+
+The system now features intelligent template selection based on:
+
+- **Dynamic System Prompt Selection**: Automatically chooses between system prompts that generate alternate translations vs. those that use provided ones, based on whether the template contains "Alternate translation:"
+- **Template Type Filtering**: When editors provide `t:` instructions (e.g., `t:cognate accusative`), the system uses a two-tier approach:
+  1. **Exact Match**: Finds templates with exactly matching `type` field
+  2. **AI-Assisted Selection**: If no exact match, provides enhanced instructions for the AI to select from available templates based on the hint
+- **Improved Instruction Following**: Enhanced template text generation provides clearer directives to the AI for better adherence to specific template requirements
 
 ### Caching Strategy
 
@@ -623,7 +635,7 @@ Expected Google Sheets format:
 | `Go?` | Processing trigger (any value except "AI" to process) |
 | `GLQuote` | Text to be addressed |
 | `AT` | Alternate translation (optional) |
-| `Explanation` | Additional context |
+| `Explanation` | Additional context (supports `i:` for required info, `t:` for template type hints) |
 | `AI TN` | Generated translation note (output) |
 
 ## 🤝 Support

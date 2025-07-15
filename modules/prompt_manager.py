@@ -6,7 +6,7 @@ Handles loading and formatting prompts for AI interactions.
 import os
 import yaml
 import logging
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 from .config_manager import ConfigManager
 
@@ -125,26 +125,35 @@ class PromptManager:
             self.logger.error(f"Error getting prompt for {note_type}: {e}")
             return "Create a translation note for this item."
     
-    def get_system_message(self, note_type: str) -> Optional[str]:
+    def get_system_message(self, note_type: str, templates: List[Dict[str, Any]] = None) -> Optional[str]:
         """Get the system message for a specific note type.
         
         Args:
             note_type: Type of note
+            templates: List of templates to check for AT requirements
             
         Returns:
             System message string or None
         """
         try:
-            # Map note types to system message keys
-            system_mapping = {
-                'given_at': 'given_at_agent',
-                'writes_at': 'ai_writes_at_agent',
-                'see_how_at': 'ai_writes_at_agent',
-                'see_how': 'given_at_agent',
-                'review': 'given_at_agent'
-            }
+            # Check if any template contains "Alternate translation:" to determine system prompt
+            needs_at_generation = False
+            if templates:
+                for template in templates:
+                    template_text = template.get('note_template', '')
+                    if 'Alternate translation:' in template_text:
+                        needs_at_generation = True
+                        break
             
-            system_key = system_mapping.get(note_type, 'given_at_agent')
+            # Select system prompt based on AT requirement
+            if needs_at_generation:
+                system_key = 'ai_writes_at_agent'  # Generate alternate translations
+            else:
+                system_key = 'given_at_agent'      # Use provided alternate translations (or none)
+            
+            # Override for specific note types that should always use given_at_agent
+            if note_type in ['given_at', 'see_how', 'review']:
+                system_key = 'given_at_agent'
             
             # Get system prompts from cache (Google Sheets)
             system_prompts = self._get_system_prompts_from_cache()
