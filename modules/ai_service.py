@@ -659,7 +659,7 @@ class AIService:
 
         info_text = ""
         if info_segments:
-            info_text = "Be sure the note includes this information: " + " ".join(info_segments)  + "\n If this information references another chapter and verse, for instance if it says, 'see how … 9:3,' when you include this information you should format the chapter:verse portion as a link in the following manner: [9:3](../09/03.md)."
+            info_text = "Be sure the note includes this information: " + " ".join(info_segments)  + "\n If this information references another chapter and verse, format it according to these patterns: for a verse of the same chapter use [verse 2](../../jos/2/2.md), for same book different chapter use [chapter 3:3](../../jos/3/3.md), and for a different book use [Exodus 2:2](../../exo/2/2.md). Note that no zero-padding is used in the paths."
 
         template_text = ""
         if template_segments:

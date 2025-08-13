@@ -129,37 +129,34 @@ def separate_items_by_processing_type(items: List[Dict[str, Any]],
         gl_quote = item.get('GLQuote', '')
         ref = item.get('Ref', 'unknown')
 
-        # Check for translate-unknown with TW matches
-        if 'TWN' not in explanation.lower() and 'translate-unknown' in sref.lower():
-            if tw_headwords is None:
-                tw_headwords = cache_manager.load_tw_headwords()
+        # Check for translate-unknown with TW matches (but only if TWN is NOT in explanation)
+        if 'translate-unknown' in sref.lower():
+            has_twn = 'twn' in explanation.lower()
+            logger.info(f"DEBUG: {ref} - translate-unknown found, explanation contains TWN: {has_twn}, explanation: '{explanation}'")
             
-            from .tw_search import find_matches
-            matches = find_matches(gl_quote, tw_headwords)
-            if matches:
-                item['tw_matches'] = matches
-                logger.info(f"PROGRAMMATIC: {ref} - translate-unknown headword matches {matches}")
-                programmatic_items.append(item)
-                continue
-        
-        # Check for "see how" notes
-        if explanation.lower().startswith('see how'):
-            templates = ai_service._get_templates_for_item(item)
-            needs_at = should_include_alternate_translation(templates)
-
-            if not needs_at:
-                logger.info(f"PROGRAMMATIC: {ref} - 'see how' does not require an alternate translation based on templates.")
-                programmatic_items.append(item)
-            else:
-                if at:
-                    logger.info(f"PROGRAMMATIC: {ref} - 'see how' has a provided alternate translation.")
+            if not has_twn:
+                if tw_headwords is None:
+                    tw_headwords = cache_manager.load_tw_headwords()
+                
+                from .tw_search import find_matches
+                matches = find_matches(gl_quote, tw_headwords)
+                if matches:
+                    item['tw_matches'] = matches
+                    logger.info(f"PROGRAMMATIC: {ref} - translate-unknown headword matches {matches}")
                     programmatic_items.append(item)
-                else:
-                    logger.info(f"AI NEEDED: {ref} - 'see how' requires an alternate translation, but it is missing.")
-                    ai_items.append(item)
-        else:
-            logger.info(f"AI NEEDED: {ref} - General case: explanation: '{explanation[:50]}...'")
-            ai_items.append(item)
+                    continue
+            else:
+                logger.info(f"AI NEEDED: {ref} - translate-unknown with TWN override in explanation")
+        
+        # Check for "see how" notes - these are always handled programmatically
+        if explanation.lower().startswith('see how'):
+            logger.info(f"PROGRAMMATIC: {ref} - 'see how' note, handling programmatically.")
+            programmatic_items.append(item)
+            continue
+            
+        # If we get here, send to AI (including translate-unknown with TWN in explanation)
+        logger.info(f"AI NEEDED: {ref} - General case: explanation: '{explanation[:50]}...'")
+        ai_items.append(item)
     
     logger.info(f"SEPARATION COMPLETE: {len(programmatic_items)} programmatic, {len(ai_items)} need AI")
     return programmatic_items, ai_items
@@ -213,7 +210,7 @@ def generate_programmatic_note(item: Dict[str, Any], logger: Optional[logging.Lo
     """Generate a note programmatically for "see how" or "translate-unknown" items.
     
     This function handles two types of programmatic notes:
-    1. "See how" notes with proper reference formatting and zero-padding
+    1. "See how" notes with proper reference formatting (no zero-padding)
     2. Translate-unknown notes with TW headword matches
     
     Args:
@@ -230,15 +227,10 @@ def generate_programmatic_note(item: Dict[str, Any], logger: Optional[logging.Lo
     at = item.get('AT', '').strip()
     
     if explanation.lower().startswith('see how'):
-        # Extract the reference (e.g., "see how 20:3" -> "20:3")
+        # Extract the reference (e.g., "see how 2" -> "2", "see how 3:3" -> "3:3", "see how exo 2:2" -> "exo 2:2")
         ref_match = explanation.replace('see how ', '').strip()
         
-        if ':' in ref_match:
-            chapter, verse = ref_match.split(':', 1)
-            # Prepend zero if chapter or verse length equals one
-            note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter.zfill(2)}/{verse.zfill(2)}.md)."
-        else:
-            note = f"See how you translated the similar expression in {ref_match}."
+        note = _format_see_how_reference(ref_match, item)
         
         # Add alternate translation using the formatting function
         formatted_at = format_alternate_translation(at)
@@ -262,6 +254,169 @@ def generate_programmatic_note(item: Dict[str, Any], logger: Optional[logging.Lo
             return processed_note
     
     return ""
+
+
+def _format_see_how_reference(ref_match: str, item: Dict[str, Any] = None) -> str:
+    """Format a 'see how' reference according to the new specification.
+    
+    Handles three formats:
+    - Same chapter: 'see how 2' -> 'See how you translated the similar expression in [verse 2](../../deu/25/2.md)'
+    - Different chapter: 'see how 3:3' -> 'See how you translated the similar expression in [3:3](../../deu/3/3.md)'
+    - Different book: 'see how exo 2:2' -> 'See how you translated the similar expression in [Exodus 2:2](../../exo/2/2.md)'
+    
+    Args:
+        ref_match: The reference part after 'see how ' (e.g., '2', '3:3', 'exo 2:2')
+        item: The current item data containing Book and Ref fields for context
+        
+    Returns:
+        Formatted note text
+    """
+    # Get current book and chapter from item data
+    current_book = 'jos'  # Default fallback
+    current_chapter = '2'  # Default fallback
+    
+    if item:
+        book_field = item.get('Book', '').strip().lower()
+        ref_field = item.get('Ref', '').strip()
+        
+        # Get book code from Book field
+        if book_field:
+            current_book = book_field
+            
+        # Get chapter from Ref field (format like "25:3")
+        if ref_field and ':' in ref_field:
+            current_chapter = ref_field.split(':')[0]
+    # Check if it's a different book (contains letters)
+    if any(c.isalpha() for c in ref_match):
+        # Different book format: 'exo 2:2' or 'exodus 2:2'
+        parts = ref_match.split()
+        if len(parts) >= 2:
+            book_input = parts[0]
+            chapter_verse = ' '.join(parts[1:])
+            book_code, book_name = _get_book_info(book_input)
+            if ':' in chapter_verse:
+                chapter, verse = chapter_verse.split(':', 1)
+                return f"See how you translated the similar expression in [{book_name} {chapter}:{verse}](../../{book_code}/{chapter}/{verse}.md)."
+            else:
+                # Just chapter reference in different book
+                return f"See how you translated the similar expression in [{book_name} {chapter_verse}](../../{book_code}/{chapter_verse}/{chapter_verse}.md)."
+        else:
+            return f"See how you translated the similar expression in {ref_match}."
+    
+    elif ':' in ref_match:
+        # Different chapter in same book: '3:3'
+        chapter, verse = ref_match.split(':', 1)
+        return f"See how you translated the similar expression in [{chapter}:{verse}](../../{current_book}/{chapter}/{verse}.md)."
+    
+    else:
+        # Same chapter: '2'
+        verse = ref_match
+        return f"See how you translated the similar expression in [verse {verse}](../../{current_book}/{current_chapter}/{verse}.md)."
+
+
+def _get_book_info(book_input: str) -> tuple[str, str]:
+    """Get book code and name from either a book code or full name.
+    
+    Args:
+        book_input: Either a book code (e.g., 'exo') or full name (e.g., 'exodus')
+        
+    Returns:
+        Tuple of (book_code, book_name)
+    """
+    book_mappings = {
+        'gen': 'Genesis', 'genesis': ('gen', 'Genesis'),
+        'exo': 'Exodus', 'exodus': ('exo', 'Exodus'),
+        'lev': 'Leviticus', 'leviticus': ('lev', 'Leviticus'),
+        'num': 'Numbers', 'numbers': ('num', 'Numbers'),
+        'deu': 'Deuteronomy', 'deuteronomy': ('deu', 'Deuteronomy'),
+        'jos': 'Joshua', 'joshua': ('jos', 'Joshua'),
+        'jdg': 'Judges', 'judges': ('jdg', 'Judges'),
+        'rut': 'Ruth', 'ruth': ('rut', 'Ruth'),
+        '1sa': '1 Samuel', '1 samuel': ('1sa', '1 Samuel'),
+        '2sa': '2 Samuel', '2 samuel': ('2sa', '2 Samuel'),
+        '1ki': '1 Kings', '1 kings': ('1ki', '1 Kings'),
+        '2ki': '2 Kings', '2 kings': ('2ki', '2 Kings'),
+        '1ch': '1 Chronicles', '1 chronicles': ('1ch', '1 Chronicles'),
+        '2ch': '2 Chronicles', '2 chronicles': ('2ch', '2 Chronicles'),
+        'ezr': 'Ezra', 'ezra': ('ezr', 'Ezra'),
+        'neh': 'Nehemiah', 'nehemiah': ('neh', 'Nehemiah'),
+        'est': 'Esther', 'esther': ('est', 'Esther'),
+        'job': 'Job', 'job': ('job', 'Job'),
+        'psa': 'Psalms', 'psalms': ('psa', 'Psalms'), 'psalm': ('psa', 'Psalms'),
+        'pro': 'Proverbs', 'proverbs': ('pro', 'Proverbs'),
+        'ecc': 'Ecclesiastes', 'ecclesiastes': ('ecc', 'Ecclesiastes'),
+        'sng': 'Song of Songs', 'song of songs': ('sng', 'Song of Songs'),
+        'isa': 'Isaiah', 'isaiah': ('isa', 'Isaiah'),
+        'jer': 'Jeremiah', 'jeremiah': ('jer', 'Jeremiah'),
+        'lam': 'Lamentations', 'lamentations': ('lam', 'Lamentations'),
+        'ezk': 'Ezekiel', 'ezekiel': ('ezk', 'Ezekiel'),
+        'dan': 'Daniel', 'daniel': ('dan', 'Daniel'),
+        'hos': 'Hosea', 'hosea': ('hos', 'Hosea'),
+        'jol': 'Joel', 'joel': ('jol', 'Joel'),
+        'amo': 'Amos', 'amos': ('amo', 'Amos'),
+        'oba': 'Obadiah', 'obadiah': ('oba', 'Obadiah'),
+        'jon': 'Jonah', 'jonah': ('jon', 'Jonah'),
+        'mic': 'Micah', 'micah': ('mic', 'Micah'),
+        'nam': 'Nahum', 'nahum': ('nam', 'Nahum'),
+        'hab': 'Habakkuk', 'habakkuk': ('hab', 'Habakkuk'),
+        'zep': 'Zephaniah', 'zephaniah': ('zep', 'Zephaniah'),
+        'hag': 'Haggai', 'haggai': ('hag', 'Haggai'),
+        'zec': 'Zechariah', 'zechariah': ('zec', 'Zechariah'),
+        'mal': 'Malachi', 'malachi': ('mal', 'Malachi'),
+        'mat': 'Matthew', 'matthew': ('mat', 'Matthew'),
+        'mrk': 'Mark', 'mark': ('mrk', 'Mark'),
+        'luk': 'Luke', 'luke': ('luk', 'Luke'),
+        'jhn': 'John', 'john': ('jhn', 'John'),
+        'act': 'Acts', 'acts': ('act', 'Acts'),
+        'rom': 'Romans', 'romans': ('rom', 'Romans'),
+        '1co': '1 Corinthians', '1 corinthians': ('1co', '1 Corinthians'),
+        '2co': '2 Corinthians', '2 corinthians': ('2co', '2 Corinthians'),
+        'gal': 'Galatians', 'galatians': ('gal', 'Galatians'),
+        'eph': 'Ephesians', 'ephesians': ('eph', 'Ephesians'),
+        'php': 'Philippians', 'philippians': ('php', 'Philippians'),
+        'col': 'Colossians', 'colossians': ('col', 'Colossians'),
+        '1th': '1 Thessalonians', '1 thessalonians': ('1th', '1 Thessalonians'),
+        '2th': '2 Thessalonians', '2 thessalonians': ('2th', '2 Thessalonians'),
+        '1ti': '1 Timothy', '1 timothy': ('1ti', '1 Timothy'),
+        '2ti': '2 Timothy', '2 timothy': ('2ti', '2 Timothy'),
+        'tit': 'Titus', 'titus': ('tit', 'Titus'),
+        'phm': 'Philemon', 'philemon': ('phm', 'Philemon'),
+        'heb': 'Hebrews', 'hebrews': ('heb', 'Hebrews'),
+        'jas': 'James', 'james': ('jas', 'James'),
+        '1pe': '1 Peter', '1 peter': ('1pe', '1 Peter'),
+        '2pe': '2 Peter', '2 peter': ('2pe', '2 Peter'),
+        '1jn': '1 John', '1 john': ('1jn', '1 John'),
+        '2jn': '2 John', '2 john': ('2jn', '2 John'),
+        '3jn': '3 John', '3 john': ('3jn', '3 John'),
+        'jud': 'Jude', 'jude': ('jud', 'Jude'),
+        'rev': 'Revelation', 'revelation': ('rev', 'Revelation')
+    }
+    
+    book_input_lower = book_input.lower()
+    
+    # Check if it's a full name first (returns tuple)
+    if book_input_lower in book_mappings and isinstance(book_mappings[book_input_lower], tuple):
+        return book_mappings[book_input_lower]
+    
+    # Check if it's a book code (returns string, we need to make tuple)
+    if book_input_lower in book_mappings and isinstance(book_mappings[book_input_lower], str):
+        return (book_input_lower, book_mappings[book_input_lower])
+    
+    # Default fallback
+    return (book_input.lower(), book_input.capitalize())
+
+
+def _get_book_name(book_code: str) -> str:
+    """Get the full book name from a book code (legacy function for compatibility).
+    
+    Args:
+        book_code: Three-letter book code (e.g., 'exo', 'jos')
+        
+    Returns:
+        Full book name (e.g., 'Exodus', 'Joshua')
+    """
+    _, book_name = _get_book_info(book_code)
+    return book_name
 
 
 def clean_ai_output(output: str) -> str:
@@ -344,14 +499,8 @@ def format_final_note(original_item: Dict[str, Any], ai_output: str, note_type: 
         if note_type == 'see_how':
             # For "see how" notes, format the reference
             if explanation.lower().startswith('see how'):
-                # Extract the reference (e.g., "see how 20:3" -> "20:3")
                 ref_match = explanation.replace('see how ', '').strip()
-                if ':' in ref_match:
-                    chapter, verse = ref_match.split(':', 1)
-                    # Prepend zero if chapter or verse length equals one
-                    note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter.zfill(2)}/{verse.zfill(2)}.md)."
-                else:
-                    note = f"See how you translated the similar expression in {ref_match}."
+                note = _format_see_how_reference(ref_match, original_item)
             else:
                 note = ai_output
             
