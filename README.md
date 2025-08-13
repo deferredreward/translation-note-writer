@@ -271,6 +271,11 @@ The system now features intelligent caching that:
 
 The system includes automatic conversion of short SRef values to full support reference names:
 
+**URL Path Trimming**: RC URL patterns are automatically processed:
+- `rc://*/ta/man/translate/figs-ellipsis` → `figs-ellipsis`
+- `rc://*/ta/man/translate/figs-abstractnouns` → `figs-abstractnouns`
+- Any URL starting with `rc://` is trimmed to extract only the final part after the last `/`
+
 **Short Form Mappings**: Common abbreviations are automatically converted:
 - `you` → `figs-you`
 - `metaphor` → `figs-metaphor`

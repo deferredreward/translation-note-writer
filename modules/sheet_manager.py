@@ -1152,8 +1152,13 @@ class SheetManager:
             original_sref = sref_value
             updated_sref = sref_value
             
+            # Trim rc:// URL paths to extract the final part after the last '/'
+            if updated_sref.startswith('rc://') and '/' in updated_sref:
+                updated_sref = updated_sref.split('/')[-1]
+                self.logger.debug(f"Trimmed rc:// URL path '{sref_value}' to '{updated_sref}'")
+            
             # First, check if it's a short form that needs conversion
-            sref_lower = sref_value.lower()
+            sref_lower = updated_sref.lower()
             if sref_lower in short_to_full_mapping:
                 updated_sref = short_to_full_mapping[sref_lower]
                 self.logger.debug(f"Converted short form '{sref_value}' to '{updated_sref}'")
