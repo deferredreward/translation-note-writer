@@ -1,6 +1,9 @@
 """
 Batch Processor
 Handles processing items in batches with the AI service and updating sheets.
+
+This module provides batch processing capabilities for translation notes,
+with support for both programmatic and AI-based processing.
 """
 
 import logging
@@ -15,10 +18,17 @@ from .config_manager import ConfigManager
 from .ai_service import AIService
 from .sheet_manager import SheetManager
 from .cache_manager import CacheManager
-from .tw_search import find_matches
+from .processing_utils import (
+    post_process_text, separate_items_by_processing_type,
+    format_alternate_translation, generate_programmatic_note,
+    clean_ai_output, determine_note_type, format_final_note,
+    prepare_update_data, ensure_biblical_text_cached,
+    should_include_alternate_translation
+)
 
 
-def _post_process_text(text: str) -> str:
+# _post_process_text function moved to processing_utils.py as post_process_text
+def _post_process_text_legacy(text: str) -> str:
     """Post-process text by removing curly braces and converting straight quotes to smart quotes.
     
     Args:
@@ -71,6 +81,10 @@ def _post_process_text(text: str) -> str:
         i += 1
     
     return ''.join(result)
+
+
+# Use the shared function instead of the legacy one
+_post_process_text = post_process_text
 
 
 class BatchProcessor:
@@ -148,50 +162,7 @@ class BatchProcessor:
         Returns:
             Tuple of (programmatic_items, ai_items)
         """
-        programmatic_items = []
-        ai_items = []
-        
-        self.logger.info(f"=== SEPARATING {len(items)} ITEMS BY PROCESSING TYPE ===")
-        
-        tw_headwords = None
-
-        for item in items:
-            explanation = item.get('Explanation', '').strip()
-            sref = item.get('SRef', '').strip()
-            at = item.get('AT', '').strip()
-            gl_quote = item.get('GLQuote', '')
-            ref = item.get('Ref', 'unknown')
-
-            if 'TWN' not in explanation.lower() and 'translate-unknown' in sref.lower():
-                if tw_headwords is None:
-                    tw_headwords = self.cache_manager.load_tw_headwords()
-                matches = find_matches(gl_quote, tw_headwords)
-                if matches:
-                    item['tw_matches'] = matches
-                    self.logger.info(f"PROGRAMMATIC: {ref} - translate-unknown headword matches {matches}")
-                    programmatic_items.append(item)
-                    continue
-            
-            if explanation.lower().startswith('see how'):
-                templates = self.ai_service._get_templates_for_item(item)
-                needs_at = self._should_include_alternate_translation(templates)
-
-                if not needs_at:
-                    self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' does not require an alternate translation based on templates.")
-                    programmatic_items.append(item)
-                else:
-                    if at:
-                        self.logger.info(f"PROGRAMMATIC: {ref} - 'see how' has a provided alternate translation.")
-                        programmatic_items.append(item)
-                    else:
-                        self.logger.info(f"AI NEEDED: {ref} - 'see how' requires an alternate translation, but it is missing.")
-                        ai_items.append(item)
-            else:
-                self.logger.info(f"AI NEEDED: {ref} - General case: explanation: '{explanation[:50]}...'")
-                ai_items.append(item)
-        
-        self.logger.info(f"SEPARATION COMPLETE: {len(programmatic_items)} programmatic, {len(ai_items)} need AI")
-        return programmatic_items, ai_items
+        return separate_items_by_processing_type(items, self.ai_service, self.cache_manager, self.logger)
 
     def _process_programmatic_items(self, items: List[Dict[str, Any]], sheet_id: str) -> int:
         """Process items that can be handled programmatically without AI.
@@ -237,7 +208,7 @@ class BatchProcessor:
         return success_count
 
     def _generate_programmatic_note(self, item: Dict[str, Any]) -> str:
-        """Generate a note programmatically for "see how" items.
+        """Generate a note programmatically for 'see how' or 'translate-unknown' items.
         
         Args:
             item: Item data
@@ -245,43 +216,7 @@ class BatchProcessor:
         Returns:
             Generated note text
         """
-        explanation = item.get('Explanation', '').strip()
-        at = item.get('AT', '').strip()
-        
-        if explanation.lower().startswith('see how'):
-            # Extract the reference (e.g., "see how 20:3" -> "20:3")
-            ref_match = explanation.replace('see how ', '').strip()
-            
-            if ':' in ref_match:
-                chapter, verse = ref_match.split(':', 1)
-                # Prepend zero if chapter or verse length equals one
-                note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter.zfill(2)}/{verse.zfill(2)}.md)."
-            else:
-                note = f"See how you translated the similar expression in {ref_match}."
-            
-            # Add alternate translation using the same formatting logic
-            formatted_at = self._format_alternate_translation(at)
-            note += formatted_at
-            
-            # Apply post-processing to clean up the note
-
-            processed_note = _post_process_text(note)
-
-            self.logger.info(f"Generated programmatic note for {item.get('Ref', 'unknown')}: {processed_note}")
-            return processed_note
-
-        # Handle translate-unknown using pre-matched TW headwords
-        if ('TWN' not in explanation and
-                'translate-unknown' in item.get('SRef', '').lower()):
-            matches = item.get('tw_matches') or []
-            if matches:
-                note = f"TW found: {', '.join(matches)}"
-                processed_note = _post_process_text(note)
-                self.logger.info(
-                    f"Generated translate-unknown note for {item.get('Ref', 'unknown')}: {processed_note}")
-                return processed_note
-        
-        return ""
+        return generate_programmatic_note(item, self.logger)
 
     def _process_ai_items_parallel(self, items: List[Dict[str, Any]], sheet_id: str) -> int:
         """Process AI items using parallel batch submission.
@@ -565,46 +500,7 @@ class BatchProcessor:
         Returns:
             Update data dictionary or None if invalid
         """
-        try:
-            # Try multiple possible row number field names
-            row_number = (original_item.get('row') or 
-                         original_item.get('row # for n8n hide, don\'t delete') or
-                         original_item.get('row_number'))
-            
-            if not row_number:
-                self.logger.warning(f"No row number found in original item. Available keys: {list(original_item.keys())}")
-                return None
-            
-            # Clean the AI output
-            cleaned_output = self._clean_ai_output(ai_output)
-            
-            self.logger.info(f"AI output for {original_item.get('Ref', 'unknown')}: {cleaned_output[:200]}{'...' if len(cleaned_output) > 200 else ''}")
-            
-            # Determine what type of note this is and format accordingly
-            note_type = self._determine_note_type(original_item)
-            final_note = self._format_final_note(original_item, cleaned_output, note_type)
-            
-            self.logger.debug(f"Note type: {note_type}, Final note length: {len(final_note)}")
-            self.logger.info(f"Final formatted note: {final_note[:200]}{'...' if len(final_note) > 200 else ''}")
-            
-            # Prepare the update
-            update_data = {
-                'row_number': row_number,
-                'updates': {
-                    'Go?': 'AI',  # Mark as completed by AI
-                    'AI TN': final_note
-                }
-            }
-            
-            # Add SRef if it was updated
-            if original_item.get('SRef'):
-                update_data['updates']['SRef'] = original_item['SRef']
-            
-            return update_data
-            
-        except Exception as e:
-            self.logger.error(f"Error preparing update data: {e}")
-            return None
+        return prepare_update_data(original_item, ai_output, self.logger)
     
     def _clean_ai_output(self, output: str) -> str:
         """Clean AI output by removing quotes and extra whitespace.
@@ -615,17 +511,7 @@ class BatchProcessor:
         Returns:
             Cleaned output
         """
-        # Remove surrounding quotes
-        cleaned = output.strip()
-        if cleaned.startswith('"') and cleaned.endswith('"'):
-            cleaned = cleaned[1:-1]
-        elif cleaned.startswith("'") and cleaned.endswith("'"):
-            cleaned = cleaned[1:-1]
-        
-        # Remove trailing newlines
-        cleaned = cleaned.rstrip('\n')
-        
-        return cleaned
+        return clean_ai_output(output)
     
     def _determine_note_type(self, item: Dict[str, Any]) -> str:
         """Determine the type of note based on item data.
@@ -636,15 +522,7 @@ class BatchProcessor:
         Returns:
             Note type string
         """
-        explanation = item.get('Explanation', '').strip()
-        at = item.get('AT', '').strip()
-        
-        if explanation.lower().startswith('see how'):
-            return 'see_how'
-        elif at:
-            return 'given_at'
-        else:
-            return 'writes_at'
+        return determine_note_type(item)
     
     def _format_final_note(self, original_item: Dict[str, Any], ai_output: str, note_type: str) -> str:
         """Format the final note based on the note type.
@@ -657,68 +535,7 @@ class BatchProcessor:
         Returns:
             Formatted final note
         """
-        try:
-            explanation = original_item.get('Explanation', '').strip()
-            at = original_item.get('AT', '').strip()
-            
-            if note_type == 'see_how':
-                # For "see how" notes, format the reference
-                if explanation.lower().startswith('see how'):
-                    # Extract the reference (e.g., "see how 20:3" -> "20:3")
-                    ref_match = explanation.replace('see how ', '').strip()
-                    if ':' in ref_match:
-                        chapter, verse = ref_match.split(':', 1)
-                        note = f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter}/{verse}.md)."
-                    else:
-                        note = f"See how you translated the similar expression in {ref_match}."
-                else:
-                    note = ai_output
-                
-                # Add alternate translation if provided
-                if at:
-                    formatted_at = self._format_alternate_translation(at)
-                    note += formatted_at
-                
-                return _post_process_text(note)
-            
-            elif note_type == 'given_at':
-                # AI output should be the note, AT is already provided - append it
-                note = ai_output
-                
-                if at:
-                    formatted_at = self._format_alternate_translation(at)
-                    note += formatted_at
-                
-                return _post_process_text(note)
-            
-            elif note_type == 'writes_at':
-                # AI should have written both note and alternate translation
-                # Check if the output already contains "Alternate translation:"
-                if 'Alternate translation:' in ai_output:
-                    return _post_process_text(ai_output)
-                else:
-                    # AI didn't include alternate translation, might need to add it
-                    # This shouldn't happen with proper prompts, but handle gracefully
-                    note = ai_output
-                    
-                    # If we have an AT value, append it
-                    if at:
-                        formatted_at = self._format_alternate_translation(at)
-                        note += formatted_at
-                    
-                    return _post_process_text(note)
-            
-            else:
-                # Default case - just append AT if provided
-                note = ai_output
-                if at:
-                    formatted_at = self._format_alternate_translation(at)
-                    note += formatted_at
-                return _post_process_text(note)
-                
-        except Exception as e:
-            self.logger.error(f"Error formatting final note: {e}")
-            return _post_process_text(ai_output)
+        return format_final_note(original_item, ai_output, note_type, self.logger)
 
     def _format_alternate_translation(self, at: str) -> str:
         """Format the alternate translation text for appending to notes.
@@ -729,18 +546,7 @@ class BatchProcessor:
         Returns:
             Formatted alternate translation string
         """
-        if not at.strip():
-            return ""
-        
-        # Handle multiple alternate translations separated by '/'
-        if '/' in at:
-            # Split by '/' and format each part
-            parts = [part.strip() for part in at.split('/') if part.strip()]
-            formatted_parts = [f"[{part}]" for part in parts]
-            return f" Alternate translation: {' or '.join(formatted_parts)}"
-        else:
-            # Single alternate translation
-            return f" Alternate translation: [{at.strip()}]"
+        return format_alternate_translation(at)
     
     def _should_include_alternate_translation(self, templates: List[Dict[str, Any]]) -> bool:
         """Check if any template contains "Alternate translation".
@@ -751,11 +557,7 @@ class BatchProcessor:
         Returns:
             True if alternate translation should be included
         """
-        for template in templates:
-            note_template = template.get('note_template', '')
-            if 'Alternate translation' in note_template:
-                return True
-        return False
+        return should_include_alternate_translation(templates)
 
     def process_items_for_user(self, user: str, items: List[Dict[str, Any]], dry_run: bool = False):
         """Process items for a specific user.
@@ -817,19 +619,7 @@ class BatchProcessor:
             user: Username
             book: Book code
         """
-        for text_type in ['ULT', 'UST']:
-            cached_data = self.cache_manager.get_biblical_text_for_user(text_type, user, book)
-            if not cached_data:
-                self.logger.info(f"No {text_type} cache found for {user}/{book}, fetching...")
-                
-                # Fetch biblical text for the specific book
-                biblical_data = self.sheet_manager.fetch_biblical_text(text_type, book_code=book, user=user)
-                if biblical_data:
-                    # We trust fetch_biblical_text to return data for the correct book or log errors
-                    self.cache_manager.set_biblical_text_for_user(text_type, user, book, biblical_data)
-                    self.logger.info(f"Cached {text_type} for {user}/{book}")
-                else:
-                    self.logger.warning(f"Failed to fetch {text_type} for {user}/{book} to cache it.")
+        ensure_biblical_text_cached(user, book, self.cache_manager, self.sheet_manager, self.config, self.logger)
 
     def _dry_run_ai_items(self, items: List[Dict[str, Any]], user: str, book: str):
         """Perform dry run of AI items processing.

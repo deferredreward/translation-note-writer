@@ -272,8 +272,8 @@ class AIService:
         # Get the appropriate prompt
         prompt = self.prompt_manager.get_prompt(note_type, template_vars)
         
-        # Get system message
-        system_message = self.prompt_manager.get_system_message(note_type)
+        # Get system message (pass templates for AT checking)
+        system_message = self.prompt_manager.get_system_message(note_type, templates)
         
         self.logger.debug(f"  Final prompt length: {len(prompt)} characters")
         self.logger.debug(f"  System message length: {len(system_message) if system_message else 0} characters")
@@ -291,6 +291,17 @@ class AIService:
         """
         try:
             templates = self.cache_manager.get_cached_data('templates')
+            
+            # Parse explanation for template type hint
+            explanation = item.get('Explanation', '')
+            template_type_hint = None
+            if explanation:
+                # Look for t: instruction
+                import re
+                t_match = re.search(r't:([^i:]*?)(?=i:|$)', explanation)
+                if t_match:
+                    template_type_hint = t_match.group(1).strip()
+                    self.logger.info(f"Found template type hint: '{template_type_hint}'")
             
             # If no templates in cache, try to fetch them directly
             if not templates:
@@ -353,13 +364,46 @@ class AIService:
                 all_support_refs.append(template_sref)
                 
                 if template_sref == sref:
-                    matching_templates.append({
-                        'issue_type': template.get('type', ''),
-                        'note_template': template.get('note template', '')
-                    })
+                    matching_templates.append(template)  # Keep full template for type filtering
                     self.logger.info(f"MATCH FOUND: template_sref='{template_sref}' == item_sref='{sref}'")
             
             self.logger.info(f"Found {len(matching_templates)} matching templates for SRef: '{sref}'")
+            
+            # If we have a t: hint, try to filter by type
+            if template_type_hint and matching_templates:
+                # First try exact match
+                exact_matches = [t for t in matching_templates if t.get('type', '').strip().lower() == template_type_hint.lower()]
+                
+                if exact_matches:
+                    self.logger.info(f"Found {len(exact_matches)} exact type matches for '{template_type_hint}'")
+                    # Convert to expected format
+                    filtered_templates = []
+                    for template in exact_matches:
+                        filtered_templates.append({
+                            'issue_type': template.get('type', ''),
+                            'note_template': template.get('note template', '')
+                        })
+                    return filtered_templates
+                else:
+                    # No exact match - let AI choose from all matching templates
+                    self.logger.info(f"No exact match for type '{template_type_hint}', letting AI choose from {len(matching_templates)} templates")
+                    # Convert to expected format but keep all templates
+                    final_templates = []
+                    for template in matching_templates:
+                        final_templates.append({
+                            'issue_type': template.get('type', ''),
+                            'note_template': template.get('note template', '')
+                        })
+                    return final_templates
+            
+            # No type hint or no templates - convert to expected format
+            final_templates = []
+            for template in matching_templates:
+                final_templates.append({
+                    'issue_type': template.get('type', ''),
+                    'note_template': template.get('note template', '')
+                })
+            matching_templates = final_templates
             
             if matching_templates:
                 for i, template in enumerate(matching_templates):
@@ -615,11 +659,11 @@ class AIService:
 
         info_text = ""
         if info_segments:
-            info_text = "Be sure the note includes this information: " + " ".join(info_segments)  + "\n If this information references another chapter and verse, for instance if it says, 'see how … 9:3,' when you include this information you should format the chapter:verse portion as a link in the following manner: [9:3](../09/03.md)."
+            info_text = "Be sure the note includes this information: " + " ".join(info_segments)  + "\n If this information references another chapter and verse, format it according to these patterns: for a verse of the same chapter use [verse 2](../../jos/2/2.md), for same book different chapter use [chapter 3:3](../../jos/3/3.md), and for a different book use [Exodus 2:2](../../exo/2/2.md). Note that no zero-padding is used in the paths."
 
         template_text = ""
         if template_segments:
-            template_text = "In this instance, check for and use the " + " and ".join(template_segments) + " template"
+            template_text = "IMPORTANT: Use the template with type '" + " and ".join(template_segments) + "' from the templates below. Look for the template type that matches '" + " and ".join(template_segments) + "' and use that specific template."
 
         clean_explanation = " ".join(remaining)
 
