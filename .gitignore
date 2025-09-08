@@ -21,7 +21,7 @@ config/google_credentials.json
 # Data files
 *.tsv
 *.pdf
-*.txt
+
 *.usfm
 *.bak
 

@@ -1,0 +1,17 @@
+(1) For writing-background, the AI should not suggest an AT.
+
+(2) For figs-quotesinquotes , the AI does not need to specify what quotation contains another quotation within it. It should just say, “If it would be clearer in your language, you could translate this so that there is not a quotation within the quotation.” It has been saying things like: If it would be clearer in your language, you could translate this so that there is not a quotation within the quotation saying, ‘If I should kill you with the sword.’
+
+(3) For writing-newevent, the AI does not need to elaborate on what the author is doing, and it does not need to write an AT. In other words, in a note such as this one, only the first and third sentence are needed, not the second sentence or the AT:
+ The author is using the phrase And Solomon sat on the throne of David his father to introduce a new event in the story. This verse begins the account of Solomon’s reign and introduces the events of the rest of the chapter. Use a word, phrase, or other method in your language that is natural for introducing a new event. Alternate translation: [Then Solomon became king in place of his father David]
+(In some cases, the AI did not write an elaboration, although it did write an AT.)
+
+(4) Similarly for figs-imperative, the AI has been writing a middle sentence that is not needed:
+This is an imperative, but it communicates a polite request rather than a command. Here Do not turn away my face is a request from Adonijah to Bathsheba asking her to grant his petition. Use a form in your language that communicates a polite request.
+
+(5) For grammar-connect-logic-result, the AI should not specify what the two phrases are whose order could be reversed. It should simply say:
+If it would be more natural in your language, you could reverse the order of these phrases, since the second phrase gives the reason for the result that the first phrase describes.
+The AI has been adding explanations such as the following:
+
+    The first phrase (“do covenant faithfulness ... at your table”) tells what David wants Solomon to do, and the second phrase (“For thus they came near to me, when I fled”) gives the reason why Solomon should do it. (2:7)
+    The result is that the kingdom turned and became to my brother, and the reason is that it was to him from Yahweh. (2:15)

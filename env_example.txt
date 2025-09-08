@@ -1,0 +1,35 @@
+# Translation Notes AI - Environment Configuration Template
+# Copy this file to .env and fill in your actual values
+
+# Anthropic API Configuration
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+
+# Google Sheets Configuration - Editor Sheet IDs
+# Replace with your actual Google Sheet IDs
+SHEET_ID_EDITOR1=your_sheet_id_here
+SHEET_ID_EDITOR2=your_sheet_id_here
+SHEET_ID_EDITOR3=your_sheet_id_here
+SHEET_ID_EDITOR4=your_sheet_id_here
+SHEET_ID_EDITOR5=your_sheet_id_here
+
+# Editor Names (for logging and display purposes)
+# These names will appear in logs instead of "editor1", "editor2", etc.
+EDITOR1_NAME=Alice
+EDITOR2_NAME=Bob
+EDITOR3_NAME=Charlie
+EDITOR4_NAME=David
+EDITOR5_NAME=Eve
+
+# Reference sheets (shared across all editors)
+SUPPORT_REFERENCES_SHEET_ID=your_support_references_sheet_id_here
+TEMPLATES_SHEET_ID=your_templates_sheet_id_here
+SYSTEM_PROMPTS_SHEET_ID=your_system_prompts_sheet_id_here
+
+# Email Configuration (for error notifications)
+EMAIL_FROM=your_email@example.com
+EMAIL_TO=your_notification_email@example.com
+EMAIL_PASSWORD=your_app_password_here
+
+# Optional: Override configuration settings
+# DRY_RUN=false
+# DEBUG=false 
