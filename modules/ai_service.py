@@ -63,11 +63,13 @@ class AIService:
         if self.enable_prompt_caching:
             self.logger.info("Prompt caching enabled")
     
-    def create_batch_requests(self, items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def create_batch_requests(self, items: List[Dict[str, Any]], user: str = None, book: str = None) -> List[Dict[str, Any]]:
         """Create batch requests for Anthropic API.
         
         Args:
             items: List of items to process
+            user: Username for user-specific biblical text cache (optional)
+            book: Book code for user-specific biblical text cache (optional)
             
         Returns:
             List of batch request objects
@@ -118,7 +120,7 @@ class AIService:
                 note_type = self._determine_note_type(item)
                 
                 # Get the appropriate prompt and system message
-                prompt, system_message = self._build_prompt(item, note_type)
+                prompt, system_message = self._build_prompt(item, note_type, user=user, book=book)
                 
                 # Log the prompt details for debugging
                 item_ref = item.get('Ref', 'unknown')
@@ -446,10 +448,12 @@ class AIService:
         try:
             # Get cached ULT and UST data (user-specific if available)
             if user and book:
+                self.logger.debug(f"CACHE_LOOKUP: Using user-specific cache for user='{user}', book='{book}'")
                 ult_data = self.cache_manager.get_biblical_text_for_user('ULT', user, book)
                 ust_data = self.cache_manager.get_biblical_text_for_user('UST', user, book)
             else:
                 # Fallback to global cache
+                self.logger.warning(f"CACHE_LOOKUP: Falling back to global cache - user='{user}', book='{book}'")
                 ult_data = self.cache_manager.get_cached_data('ult_chapters')
                 ust_data = self.cache_manager.get_cached_data('ust_chapters')
             
