@@ -1,0 +1,132 @@
+2025-09-05 19:30:02,974 - root - INFO - Logging initialized
+2025-09-05 19:30:02,974 - root - INFO - Log level: INFO
+2025-09-05 19:30:02,974 - root - INFO - Log file: logs/translation_notes_20250905_193002.log
+2025-09-05 19:30:02,974 - root - WARNING - Configuration security warnings:
+2025-09-05 19:30:02,974 - root - WARNING -   - API key found in config file - should use environment variables
+2025-09-05 19:30:02,974 - root - WARNING -   - Email password in config file - should use environment variables
+2025-09-05 19:30:02,974 - root - WARNING -   - File config/config.yaml is readable by others: -rw-r--r--
+2025-09-05 19:30:02,980 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-05 19:30:02,983 - modules.sheet_manager - INFO - Google Sheets service initialized successfully
+2025-09-05 19:30:02,983 - modules.sheet_manager - INFO - Sheet manager initialized
+2025-09-05 19:30:02,983 - modules.cache_manager - INFO - Cache manager initialized with directory: cache
+2025-09-05 19:30:02,989 - modules.prompt_manager - INFO - Prompt manager initialized
+2025-09-05 19:30:03,172 - modules.ai_service - INFO - AI Service initialized with model: claude-sonnet-4-20250514
+2025-09-05 19:30:03,172 - modules.ai_service - INFO - Prompt caching enabled
+2025-09-05 19:30:03,172 - modules.batch_processor - INFO - Batch processor initialized with batch size: 4
+2025-09-05 19:30:03,172 - modules.continuous_batch_manager - INFO - Continuous batch manager initialized - max concurrent: 4
+2025-09-05 19:30:03,172 - modules.continuous_batch_manager - INFO - Work check interval: 60s, minimum: 5s
+2025-09-05 19:30:03,172 - root - INFO - Initializing caches...
+2025-09-05 19:30:03,172 - modules.cache_manager - INFO - Refreshing cache: ult_chapters
+2025-09-05 19:30:03,174 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-05 19:30:03,176 - modules.sheet_manager - INFO - Google Sheets service initialized successfully
+2025-09-05 19:30:03,176 - modules.sheet_manager - INFO - Sheet manager initialized
+2025-09-05 19:30:03,176 - modules.cache_manager - INFO - Skipping global refresh for ult_chapters. Will be cached per user/book.
+2025-09-05 19:30:03,176 - modules.cache_manager - INFO - Refreshing cache: ust_chapters
+2025-09-05 19:30:03,178 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-05 19:30:03,180 - modules.sheet_manager - INFO - Google Sheets service initialized successfully
+2025-09-05 19:30:03,180 - modules.sheet_manager - INFO - Sheet manager initialized
+2025-09-05 19:30:03,180 - modules.cache_manager - INFO - Skipping global refresh for ust_chapters. Will be cached per user/book.
+2025-09-05 19:30:03,180 - modules.cache_manager - INFO - Refreshing cache: templates
+2025-09-05 19:30:03,182 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-05 19:30:03,184 - modules.sheet_manager - INFO - Google Sheets service initialized successfully
+2025-09-05 19:30:03,184 - modules.sheet_manager - INFO - Sheet manager initialized
+2025-09-05 19:30:03,184 - modules.sheet_manager - INFO - Fetching translation note templates
+2025-09-05 19:30:04,667 - modules.sheet_manager - INFO - Fetched 183 templates
+2025-09-05 19:30:04,671 - modules.cache_manager - INFO - Successfully refreshed cache with new content: templates
+2025-09-05 19:30:04,671 - modules.cache_manager - INFO - Refreshing cache: support_references
+2025-09-05 19:30:04,673 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-05 19:30:04,675 - modules.sheet_manager - INFO - Google Sheets service initialized successfully
+2025-09-05 19:30:04,675 - modules.sheet_manager - INFO - Sheet manager initialized
+2025-09-05 19:30:04,675 - modules.sheet_manager - INFO - Fetching support references
+2025-09-05 19:30:05,630 - modules.sheet_manager - INFO - Fetched 90 support references
+2025-09-05 19:30:05,632 - modules.cache_manager - INFO - Successfully refreshed cache with new content: support_references
+2025-09-05 19:30:05,632 - modules.cache_manager - INFO - Refreshing cache: system_prompts
+2025-09-05 19:30:05,635 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-09-05 19:30:05,638 - modules.sheet_manager - INFO - Google Sheets service initialized successfully
+2025-09-05 19:30:05,639 - modules.sheet_manager - INFO - Sheet manager initialized
+2025-09-05 19:30:05,639 - modules.sheet_manager - INFO - Fetching system prompts from Google Sheet
+2025-09-05 19:30:06,865 - modules.sheet_manager - INFO - Fetched 2 system prompts
+2025-09-05 19:30:06,868 - modules.cache_manager - INFO - Successfully refreshed cache with new content: system_prompts
+2025-09-05 19:30:06,868 - root - INFO - Initialized caches: templates, support_references, system_prompts
+2025-09-05 19:30:06,868 - root - INFO - Translation Notes AI initialized successfully
+2025-09-05 19:30:06,868 - root - INFO - Continuous processing: ENABLED
+2025-09-05 19:30:06,868 - root - INFO - Immediate mode: DISABLED (will be enabled if --immediate-mode flag is used)
+2025-09-05 19:30:06,869 - root - INFO - Process ID: 12820
+2025-09-05 19:30:06,869 - root - INFO - Python version: 3.10.12 (main, Aug 15 2025, 14:32:43) [GCC 11.4.0]
+2025-09-05 19:30:06,869 - root - INFO - Working directory: /home/mira/Documents/Github/tn-writer
+2025-09-05 19:30:06,869 - root - INFO - Keyboard shortcuts: Ctrl+C (soft stop) -> Ctrl+C (graceful stop) -> Ctrl+C (force exit)
+2025-09-05 19:30:06,869 - root - INFO - Running complete mode - processing until no work found...
+2025-09-05 19:30:06,869 - root - INFO - === STARTING COMPLETE MODE ===
+2025-09-05 19:30:06,869 - root - INFO - Processing will continue until no work is found across all sheets
+2025-09-05 19:30:06,869 - root - INFO - === Processing cycle 1 ===
+2025-09-05 19:30:12,197 - modules.sheet_manager - INFO - Row 2: SRef conversion 'exclusive' -> 'figs-exclusive'
+2025-09-05 19:30:12,198 - modules.sheet_manager - INFO - Row 3: SRef conversion 'activepassive' -> 'figs-activepassive'
+2025-09-05 19:30:12,198 - root - INFO - Converting 2 SRef values for Benjamin (editor3)
+2025-09-05 19:30:12,570 - modules.sheet_manager - INFO - Successfully updated 2 cells in 2 rows (only allowed columns: D, F, I)
+2025-09-05 19:30:12,570 - root - INFO - Successfully updated 2 SRef values for Benjamin (editor3)
+2025-09-05 19:30:13,199 - root - INFO - Found 2 pending items for Benjamin (editor3)
+2025-09-05 19:30:13,200 - modules.batch_processor - INFO - === SEPARATING 2 ITEMS BY PROCESSING TYPE ===
+2025-09-05 19:30:13,200 - modules.batch_processor - INFO - AI NEEDED: 1:1 - General case: explanation: '...'
+2025-09-05 19:30:13,201 - modules.batch_processor - INFO - AI NEEDED: 1:2 - General case: explanation: '...'
+2025-09-05 19:30:13,201 - modules.batch_processor - INFO - SEPARATION COMPLETE: 0 programmatic, 2 need AI
+2025-09-05 19:30:13,201 - modules.batch_processor - INFO - Processing 2 items that require AI in parallel batches
+2025-09-05 19:30:13,201 - modules.batch_processor - INFO - Created 1 batches for parallel processing
+2025-09-05 19:30:13,202 - modules.batch_processor - INFO - Processing batch group 1 with 1 batches
+2025-09-05 19:30:13,204 - modules.ai_service - INFO - Looking for templates matching SRef: 'figs-exclusive'
+2025-09-05 19:30:13,204 - modules.ai_service - INFO - MATCH FOUND: template_sref='figs-exclusive' == item_sref='figs-exclusive'
+2025-09-05 19:30:13,204 - modules.ai_service - INFO - MATCH FOUND: template_sref='figs-exclusive' == item_sref='figs-exclusive'
+2025-09-05 19:30:13,204 - modules.ai_service - INFO - Found 2 matching templates for SRef: 'figs-exclusive'
+2025-09-05 19:30:13,204 - modules.ai_service - INFO -   Match 1: Type='exclusive', Template='By **us**, the high priest means himself and his friends but not the apostles to whom he is speaking...'
+2025-09-05 19:30:13,204 - modules.ai_service - INFO -   Match 2: Type='inclusive', Template='By **us**, SPEAKER means to include both himself and his listeners, so use the inclusive form of tha...'
+2025-09-05 19:30:13,204 - modules.ai_service - WARNING - No ULT data available in cache
+2025-09-05 19:30:13,204 - modules.ai_service - WARNING - No UST data available in cache
+2025-09-05 19:30:13,204 - modules.prompt_manager - ERROR - Missing variable in prompt template: 'ult_verse_content'
+2025-09-05 19:30:13,205 - modules.ai_service - INFO - Looking for templates matching SRef: 'figs-activepassive'
+2025-09-05 19:30:13,205 - modules.ai_service - INFO - MATCH FOUND: template_sref='figs-activepassive' == item_sref='figs-activepassive'
+2025-09-05 19:30:13,205 - modules.ai_service - INFO - MATCH FOUND: template_sref='figs-activepassive' == item_sref='figs-activepassive'
+2025-09-05 19:30:13,205 - modules.ai_service - INFO - Found 2 matching templates for SRef: 'figs-activepassive'
+2025-09-05 19:30:13,205 - modules.ai_service - INFO -   Match 1: Type='', Template='The expression **PASSIVE** is a passive verbal form. If your language would not use that form, you c...'
+2025-09-05 19:30:13,205 - modules.ai_service - INFO -   Match 2: Type='agent', Template='The expression **PASSIVE** is a passive verbal form. If your language would not use that form, you c...'
+2025-09-05 19:30:13,206 - modules.ai_service - WARNING - No ULT data available in cache
+2025-09-05 19:30:13,206 - modules.ai_service - WARNING - No UST data available in cache
+2025-09-05 19:30:13,206 - modules.prompt_manager - ERROR - Missing variable in prompt template: 'ult_verse_content'
+2025-09-05 19:30:13,450 - httpx - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages/batches?beta=true "HTTP/1.1 200 OK"
+2025-09-05 19:30:13,461 - modules.ai_service - INFO - Submitted batch with 2 requests. Batch ID: msgbatch_013LqWiVhdaT7tdfodMVeXkf
+2025-09-05 19:30:13,461 - modules.batch_processor - INFO - Submitted batch 1 (ID: msgbatch_013LqWiVhdaT7tdfodMVeXkf)
+2025-09-05 19:30:13,462 - modules.batch_processor - INFO - Waiting for 1 batches to complete...
+2025-09-05 19:30:13,572 - httpx - INFO - HTTP Request: GET https://api.anthropic.com/v1/messages/batches/msgbatch_013LqWiVhdaT7tdfodMVeXkf?beta=true "HTTP/1.1 200 OK"
+2025-09-05 19:31:13,793 - httpx - INFO - HTTP Request: GET https://api.anthropic.com/v1/messages/batches/msgbatch_013LqWiVhdaT7tdfodMVeXkf?beta=true "HTTP/1.1 200 OK"
+2025-09-05 19:31:13,800 - modules.batch_processor - INFO - Batch 1 (ID: msgbatch_013LqWiVhdaT7tdfodMVeXkf) completed
+2025-09-05 19:31:13,936 - httpx - INFO - HTTP Request: GET https://api.anthropic.com/v1/messages/batches/msgbatch_013LqWiVhdaT7tdfodMVeXkf?beta=true "HTTP/1.1 200 OK"
+2025-09-05 19:31:14,120 - httpx - INFO - HTTP Request: GET https://api.anthropic.com/v1/messages/batches/msgbatch_013LqWiVhdaT7tdfodMVeXkf/results "HTTP/1.1 200 OK"
+2025-09-05 19:31:14,154 - modules.ai_service - INFO - Retrieved 2 results from batch msgbatch_013LqWiVhdaT7tdfodMVeXkf
+2025-09-05 19:31:14,154 - modules.ai_service - INFO - Custom ID: item_0_2
+2025-09-05 19:31:14,155 - modules.ai_service - INFO - Custom ID: item_1_3
+2025-09-05 19:31:14,155 - modules.batch_processor - INFO - AI output for 1:1: Here the author is using a figure of speech that connects two ideas with a word that is normally used to express purpose. In this case, the word **that** connects God doing good to his people with the...
+2025-09-05 19:31:14,155 - modules.batch_processor - INFO - Final formatted note: Here the author is using a figure of speech that connects two ideas with a word that is normally used to express purpose. In this case, the word **that** connects God doing good to his people with the...
+2025-09-05 19:31:14,155 - modules.batch_processor - INFO - AI output for 1:2: Here Paul is using the word **hearts** to represent the inner person, including a person's mind, will, and emotions. If it would be helpful in your language, you could use an equivalent expression fro...
+2025-09-05 19:31:14,155 - modules.batch_processor - INFO - Final formatted note: Here Paul is using the word **hearts** to represent the inner person, including a person’s mind, will, and emotions. If it would be helpful in your language, you could use an equivalent expression fro...
+2025-09-05 19:31:14,841 - modules.sheet_manager - INFO - Successfully updated 6 cells in 2 rows (only allowed columns: D, F, I)
+2025-09-05 19:31:14,841 - modules.batch_processor - INFO - Successfully updated 2 rows in sheet
+2025-09-05 19:31:14,842 - modules.batch_processor - INFO - Batch 1 processed: 2/2 items
+2025-09-05 19:32:14,855 - modules.batch_processor - INFO - Batch group completed: 2 total items processed
+2025-09-05 19:32:14,856 - modules.batch_processor - INFO - AI processed 2/2 items
+2025-09-05 19:32:14,857 - root - INFO - Processed 2 items for Benjamin (editor3)
+2025-09-05 19:32:17,546 - root - INFO - Processed 2 items across all sheets
+2025-09-05 19:32:17,546 - root - INFO - Processed 2 items in cycle 1
+2025-09-05 19:32:19,549 - root - INFO - === Processing cycle 2 ===
+2025-09-05 19:32:23,114 - root - INFO - No work found in this cycle - processing complete
+2025-09-05 19:32:23,115 - root - INFO - === COMPLETE MODE FINISHED ===
+2025-09-05 19:32:23,115 - root - INFO - Total cycles: 2
+2025-09-05 19:32:23,116 - root - INFO - Total items processed: 2
+2025-09-05 19:32:23,116 - root - INFO - Processing completed - no more work found
+2025-09-05 19:32:23,117 - root - INFO - Application is exiting...
+2025-09-05 19:32:23,117 - root - INFO - Exit time: 2025-09-05 19:32:23.117451
+2025-09-05 19:32:23,117 - root - INFO - Exit called from:
+2025-09-05 19:32:23,120 - root - INFO - File "/home/mira/Documents/Github/tn-writer/main.py", line 122, in _on_exit
+    for line in traceback.format_stack():
+2025-09-05 19:32:23,120 - root - INFO - Active threads at exit: 1
+2025-09-05 19:32:23,120 - root - INFO - Continuous batch manager running: False
+2025-09-05 19:32:23,121 - root - INFO - Continuous batch manager shutdown requested: False
+2025-09-05 19:32:23,121 - root - INFO - Running batches at exit: 0
+2025-09-05 19:32:23,121 - root - INFO - === EXIT DEBUG COMPLETE ===
