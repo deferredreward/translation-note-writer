@@ -1,6 +1,7 @@
 # Cache and logs
 cache/
 logs/
+transfer/
 
 # Virtual environment
 venv/
