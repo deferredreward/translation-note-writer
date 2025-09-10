@@ -127,29 +127,6 @@ class BatchProcessor:
         if not items:
             return 0
         
-        # Step 0: Determine user and book for biblical text caching
-        user = None
-        book = None
-        
-        # Get the user from sheet_id
-        sheet_ids = self.config.get('google_sheets.sheet_ids', {})
-        for key, sid in sheet_ids.items():
-            if sid == sheet_id:
-                user = key
-                break
-        
-        if user:
-            # Detect the current book from items
-            _, book = self.cache_manager.detect_user_book_from_items(items)
-            if book:
-                self.logger.info(f"BATCH_PROCESSOR: Detected user='{user}', book='{book}' - ensuring biblical text cached")
-                # Ensure biblical text is cached for this user and book
-                self._ensure_biblical_text_cached(user, book)
-            else:
-                self.logger.warning(f"BATCH_PROCESSOR: Could not detect book from items for user '{user}' (missing Book column?)")
-        else:
-            self.logger.warning(f"BATCH_PROCESSOR: Could not determine user from sheet_id '{sheet_id}'")
-        
         # Step 1: Separate items that can be handled programmatically vs need AI
         programmatic_items, ai_items = self._separate_items_by_processing_type(items)
         
@@ -167,9 +144,9 @@ class BatchProcessor:
             self.logger.info(f"Processing {len(ai_items)} items that require AI in parallel batches")
             
             if self.config.get('debug.dry_run', False):
-                ai_processed = self._process_ai_items_dry_run(ai_items, sheet_id, user=user, book=book)
+                ai_processed = self._process_ai_items_dry_run(ai_items, sheet_id)
             else:
-                ai_processed = self._process_ai_items_parallel(ai_items, sheet_id, user=user, book=book)
+                ai_processed = self._process_ai_items_parallel(ai_items, sheet_id)
             
             total_processed += ai_processed
             self.logger.info(f"AI processed {ai_processed}/{len(ai_items)} items")
@@ -241,14 +218,12 @@ class BatchProcessor:
         """
         return generate_programmatic_note(item, self.logger)
 
-    def _process_ai_items_parallel(self, items: List[Dict[str, Any]], sheet_id: str, user: str = None, book: str = None) -> int:
+    def _process_ai_items_parallel(self, items: List[Dict[str, Any]], sheet_id: str) -> int:
         """Process AI items using parallel batch submission.
         
         Args:
             items: List of items that need AI processing
             sheet_id: Google Sheets ID
-            user: Username for user-specific biblical text cache (optional)
-            book: Book code for user-specific biblical text cache (optional)
             
         Returns:
             Number of items successfully processed
@@ -284,7 +259,7 @@ class BatchProcessor:
                     self.logger.debug(f"Submitting batch {batch_num} with {len(batch_items)} items")
                     
                     # Create and submit batch
-                    requests = self.ai_service.create_batch_requests(batch_items, user=user, book=book)
+                    requests = self.ai_service.create_batch_requests(batch_items)
                     if requests:
                         batch_id = self.ai_service.submit_batch(requests)
                         batch_submissions.append({
@@ -377,14 +352,12 @@ class BatchProcessor:
         self.logger.info(f"Batch group completed: {total_processed} total items processed")
         return total_processed
 
-    def _process_ai_items_dry_run(self, items: List[Dict[str, Any]], sheet_id: str, user: str = None, book: str = None) -> int:
+    def _process_ai_items_dry_run(self, items: List[Dict[str, Any]], sheet_id: str) -> int:
         """Process AI items in dry run mode.
         
         Args:
             items: List of items that would need AI processing
             sheet_id: Google Sheets ID
-            user: Username for user-specific biblical text cache (optional)
-            book: Book code for user-specific biblical text cache (optional)
             
         Returns:
             Number of items that would be processed
@@ -397,12 +370,12 @@ class BatchProcessor:
             batch_num = (i // batch_size) + 1
             
             self.logger.info(f"=== DRY RUN BATCH {batch_num} - AI items ===")
-            processed_count = self._process_batch_dry_run(batch_items, sheet_id, user=user, book=book)
+            processed_count = self._process_batch_dry_run(batch_items, sheet_id)
             total_items += processed_count
         
         return total_items
     
-    def _process_batch_dry_run(self, items: List[Dict[str, Any]], sheet_id: str, user: str = None, book: str = None) -> int:
+    def _process_batch_dry_run(self, items: List[Dict[str, Any]], sheet_id: str) -> int:
         """Process a batch in dry run mode (no AI calls).
         
         Args:
@@ -440,11 +413,11 @@ class BatchProcessor:
                     self.logger.warning("No templates found for this item!")
                 
                 # Get biblical text
-                biblical_text = self.ai_service._get_biblical_text_for_item(item, user=user, book=book)
+                biblical_text = self.ai_service._get_biblical_text_for_item(item)
                 self.logger.info(f"Biblical text fields: {list(biblical_text.keys())}")
                 
                 # Build prompt (but don't send it)
-                prompt, system_message = self.ai_service._build_prompt(item, note_type, user=user, book=book)
+                prompt, system_message = self.ai_service._build_prompt(item, note_type)
                 self.logger.debug(f"Prompt length: {len(prompt)} characters")
                 self.logger.debug(f"System message length: {len(system_message) if system_message else 0} characters")
                 
@@ -632,7 +605,7 @@ class BatchProcessor:
         if ai_items:
             self.logger.info(f"=== PROCESSING {len(ai_items)} AI ITEMS FOR {user.upper()} ===")
             if not dry_run:
-                self._process_ai_items_parallel(ai_items, sheet_id, user=user, book=book)
+                self._process_ai_items_parallel(ai_items, sheet_id)
             else:
                 self._dry_run_ai_items(ai_items, user, book)
         
@@ -646,41 +619,7 @@ class BatchProcessor:
             user: Username
             book: Book code
         """
-        import time
-        import platform
-        start_time = time.time()
-        
-        self.logger.info(f"BIBLICAL_CACHE: Starting biblical text caching for user='{user}', book='{book}' on {platform.system()}")
-        
-        # Check cache status before attempting to cache
-        ult_cached_before = self.cache_manager.get_biblical_text_for_user('ULT', user, book) is not None
-        ust_cached_before = self.cache_manager.get_biblical_text_for_user('UST', user, book) is not None
-        self.logger.info(f"BIBLICAL_CACHE: Cache status BEFORE - ULT: {'✓' if ult_cached_before else '✗'}, UST: {'✓' if ust_cached_before else '✗'}")
-        
-        try:
-            ensure_biblical_text_cached(user, book, self.cache_manager, self.sheet_manager, self.config, self.logger)
-            
-            # Check cache status after attempting to cache
-            ult_cached_after = self.cache_manager.get_biblical_text_for_user('ULT', user, book) is not None
-            ust_cached_after = self.cache_manager.get_biblical_text_for_user('UST', user, book) is not None
-            elapsed_time = time.time() - start_time
-            
-            self.logger.info(f"BIBLICAL_CACHE: Cache status AFTER - ULT: {'✓' if ult_cached_after else '✗'}, UST: {'✓' if ust_cached_after else '✗'} (took {elapsed_time:.2f}s)")
-            
-            # Check for Linux-specific silent failures
-            if not ult_cached_after or not ust_cached_after:
-                self.logger.error(f"BIBLICAL_CACHE: SILENT FAILURE detected on {platform.system()} - biblical text caching appeared to succeed but cache is still empty")
-                self.logger.error(f"BIBLICAL_CACHE: This may indicate a Linux-specific issue with Door43 scraping or cache persistence")
-            else:
-                self.logger.info(f"BIBLICAL_CACHE: SUCCESS - Biblical text successfully cached for {user}/{book}")
-                
-        except Exception as e:
-            elapsed_time = time.time() - start_time
-            self.logger.error(f"BIBLICAL_CACHE: EXCEPTION during caching for {user}/{book} after {elapsed_time:.2f}s: {e}")
-            self.logger.error(f"BIBLICAL_CACHE: Platform: {platform.system()}, Python: {platform.python_version()}")
-            import traceback
-            self.logger.error(f"BIBLICAL_CACHE: Full traceback: {traceback.format_exc()}")
-            raise
+        ensure_biblical_text_cached(user, book, self.cache_manager, self.sheet_manager, self.config, self.logger)
 
     def _dry_run_ai_items(self, items: List[Dict[str, Any]], user: str, book: str):
         """Perform dry run of AI items processing.
@@ -725,7 +664,7 @@ class BatchProcessor:
                 
                 # Build prompt
                 try:
-                    prompt, system_message = self.ai_service._build_prompt(item, note_type, user=user, book=book)
+                    prompt, system_message = self.ai_service._build_prompt(item, note_type)
                     self.logger.debug(f"Prompt length: {len(prompt)} characters")
                     self.logger.debug(f"System message length: {len(system_message) if system_message else 0} characters")
                     

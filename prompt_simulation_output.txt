@@ -1,0 +1,476 @@
+=== TRANSLATION NOTE PROMPT SIMULATION ===
+Generated on: 2025-07-15 10:57:01,893
+
+## Support Reference: writing-background
+==================================================
+Support Reference Found: writing-background
+Type: 
+Description: 
+
+Template Found:
+  support reference: writing-background
+  type: generic
+  note template: Here, the author is providing background information to help readers understand what happens next in the story. In your translation, introduce this information in a way that would be natural in your own language and culture.
+
+SYSTEM MESSAGE:
+Return a translation note by adapting a template provided below as closely as possible. Change only as much as is needed to address the translation issue in the context. Use the template as a model for the reading level and degree of formality that your note should have.
+For the note, write an alternate translation (or two, separated by `or`). Place alternate translation(s) at the end of the note, as modeled in the template. Enclose each in square brackets. An alternate translation should be a seamless replacement for the text in which the translation issue occurs. Do not use quotation marks in the alternate translation(s) unless that text contains opening or closing quotation marks or both. In that case, reproduce the quotation mark(s) in the corresponding location(s).
+
+Only respond with the note, not with any other text or explanation. 
+
+Use curly/smart quotes (“”‘’) instead of straight quotes.
+
+In the note, put in markdown bold formatting any words or phrases that you quote from the given text or from the rest of the verse. (Only use quotation marks where there may be quotation marks in the original text that you are quoting.) Use markdown bold formatting only for the first occurrence of quoted words or phrases in your note. Quotations from other verses in the Bible should be put in quotation marks.
+
+When you quote words or phrases from the given text or the rest of the verse, match the capitalization, number, and grammatical forms exactly. For example, if the text says ‘horses,’ do not write a note saying, ‘A **horse** is (definition).’ Say, ‘The term **horses** describes (definition).’
+
+In the templates you will find words that are in all capital letters. These words need to be replaced by the appropriate information from the verse or the verse's context. These may or may not be direct quotes.
+
+When referring to the author or writer of a biblical text in these notes use "the author" instead of "the writer".
+
+If there are slashes between words expressing similar or different ideas in a template discern which word or two applies and instead of using all of that part of the template use the word or to that you've chosen as applicable in this circumstance and write it as a natural sentence using 'and' or 'or' not a slash.
+
+Here are examples of three notes properly created from templates, including alternate translations written as exact replacments for the text that contains the translation issue:
+
+Template: Here SPEAKER is using the plural **text** where he could have used the singular form. This suggests that he is using the plural form to PURPOSE. If it would be helpful in your language, you could use the singular and express the emphasis in another way.
+Note to “the seas” in Jonah 2:3: Here Jonah is using the plural **seas** where he could have used the singular form. This suggests that he is using the plural form to emphasize the greatness or complexity of the sea. If it would be helpful in your language, you could use the singular and express the emphasis in another way. Alternate translation: [the vast sea] or [the raging sea]
+
+Template: SPEAKER is referring to all of THING by naming two extremes, **EXTREME** and **EXTREME**. If it would be helpful in your language, you could use an equivalent expression or plain language.
+Note to “from the sunrise and from the sea” in Joshua 11:3: The author is referring to all of the Canaanite territory by naming its two extreme ends, **the sunrise** (the east) and **the sea** (the west). If it would be helpful in your language, you could use an equivalent expression or plain language. Alternate translation: [from all over their territory]
+
+Template: The terms **word1** and **word2** mean similar things. SPEAKER is using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. 
+Note to “Strengthen yourselves and be men” in 1 Samuel 4:9: The expressions **Strengthen yourselves** and **be men** mean similar things. The Philistines are using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. Alternate translation: [Be very courageous]
+
+
+Use the following verbiage when speaking about figures of speech:
+Metaphor: image, SPEAKER is speaking of TEXT as if it were IMAGE
+Hyperbole: generalization, extreme statement
+Idiom: TEXT was a common expression meaning
+Irony: the opposite of the literal meaning of his words
+Litany: repetitive series of clauses
+Merism: SPEAKER is referring to all of THING by naming two extremes,
+Metonymy: Here, hand represents the capability of a person. (this one is specific as an example)
+Parallelism: These two phrases mean basically the same thing.
+Personification: Here _____ speaks of text as if it were a person who could…
+Synecdoche: AUTHOR is using one kind of food, bread, to mean food in general. (this one is specific as an example)
+Simile: comparison
+Hendiadys: The phrase WORD and WORD expresses a single idea.
+
+write numbers ≤ 10 in words, > 10 in digits
+
+USER PROMPT:
+Return only the note.
+
+Create a note to help Bible translators understand and address the issue identified `{sref}`. 
+Here is the text where the issue occurs: `{gl_quote}`. 
+Here is the full text of the verse: `{ult_verse_content}`. 
+Here is {book} {ref} in its context: `{ult_verse_in_context}`
+
+Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. However, don't reference modern versions in your note.
+
+The following input may or may not occur:
+
+- Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to slightly override the template, try to discern the intent even from a minimal prompt. Make sure your note includes the information prefixed by `i:`. Make sure your note includes the information prefixed by `i:`. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+{info}
+
+If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note, the explanation from the previous paragraph may help: `{ai_tn}`
+
+When you make the alternate translation, it should fit seamlessly back into the ULT such that if you remove the GLQuote `{gl_quote}` and replace it with the alternate translation it reads correctly. Here is the ULT for this verse: `{ult_verse_content}`
+
+Check the UST for the same verse to make sure that your alternate translation is not the same as the UST. If it is, come up with another alternate translation idea. Here is the UST for that verse: `{ust_verse_content}`
+
+Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
+
+{templates}
+
+Return only the note.
+
+
+VERSE CONTEXT:
+Reference: GEN 1:10
+ULT: God called the dry land "earth," and the gathering of the waters he called "seas." God saw that it was good.
+UST: God gave names to the dry land and to the water that was gathered together. He called the dry land "earth," and he called the gathered water "seas." God was pleased with what he saw.
+GL Quote: God called the dry land "earth"
+
+================================================================================
+
+## Support Reference: figs-quotesinquotes
+==================================================
+Support Reference Found: figs-quotesinquotes
+Type: 
+Description: 
+
+Template Found:
+  support reference: figs-quotesinquotes
+  note template: If it would be clearer in your language, you could translate this so that there is not a quotation within a quotation. Alternate translation: [text]
+
+SYSTEM MESSAGE:
+Return a translation note by adapting a template provided below as closely as possible. Change only as much as is needed to address the translation issue in the context. Use the template as a model for the reading level and degree of formality that your note should have.
+For the note, write an alternate translation (or two, separated by `or`). Place alternate translation(s) at the end of the note, as modeled in the template. Enclose each in square brackets. An alternate translation should be a seamless replacement for the text in which the translation issue occurs. Do not use quotation marks in the alternate translation(s) unless that text contains opening or closing quotation marks or both. In that case, reproduce the quotation mark(s) in the corresponding location(s).
+
+Only respond with the note, not with any other text or explanation. 
+
+Use curly/smart quotes (“”‘’) instead of straight quotes.
+
+In the note, put in markdown bold formatting any words or phrases that you quote from the given text or from the rest of the verse. (Only use quotation marks where there may be quotation marks in the original text that you are quoting.) Use markdown bold formatting only for the first occurrence of quoted words or phrases in your note. Quotations from other verses in the Bible should be put in quotation marks.
+
+When you quote words or phrases from the given text or the rest of the verse, match the capitalization, number, and grammatical forms exactly. For example, if the text says ‘horses,’ do not write a note saying, ‘A **horse** is (definition).’ Say, ‘The term **horses** describes (definition).’
+
+In the templates you will find words that are in all capital letters. These words need to be replaced by the appropriate information from the verse or the verse's context. These may or may not be direct quotes.
+
+When referring to the author or writer of a biblical text in these notes use "the author" instead of "the writer".
+
+If there are slashes between words expressing similar or different ideas in a template discern which word or two applies and instead of using all of that part of the template use the word or to that you've chosen as applicable in this circumstance and write it as a natural sentence using 'and' or 'or' not a slash.
+
+Here are examples of three notes properly created from templates, including alternate translations written as exact replacments for the text that contains the translation issue:
+
+Template: Here SPEAKER is using the plural **text** where he could have used the singular form. This suggests that he is using the plural form to PURPOSE. If it would be helpful in your language, you could use the singular and express the emphasis in another way.
+Note to “the seas” in Jonah 2:3: Here Jonah is using the plural **seas** where he could have used the singular form. This suggests that he is using the plural form to emphasize the greatness or complexity of the sea. If it would be helpful in your language, you could use the singular and express the emphasis in another way. Alternate translation: [the vast sea] or [the raging sea]
+
+Template: SPEAKER is referring to all of THING by naming two extremes, **EXTREME** and **EXTREME**. If it would be helpful in your language, you could use an equivalent expression or plain language.
+Note to “from the sunrise and from the sea” in Joshua 11:3: The author is referring to all of the Canaanite territory by naming its two extreme ends, **the sunrise** (the east) and **the sea** (the west). If it would be helpful in your language, you could use an equivalent expression or plain language. Alternate translation: [from all over their territory]
+
+Template: The terms **word1** and **word2** mean similar things. SPEAKER is using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. 
+Note to “Strengthen yourselves and be men” in 1 Samuel 4:9: The expressions **Strengthen yourselves** and **be men** mean similar things. The Philistines are using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. Alternate translation: [Be very courageous]
+
+
+Use the following verbiage when speaking about figures of speech:
+Metaphor: image, SPEAKER is speaking of TEXT as if it were IMAGE
+Hyperbole: generalization, extreme statement
+Idiom: TEXT was a common expression meaning
+Irony: the opposite of the literal meaning of his words
+Litany: repetitive series of clauses
+Merism: SPEAKER is referring to all of THING by naming two extremes,
+Metonymy: Here, hand represents the capability of a person. (this one is specific as an example)
+Parallelism: These two phrases mean basically the same thing.
+Personification: Here _____ speaks of text as if it were a person who could…
+Synecdoche: AUTHOR is using one kind of food, bread, to mean food in general. (this one is specific as an example)
+Simile: comparison
+Hendiadys: The phrase WORD and WORD expresses a single idea.
+
+write numbers ≤ 10 in words, > 10 in digits
+
+USER PROMPT:
+Return only the note.
+
+Create a note to help Bible translators understand and address the issue identified `{sref}`. 
+Here is the text where the issue occurs: `{gl_quote}`. 
+Here is the full text of the verse: `{ult_verse_content}`. 
+Here is {book} {ref} in its context: `{ult_verse_in_context}`
+
+Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. However, don't reference modern versions in your note.
+
+The following input may or may not occur:
+
+- Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to slightly override the template, try to discern the intent even from a minimal prompt. Make sure your note includes the information prefixed by `i:`. Make sure your note includes the information prefixed by `i:`. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+{info}
+
+If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note, the explanation from the previous paragraph may help: `{ai_tn}`
+
+When you make the alternate translation, it should fit seamlessly back into the ULT such that if you remove the GLQuote `{gl_quote}` and replace it with the alternate translation it reads correctly. Here is the ULT for this verse: `{ult_verse_content}`
+
+Check the UST for the same verse to make sure that your alternate translation is not the same as the UST. If it is, come up with another alternate translation idea. Here is the UST for that verse: `{ust_verse_content}`
+
+Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
+
+{templates}
+
+Return only the note.
+
+
+VERSE CONTEXT:
+Reference: GEN 1:10
+ULT: God called the dry land "earth," and the gathering of the waters he called "seas." God saw that it was good.
+UST: God gave names to the dry land and to the water that was gathered together. He called the dry land "earth," and he called the gathered water "seas." God was pleased with what he saw.
+GL Quote: God called the dry land "earth"
+
+================================================================================
+
+## Support Reference: writing-newevent
+==================================================
+Support Reference Found: writing-newevent
+Type: 
+Description: 
+
+Template Found:
+  support reference: writing-newevent
+  type: generic
+  note template: SPEAKER is using the word translated as **text** to introduce a new event in the story. Use a word, phrase, or other method in your language that is natural for introducing a new event. 
+
+SYSTEM MESSAGE:
+Return a translation note by adapting a template provided below as closely as possible. Change only as much as is needed to address the translation issue in the context. Use the template as a model for the reading level and degree of formality that your note should have.
+For the note, write an alternate translation (or two, separated by `or`). Place alternate translation(s) at the end of the note, as modeled in the template. Enclose each in square brackets. An alternate translation should be a seamless replacement for the text in which the translation issue occurs. Do not use quotation marks in the alternate translation(s) unless that text contains opening or closing quotation marks or both. In that case, reproduce the quotation mark(s) in the corresponding location(s).
+
+Only respond with the note, not with any other text or explanation. 
+
+Use curly/smart quotes (“”‘’) instead of straight quotes.
+
+In the note, put in markdown bold formatting any words or phrases that you quote from the given text or from the rest of the verse. (Only use quotation marks where there may be quotation marks in the original text that you are quoting.) Use markdown bold formatting only for the first occurrence of quoted words or phrases in your note. Quotations from other verses in the Bible should be put in quotation marks.
+
+When you quote words or phrases from the given text or the rest of the verse, match the capitalization, number, and grammatical forms exactly. For example, if the text says ‘horses,’ do not write a note saying, ‘A **horse** is (definition).’ Say, ‘The term **horses** describes (definition).’
+
+In the templates you will find words that are in all capital letters. These words need to be replaced by the appropriate information from the verse or the verse's context. These may or may not be direct quotes.
+
+When referring to the author or writer of a biblical text in these notes use "the author" instead of "the writer".
+
+If there are slashes between words expressing similar or different ideas in a template discern which word or two applies and instead of using all of that part of the template use the word or to that you've chosen as applicable in this circumstance and write it as a natural sentence using 'and' or 'or' not a slash.
+
+Here are examples of three notes properly created from templates, including alternate translations written as exact replacments for the text that contains the translation issue:
+
+Template: Here SPEAKER is using the plural **text** where he could have used the singular form. This suggests that he is using the plural form to PURPOSE. If it would be helpful in your language, you could use the singular and express the emphasis in another way.
+Note to “the seas” in Jonah 2:3: Here Jonah is using the plural **seas** where he could have used the singular form. This suggests that he is using the plural form to emphasize the greatness or complexity of the sea. If it would be helpful in your language, you could use the singular and express the emphasis in another way. Alternate translation: [the vast sea] or [the raging sea]
+
+Template: SPEAKER is referring to all of THING by naming two extremes, **EXTREME** and **EXTREME**. If it would be helpful in your language, you could use an equivalent expression or plain language.
+Note to “from the sunrise and from the sea” in Joshua 11:3: The author is referring to all of the Canaanite territory by naming its two extreme ends, **the sunrise** (the east) and **the sea** (the west). If it would be helpful in your language, you could use an equivalent expression or plain language. Alternate translation: [from all over their territory]
+
+Template: The terms **word1** and **word2** mean similar things. SPEAKER is using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. 
+Note to “Strengthen yourselves and be men” in 1 Samuel 4:9: The expressions **Strengthen yourselves** and **be men** mean similar things. The Philistines are using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. Alternate translation: [Be very courageous]
+
+
+Use the following verbiage when speaking about figures of speech:
+Metaphor: image, SPEAKER is speaking of TEXT as if it were IMAGE
+Hyperbole: generalization, extreme statement
+Idiom: TEXT was a common expression meaning
+Irony: the opposite of the literal meaning of his words
+Litany: repetitive series of clauses
+Merism: SPEAKER is referring to all of THING by naming two extremes,
+Metonymy: Here, hand represents the capability of a person. (this one is specific as an example)
+Parallelism: These two phrases mean basically the same thing.
+Personification: Here _____ speaks of text as if it were a person who could…
+Synecdoche: AUTHOR is using one kind of food, bread, to mean food in general. (this one is specific as an example)
+Simile: comparison
+Hendiadys: The phrase WORD and WORD expresses a single idea.
+
+write numbers ≤ 10 in words, > 10 in digits
+
+USER PROMPT:
+Return only the note.
+
+Create a note to help Bible translators understand and address the issue identified `{sref}`. 
+Here is the text where the issue occurs: `{gl_quote}`. 
+Here is the full text of the verse: `{ult_verse_content}`. 
+Here is {book} {ref} in its context: `{ult_verse_in_context}`
+
+Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. However, don't reference modern versions in your note.
+
+The following input may or may not occur:
+
+- Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to slightly override the template, try to discern the intent even from a minimal prompt. Make sure your note includes the information prefixed by `i:`. Make sure your note includes the information prefixed by `i:`. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+{info}
+
+If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note, the explanation from the previous paragraph may help: `{ai_tn}`
+
+When you make the alternate translation, it should fit seamlessly back into the ULT such that if you remove the GLQuote `{gl_quote}` and replace it with the alternate translation it reads correctly. Here is the ULT for this verse: `{ult_verse_content}`
+
+Check the UST for the same verse to make sure that your alternate translation is not the same as the UST. If it is, come up with another alternate translation idea. Here is the UST for that verse: `{ust_verse_content}`
+
+Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
+
+{templates}
+
+Return only the note.
+
+
+VERSE CONTEXT:
+Reference: GEN 1:10
+ULT: God called the dry land "earth," and the gathering of the waters he called "seas." God saw that it was good.
+UST: God gave names to the dry land and to the water that was gathered together. He called the dry land "earth," and he called the gathered water "seas." God was pleased with what he saw.
+GL Quote: God called the dry land "earth"
+
+================================================================================
+
+## Support Reference: figs-imperative
+==================================================
+Support Reference Found: figs-imperative
+Type: 
+Description: 
+
+Template Found:
+  support reference: figs-imperative
+  type: request
+  note template: This is an imperative, but it communicates a polite request rather than a command. Use a form in your language that communicates a polite request. It may be helpful to add an expression such as “please” to make this clear. Alternate translation: [text]
+
+SYSTEM MESSAGE:
+Return a translation note by adapting a template provided below as closely as possible. Change only as much as is needed to address the translation issue in the context. Use the template as a model for the reading level and degree of formality that your note should have.
+For the note, write an alternate translation (or two, separated by `or`). Place alternate translation(s) at the end of the note, as modeled in the template. Enclose each in square brackets. An alternate translation should be a seamless replacement for the text in which the translation issue occurs. Do not use quotation marks in the alternate translation(s) unless that text contains opening or closing quotation marks or both. In that case, reproduce the quotation mark(s) in the corresponding location(s).
+
+Only respond with the note, not with any other text or explanation. 
+
+Use curly/smart quotes (“”‘’) instead of straight quotes.
+
+In the note, put in markdown bold formatting any words or phrases that you quote from the given text or from the rest of the verse. (Only use quotation marks where there may be quotation marks in the original text that you are quoting.) Use markdown bold formatting only for the first occurrence of quoted words or phrases in your note. Quotations from other verses in the Bible should be put in quotation marks.
+
+When you quote words or phrases from the given text or the rest of the verse, match the capitalization, number, and grammatical forms exactly. For example, if the text says ‘horses,’ do not write a note saying, ‘A **horse** is (definition).’ Say, ‘The term **horses** describes (definition).’
+
+In the templates you will find words that are in all capital letters. These words need to be replaced by the appropriate information from the verse or the verse's context. These may or may not be direct quotes.
+
+When referring to the author or writer of a biblical text in these notes use "the author" instead of "the writer".
+
+If there are slashes between words expressing similar or different ideas in a template discern which word or two applies and instead of using all of that part of the template use the word or to that you've chosen as applicable in this circumstance and write it as a natural sentence using 'and' or 'or' not a slash.
+
+Here are examples of three notes properly created from templates, including alternate translations written as exact replacments for the text that contains the translation issue:
+
+Template: Here SPEAKER is using the plural **text** where he could have used the singular form. This suggests that he is using the plural form to PURPOSE. If it would be helpful in your language, you could use the singular and express the emphasis in another way.
+Note to “the seas” in Jonah 2:3: Here Jonah is using the plural **seas** where he could have used the singular form. This suggests that he is using the plural form to emphasize the greatness or complexity of the sea. If it would be helpful in your language, you could use the singular and express the emphasis in another way. Alternate translation: [the vast sea] or [the raging sea]
+
+Template: SPEAKER is referring to all of THING by naming two extremes, **EXTREME** and **EXTREME**. If it would be helpful in your language, you could use an equivalent expression or plain language.
+Note to “from the sunrise and from the sea” in Joshua 11:3: The author is referring to all of the Canaanite territory by naming its two extreme ends, **the sunrise** (the east) and **the sea** (the west). If it would be helpful in your language, you could use an equivalent expression or plain language. Alternate translation: [from all over their territory]
+
+Template: The terms **word1** and **word2** mean similar things. SPEAKER is using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. 
+Note to “Strengthen yourselves and be men” in 1 Samuel 4:9: The expressions **Strengthen yourselves** and **be men** mean similar things. The Philistines are using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. Alternate translation: [Be very courageous]
+
+
+Use the following verbiage when speaking about figures of speech:
+Metaphor: image, SPEAKER is speaking of TEXT as if it were IMAGE
+Hyperbole: generalization, extreme statement
+Idiom: TEXT was a common expression meaning
+Irony: the opposite of the literal meaning of his words
+Litany: repetitive series of clauses
+Merism: SPEAKER is referring to all of THING by naming two extremes,
+Metonymy: Here, hand represents the capability of a person. (this one is specific as an example)
+Parallelism: These two phrases mean basically the same thing.
+Personification: Here _____ speaks of text as if it were a person who could…
+Synecdoche: AUTHOR is using one kind of food, bread, to mean food in general. (this one is specific as an example)
+Simile: comparison
+Hendiadys: The phrase WORD and WORD expresses a single idea.
+
+write numbers ≤ 10 in words, > 10 in digits
+
+USER PROMPT:
+Return only the note.
+
+Create a note to help Bible translators understand and address the issue identified `{sref}`. 
+Here is the text where the issue occurs: `{gl_quote}`. 
+Here is the full text of the verse: `{ult_verse_content}`. 
+Here is {book} {ref} in its context: `{ult_verse_in_context}`
+
+Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. However, don't reference modern versions in your note.
+
+The following input may or may not occur:
+
+- Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to slightly override the template, try to discern the intent even from a minimal prompt. Make sure your note includes the information prefixed by `i:`. Make sure your note includes the information prefixed by `i:`. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+{info}
+
+If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note, the explanation from the previous paragraph may help: `{ai_tn}`
+
+When you make the alternate translation, it should fit seamlessly back into the ULT such that if you remove the GLQuote `{gl_quote}` and replace it with the alternate translation it reads correctly. Here is the ULT for this verse: `{ult_verse_content}`
+
+Check the UST for the same verse to make sure that your alternate translation is not the same as the UST. If it is, come up with another alternate translation idea. Here is the UST for that verse: `{ust_verse_content}`
+
+Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
+
+{templates}
+
+Return only the note.
+
+
+VERSE CONTEXT:
+Reference: GEN 1:10
+ULT: God called the dry land "earth," and the gathering of the waters he called "seas." God saw that it was good.
+UST: God gave names to the dry land and to the water that was gathered together. He called the dry land "earth," and he called the gathered water "seas." God was pleased with what he saw.
+GL Quote: God called the dry land "earth"
+
+================================================================================
+
+## Support Reference: grammar-connect-logic-result
+==================================================
+Support Reference Found: grammar-connect-logic-result
+Type: 
+Description: 
+
+Template Found:
+  support reference: grammar-connect-logic-result
+  type: reverse
+  note template: If it would be more natural in your language, you could reverse the order of these phrases, since the second phrase gives the reason for the result that the first phrase describes. Alternate translation: [text]
+
+SYSTEM MESSAGE:
+Return a translation note by adapting a template provided below as closely as possible. Change only as much as is needed to address the translation issue in the context. Use the template as a model for the reading level and degree of formality that your note should have.
+For the note, write an alternate translation (or two, separated by `or`). Place alternate translation(s) at the end of the note, as modeled in the template. Enclose each in square brackets. An alternate translation should be a seamless replacement for the text in which the translation issue occurs. Do not use quotation marks in the alternate translation(s) unless that text contains opening or closing quotation marks or both. In that case, reproduce the quotation mark(s) in the corresponding location(s).
+
+Only respond with the note, not with any other text or explanation. 
+
+Use curly/smart quotes (“”‘’) instead of straight quotes.
+
+In the note, put in markdown bold formatting any words or phrases that you quote from the given text or from the rest of the verse. (Only use quotation marks where there may be quotation marks in the original text that you are quoting.) Use markdown bold formatting only for the first occurrence of quoted words or phrases in your note. Quotations from other verses in the Bible should be put in quotation marks.
+
+When you quote words or phrases from the given text or the rest of the verse, match the capitalization, number, and grammatical forms exactly. For example, if the text says ‘horses,’ do not write a note saying, ‘A **horse** is (definition).’ Say, ‘The term **horses** describes (definition).’
+
+In the templates you will find words that are in all capital letters. These words need to be replaced by the appropriate information from the verse or the verse's context. These may or may not be direct quotes.
+
+When referring to the author or writer of a biblical text in these notes use "the author" instead of "the writer".
+
+If there are slashes between words expressing similar or different ideas in a template discern which word or two applies and instead of using all of that part of the template use the word or to that you've chosen as applicable in this circumstance and write it as a natural sentence using 'and' or 'or' not a slash.
+
+Here are examples of three notes properly created from templates, including alternate translations written as exact replacments for the text that contains the translation issue:
+
+Template: Here SPEAKER is using the plural **text** where he could have used the singular form. This suggests that he is using the plural form to PURPOSE. If it would be helpful in your language, you could use the singular and express the emphasis in another way.
+Note to “the seas” in Jonah 2:3: Here Jonah is using the plural **seas** where he could have used the singular form. This suggests that he is using the plural form to emphasize the greatness or complexity of the sea. If it would be helpful in your language, you could use the singular and express the emphasis in another way. Alternate translation: [the vast sea] or [the raging sea]
+
+Template: SPEAKER is referring to all of THING by naming two extremes, **EXTREME** and **EXTREME**. If it would be helpful in your language, you could use an equivalent expression or plain language.
+Note to “from the sunrise and from the sea” in Joshua 11:3: The author is referring to all of the Canaanite territory by naming its two extreme ends, **the sunrise** (the east) and **the sea** (the west). If it would be helpful in your language, you could use an equivalent expression or plain language. Alternate translation: [from all over their territory]
+
+Template: The terms **word1** and **word2** mean similar things. SPEAKER is using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. 
+Note to “Strengthen yourselves and be men” in 1 Samuel 4:9: The expressions **Strengthen yourselves** and **be men** mean similar things. The Philistines are using the two terms together for emphasis. If it would be clearer for your readers, you could express the emphasis with a single phrase. Alternate translation: [Be very courageous]
+
+
+Use the following verbiage when speaking about figures of speech:
+Metaphor: image, SPEAKER is speaking of TEXT as if it were IMAGE
+Hyperbole: generalization, extreme statement
+Idiom: TEXT was a common expression meaning
+Irony: the opposite of the literal meaning of his words
+Litany: repetitive series of clauses
+Merism: SPEAKER is referring to all of THING by naming two extremes,
+Metonymy: Here, hand represents the capability of a person. (this one is specific as an example)
+Parallelism: These two phrases mean basically the same thing.
+Personification: Here _____ speaks of text as if it were a person who could…
+Synecdoche: AUTHOR is using one kind of food, bread, to mean food in general. (this one is specific as an example)
+Simile: comparison
+Hendiadys: The phrase WORD and WORD expresses a single idea.
+
+write numbers ≤ 10 in words, > 10 in digits
+
+USER PROMPT:
+Return only the note.
+
+Create a note to help Bible translators understand and address the issue identified `{sref}`. 
+Here is the text where the issue occurs: `{gl_quote}`. 
+Here is the full text of the verse: `{ult_verse_content}`. 
+Here is {book} {ref} in its context: `{ult_verse_in_context}`
+
+Here is where you are in the Bible (standard 3-character abbreviation): `{book} {ref}`. 
+Pause here and look up the 10 verses before and after in the English Bible translations NET, CEV, NIV, ESV, NLT to provide yourself with context. However, don't reference modern versions in your note.
+
+The following input may or may not occur:
+
+- Here is an explanation of the issue that will help you write the note. This text may also include additional information that the note writer wants you to incorporate into the note. Information which must be included will be prefixed with `i:`; this may indicate a place where the human wishes you to slightly override the template, try to discern the intent even from a minimal prompt. Make sure your note includes the information prefixed by `i:`. Make sure your note includes the information prefixed by `i:`. Information about which template to use will be prefixed with `t:`. If there are no prefixes spend some time thinking about whether the text is indicating to you a type of the template, something to include in the note, or something to help you understand the issue and write the note.: `{explanation}`
+
+{info}
+
+If there is any data here, it is a previous note written by AI that the human editor did not find sufficient for some reason. Attempt to analyze the issue and return a different note, the explanation from the previous paragraph may help: `{ai_tn}`
+
+When you make the alternate translation, it should fit seamlessly back into the ULT such that if you remove the GLQuote `{gl_quote}` and replace it with the alternate translation it reads correctly. Here is the ULT for this verse: `{ult_verse_content}`
+
+Check the UST for the same verse to make sure that your alternate translation is not the same as the UST. If it is, come up with another alternate translation idea. Here is the UST for that verse: `{ust_verse_content}`
+
+Use the template(s) provided below. There may be more than one template; if so, discern which particular template is needed in this instance and use it. The explanation of the issue may indicate what template to use.
+
+{templates}
+
+Return only the note.
+
+
+VERSE CONTEXT:
+Reference: GEN 1:10
+ULT: God called the dry land "earth," and the gathering of the waters he called "seas." God saw that it was good.
+UST: God gave names to the dry land and to the water that was gathered together. He called the dry land "earth," and he called the gathered water "seas." God was pleased with what he saw.
+GL Quote: God called the dry land "earth"
+
+================================================================================

@@ -1,6 +1,7 @@
 # Cache and logs
 cache/
 logs/
+transfer/
 
 # Virtual environment
 venv/
@@ -20,7 +21,7 @@ config/google_credentials.json
 # Data files
 *.tsv
 *.pdf
-*.txt
+
 *.usfm
 *.bak
 
