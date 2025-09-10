@@ -480,7 +480,7 @@ class TranslationNotesAI:
                 
                 try:
                     # Process suggestions and regular work
-                    processed_count = self._process_sheet_work(sheet_id, friendly_name, auto_convert_sref)
+                    processed_count = self._process_sheet_work(sheet_id, editor_key, auto_convert_sref)
                     total_processed += processed_count
                     
                 except Exception as e:
@@ -517,12 +517,12 @@ class TranslationNotesAI:
             else:
                 self.logger.warning("Failed to fetch support references - SRef conversion may not work properly")
     
-    def _process_sheet_work(self, sheet_id: str, editor_name: str, auto_convert_sref: bool) -> int:
+    def _process_sheet_work(self, sheet_id: str, editor_key: str, auto_convert_sref: bool) -> int:
         """Process work for a single sheet.
         
         Args:
             sheet_id: Google Sheets ID
-            editor_name: Editor name
+            editor_key: Editor key (raw ID like 'editor3')
             auto_convert_sref: Whether to auto-convert SRef values
             
         Returns:
@@ -531,8 +531,10 @@ class TranslationNotesAI:
         processed_count = 0
         
         # Check for suggestion requests first
-        # (Implementation would be extracted to a separate suggestion handler module)
-        # self._check_and_process_suggestion_requests(sheet_id, editor_name)
+        self._check_and_process_suggestion_requests(sheet_id, editor_key)
+        
+        # Get friendly name for logging
+        editor_name = self.config.get_friendly_name_with_id(editor_key)
         
         # Convert SRef values if enabled
         if auto_convert_sref:
@@ -879,6 +881,101 @@ class TranslationNotesAI:
             
         except Exception as e:
             self.logger.error(f"Error during health check: {e}")
+    
+    def _check_and_process_suggestion_requests(self, sheet_id: str, editor_key: str):
+        """Check for suggestion requests and process them if conditions are met.
+        
+        Args:
+            sheet_id: Google Sheets ID
+            editor_key: Editor key (raw ID like 'editor3')
+        """
+        try:
+            # Check if suggestion request exists
+            if not self._has_suggestion_request(sheet_id):
+                return
+            
+            # Get friendly name for logging
+            friendly_name_with_id = self.config.get_friendly_name_with_id(editor_key)
+            self.logger.info(f"Found suggestion request for {friendly_name_with_id}")
+            
+            # Check if other work is in progress
+            if self._is_other_work_in_progress(sheet_id):
+                self.logger.info(f"Other work in progress for {friendly_name_with_id}, skipping suggestions")
+                return
+            
+            # Process the suggestion request using continuous batch manager
+            if hasattr(self, 'continuous_batch_manager'):
+                self.continuous_batch_manager._process_suggestion_request(sheet_id, editor_key)
+            else:
+                self.logger.warning(f"Continuous batch manager not available for suggestions processing for {friendly_name_with_id}")
+            
+        except Exception as e:
+            friendly_name_with_id = self.config.get_friendly_name_with_id(editor_key)
+            self.logger.error(f"Error checking suggestion requests for {friendly_name_with_id}: {e}")
+
+    def _has_suggestion_request(self, sheet_id: str) -> bool:
+        """Check if there's a suggestion request (YES in suggested notes tab, column D, row 2).
+        
+        Args:
+            sheet_id: Google Sheets ID
+            
+        Returns:
+            True if suggestion request exists
+        """
+        try:
+            # Read from suggested notes tab, column D, row 2
+            range_name = "'suggested notes'!D2"
+            
+            result = self.sheet_manager.service.spreadsheets().values().get(
+                spreadsheetId=sheet_id,
+                range=range_name
+            ).execute()
+            
+            values = result.get('values', [])
+            
+            if values and len(values) > 0 and len(values[0]) > 0:
+                value = values[0][0].strip().upper()
+                return value == 'YES'
+            
+            return False
+            
+        except Exception as e:
+            self.logger.debug(f"Error checking suggestion request: {e}")
+            return False
+
+    def _is_other_work_in_progress(self, sheet_id: str) -> bool:
+        """Check if other work is in progress (Go? column has non-AI values).
+        
+        Args:
+            sheet_id: Google Sheets ID
+            
+        Returns:
+            True if other work is in progress
+        """
+        try:
+            # Read from AI notes tab, column F (Go?)
+            range_name = "'AI notes'!F:F"
+            
+            result = self.sheet_manager.service.spreadsheets().values().get(
+                spreadsheetId=sheet_id,
+                range=range_name
+            ).execute()
+            
+            values = result.get('values', [])
+            
+            # Skip header row (index 0) and check all other rows
+            for i, row in enumerate(values[1:], start=2):
+                if row and len(row) > 0:
+                    go_value = row[0].strip()
+                    if go_value and go_value.upper() != 'AI':
+                        self.logger.debug(f"Found non-AI work in progress: row {i}, Go? = '{go_value}'")
+                        return True
+            
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"Error checking work in progress: {e}")
+            return True  # Assume work in progress on error
 
 
 def main():
