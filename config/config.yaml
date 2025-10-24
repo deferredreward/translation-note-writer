@@ -18,7 +18,7 @@ google_sheets:
 anthropic:
   # Your Anthropic API key (set in .env file)
   disabled: false  # Set to true to disable all AI API calls
-  model: "claude-sonnet-4-20250514"
+  model: "claude-sonnet-4-5-20250929"
   #model: "claude-3-5-haiku-20241022"
   # model: "claude-3-haiku-20240307"
 

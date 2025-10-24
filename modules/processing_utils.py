@@ -32,6 +32,7 @@ import logging
 import re
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime
+from .text_utils import parse_verse_reference
 
 
 def post_process_text(text: str) -> str:
@@ -307,15 +308,28 @@ def _format_see_how_reference(ref_match: str, item: Dict[str, Any] = None) -> st
             chapter_verse = ' '.join(parts[1:])
             book_code, book_name = _get_book_info(book_input)
             if ':' in chapter_verse:
-                chapter, verse = chapter_verse.split(':', 1)
-                # Use 3-digit padding for Psalms, 2-digit for others
-                if book_code.lower() == 'psa':
-                    chapter_padded = f"{int(chapter):03d}"
-                    verse_padded = f"{int(verse):02d}"
-                else:
-                    chapter_padded = f"{int(chapter):02d}"
-                    verse_padded = f"{int(verse):02d}"
-                return f"See how you translated the similar expression in [{book_name} {chapter}:{verse}](../../{book_code}/{chapter_padded}/{verse_padded}.md)."
+                try:
+                    chapter, verses = parse_verse_reference(chapter_verse)
+                    # Use the first verse for the link (in case of ranges)
+                    first_verse = verses[0]
+                    # Use 3-digit padding for Psalms, 2-digit for others
+                    if book_code.lower() == 'psa':
+                        chapter_padded = f"{chapter:03d}"
+                        verse_padded = f"{first_verse:02d}"
+                    else:
+                        chapter_padded = f"{chapter:02d}"
+                        verse_padded = f"{first_verse:02d}"
+                    return f"See how you translated the similar expression in [{book_name} {chapter_verse}](../../{book_code}/{chapter_padded}/{verse_padded}.md)."
+                except ValueError:
+                    # Fall back to original behavior if parsing fails
+                    chapter, verse = chapter_verse.split(':', 1)
+                    if book_code.lower() == 'psa':
+                        chapter_padded = f"{int(chapter):03d}"
+                        verse_padded = f"{int(verse):02d}"
+                    else:
+                        chapter_padded = f"{int(chapter):02d}"
+                        verse_padded = f"{int(verse):02d}"
+                    return f"See how you translated the similar expression in [{book_name} {chapter}:{verse}](../../{book_code}/{chapter_padded}/{verse_padded}.md)."
             else:
                 # Just chapter reference in different book
                 if book_code.lower() == 'psa':
@@ -327,16 +341,29 @@ def _format_see_how_reference(ref_match: str, item: Dict[str, Any] = None) -> st
             return f"See how you translated the similar expression in {ref_match}."
     
     elif ':' in ref_match:
-        # Different chapter in same book: '3:3'
-        chapter, verse = ref_match.split(':', 1)
-        # Use 3-digit padding for Psalms, 2-digit for others
-        if current_book.lower() == 'psa':
-            chapter_padded = f"{int(chapter):03d}"
-            verse_padded = f"{int(verse):02d}"
-        else:
-            chapter_padded = f"{int(chapter):02d}"
-            verse_padded = f"{int(verse):02d}"
-        return f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter_padded}/{verse_padded}.md)."
+        # Different chapter in same book: '3:3' or '3:3-5'
+        try:
+            chapter, verses = parse_verse_reference(ref_match)
+            # Use the first verse for the link (in case of ranges)
+            first_verse = verses[0]
+            # Use 3-digit padding for Psalms, 2-digit for others
+            if current_book.lower() == 'psa':
+                chapter_padded = f"{chapter:03d}"
+                verse_padded = f"{first_verse:02d}"
+            else:
+                chapter_padded = f"{chapter:02d}"
+                verse_padded = f"{first_verse:02d}"
+            return f"See how you translated the similar expression in [{ref_match}](../{chapter_padded}/{verse_padded}.md)."
+        except ValueError:
+            # Fall back to original behavior if parsing fails
+            chapter, verse = ref_match.split(':', 1)
+            if current_book.lower() == 'psa':
+                chapter_padded = f"{int(chapter):03d}"
+                verse_padded = f"{int(verse):02d}"
+            else:
+                chapter_padded = f"{int(chapter):02d}"
+                verse_padded = f"{int(verse):02d}"
+            return f"See how you translated the similar expression in [{chapter}:{verse}](../{chapter_padded}/{verse_padded}.md)."
     
     else:
         # Same chapter: '2'
