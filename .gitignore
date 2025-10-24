@@ -1,5 +1,6 @@
 # Cache and logs
 cache/
+.cache/
 logs/
 transfer/
 
