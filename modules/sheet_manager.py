@@ -11,6 +11,7 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.errors import HttpError
 
 from .config_manager import ConfigManager
+from .text_utils import parse_verse_reference
 
 # Custom exception for permission errors
 class SheetPermissionError(Exception):
@@ -661,19 +662,17 @@ class SheetManager:
                                 self.logger.debug(f"Book in reference '{book_part}' doesn't match expected book '{book_code}' at row {row_idx}")
                                 continue
                     
-                    # Now parse chapter:verse format
+                    # Now parse chapter:verse format (handles ranges like 10-11)
                     if ':' in reference:
-                        chapter_verse_parts = reference.split(':', 1)
-                        if len(chapter_verse_parts) == 2:
-                            chapter_num = int(chapter_verse_parts[0])
-                            verse_num = int(chapter_verse_parts[1])
+                        try:
+                            chapter_num, verse_nums = parse_verse_reference(reference)
                             detected_chapters.add(chapter_num)
                             
                             # Debug chapter detection, especially for chapter 21
                             if row_idx <= 5 or chapter_num == 21:
-                                self.logger.info(f"DEBUG {text_type}: Row {row_idx}: detected chapter={chapter_num}, verse={verse_num}")
-                        else:
-                            self.logger.debug(f"Invalid chapter:verse format '{reference}' at row {row_idx}")
+                                self.logger.info(f"DEBUG {text_type}: Row {row_idx}: detected chapter={chapter_num}, verses={verse_nums}")
+                        except ValueError as e:
+                            self.logger.debug(f"Invalid chapter:verse format '{reference}' at row {row_idx}: {e}")
                             continue
                     else:
                         self.logger.debug(f"No colon found in reference '{reference}' at row {row_idx}")
@@ -748,28 +747,28 @@ class SheetManager:
                 if not content:
                     continue
                 
-                # Try to detect chapter and verse from content like "20:1 verse text..."
-                verse_number = None
+                # Try to detect chapter and verse from content like "20:1 verse text..." or "20:10-11 verse text..."
+                verse_numbers = []
                 if ':' in content and content.split(':')[0].isdigit():
                     try:
-                        chapter_verse = content.split(' ')[0]  # Get first word like "20:1"
+                        chapter_verse = content.split(' ')[0]  # Get first word like "20:1" or "20:10-11"
                         if ':' in chapter_verse:
-                            chapter_part, verse_part = chapter_verse.split(':', 1)
-                            detected_chapter = int(chapter_part)
-                            verse_number = int(verse_part)
+                            detected_chapter, verse_numbers = parse_verse_reference(chapter_verse)
                             # Remove the chapter:verse prefix from content
                             content = content[len(chapter_verse):].strip()
                     except (ValueError, IndexError):
                         pass
                 
-                # If we couldn't detect verse number, use sequential numbering
-                if verse_number is None:
-                    verse_number = len(verses) + 1
+                # If we couldn't detect verse numbers, use sequential numbering
+                if not verse_numbers:
+                    verse_numbers = [len(verses) + 1]
                 
-                verses.append({
-                    'number': verse_number,
-                    'content': content
-                })
+                # Create verse entries for each verse number (handles both single verses and ranges)
+                for verse_num in verse_numbers:
+                    verses.append({
+                        'number': verse_num,
+                        'content': content
+                    })
             
             # Use detected chapter or default to 1
             chapter_number = detected_chapter if detected_chapter is not None else 1

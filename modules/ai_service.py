@@ -15,6 +15,7 @@ import anthropic
 from .config_manager import ConfigManager
 from .cache_manager import CacheManager
 from .prompt_manager import PromptManager
+from .text_utils import parse_verse_reference
 
 
 class AIService:
@@ -476,22 +477,20 @@ class AIService:
                 self.logger.warning(f"Invalid ref format: '{ref}'")
                 return {}
             
-            chapter, verse = ref.split(':', 1)
             try:
-                chapter = int(chapter)
-                verse = int(verse)
-            except ValueError:
-                self.logger.error(f"Invalid chapter:verse format: '{ref}'")
+                chapter, verses = parse_verse_reference(ref)
+            except ValueError as e:
+                self.logger.error(f"Invalid chapter:verse format: '{ref}' - {e}")
                 return {}
             
-            self.logger.debug(f"Parsed ref: chapter={chapter}, verse={verse}")
+            self.logger.debug(f"Parsed ref: chapter={chapter}, verses={verses}")
             
             result = {}
             
             # Get ULT text
             if ult_data:
                 ult_verse_content, ult_verse_in_context = self._extract_verse_content(
-                    ult_data, item_book or book, chapter, verse
+                    ult_data, item_book or book, chapter, verses
                 )
                 result['ult_verse_content'] = ult_verse_content
                 result['ult_verse_in_context'] = ult_verse_in_context
@@ -502,7 +501,7 @@ class AIService:
             # Get UST text
             if ust_data:
                 ust_verse_content, ust_verse_in_context = self._extract_verse_content(
-                    ust_data, item_book or book, chapter, verse
+                    ust_data, item_book or book, chapter, verses
                 )
                 result['ust_verse_content'] = ust_verse_content
                 result['ust_verse_in_context'] = ust_verse_in_context
@@ -518,20 +517,21 @@ class AIService:
             self.logger.debug(f"Full traceback: {traceback.format_exc()}")
             return {}
     
-    def _extract_verse_content(self, data: Dict[str, Any], book: str, chapter: int, verse: int) -> Tuple[str, str]:
+    def _extract_verse_content(self, data: Dict[str, Any], book: str, chapter: int, verses: List[int]) -> Tuple[str, str]:
         """Extract verse content and context from biblical text data.
         
         Args:
             data: Biblical text data
             book: Book abbreviation
             chapter: Chapter number
-            verse: Verse number
+            verses: List of verse numbers (handles both single verses and ranges)
             
         Returns:
             Tuple of (verse_content, verse_in_context)
+            For verse ranges, content is concatenated with spaces
         """
         try:
-            self.logger.debug(f"Extracting verse for book='{book}', chapter={chapter}, verse={verse}")
+            self.logger.debug(f"Extracting verses for book='{book}', chapter={chapter}, verses={verses}")
             
             # Check if data has the expected structure
             if not isinstance(data, dict):
@@ -564,48 +564,67 @@ class AIService:
                 self.logger.error(f"Chapter {chapter} not found. Available chapters: {[ch.get('chapter') for ch in chapters]}")
                 return "broken", "broken"
             
-            verses = target_chapter.get('verses', [])
-            if not verses:
+            chapter_verses = target_chapter.get('verses', [])
+            if not chapter_verses:
                 self.logger.error(f"No verses found in chapter {chapter}")
                 return "broken", "broken"
             
-            self.logger.debug(f"Found {len(verses)} verses in chapter {chapter}")
+            self.logger.debug(f"Found {len(chapter_verses)} verses in chapter {chapter}")
             
-            # Find the target verse
-            target_verse_index = -1
-            verse_content = "broken"
+            # Find the target verses
+            target_verses = []
+            target_verse_indices = []
             
-            self.logger.debug(f"Looking for verse {verse} (type: {type(verse)}) in {len(verses)} verses")
+            self.logger.debug(f"Looking for verses {verses} in {len(chapter_verses)} verses")
             
-            for i, v in enumerate(verses):
+            # Create a mapping of verse numbers to indices for efficient lookup
+            verse_index_map = {}
+            for i, v in enumerate(chapter_verses):
                 v_num = v.get('number')
-                self.logger.debug(f"Checking verse: {v_num} (type: {type(v_num)}) == {verse}? {v_num == verse}")
-                # Ensure type consistency for comparison
-                if int(v_num) == int(verse):
-                    target_verse_index = i
-                    verse_content = v.get('content', '')
-                    self.logger.debug(f"Found target verse {verse} at index {i}: '{verse_content[:100]}...'")
-                    break
+                if v_num is not None:
+                    verse_index_map[int(v_num)] = i
             
-            if target_verse_index == -1:
-                available_verses = [v.get('number') for v in verses]
-                self.logger.error(f"Verse {verse} not found in chapter {chapter}. Available verses: {available_verses}")
+            # Find all requested verses
+            for target_verse_num in verses:
+                if target_verse_num in verse_index_map:
+                    idx = verse_index_map[target_verse_num]
+                    target_verses.append(chapter_verses[idx])
+                    target_verse_indices.append(idx)
+                    self.logger.debug(f"Found verse {target_verse_num} at index {idx}")
+                else:
+                    available_verses = list(verse_index_map.keys())
+                    self.logger.error(f"Verse {target_verse_num} not found in chapter {chapter}. Available verses: {available_verses}")
+                    return "broken", "broken"
+            
+            if not target_verses:
+                self.logger.error(f"No verses found for {verses} in chapter {chapter}")
                 return "broken", "broken"
             
-            # Build context (5 verses before and after)
-            start_index = max(0, target_verse_index - 5)
-            end_index = min(len(verses) - 1, target_verse_index + 5)
+            # Combine content from all target verses
+            verse_contents = []
+            for v in target_verses:
+                v_content = v.get('content', '')
+                verse_contents.append(v_content)
+            
+            combined_verse_content = ' '.join(verse_contents)
+            
+            # Build context (5 verses before first verse and after last verse)
+            min_index = min(target_verse_indices)
+            max_index = max(target_verse_indices)
+            start_index = max(0, min_index - 5)
+            end_index = min(len(chapter_verses) - 1, max_index + 5)
             
             context_verses = []
             for i in range(start_index, end_index + 1):
-                v = verses[i]
+                v = chapter_verses[i]
                 v_content = v.get('content', '')
-                context_verses.append(f"[{v.get('number')}] {v_content}")
+                verse_num = v.get('number')
+                context_verses.append(f"[{verse_num}] {v_content}")
             
             verse_in_context = ' '.join(context_verses)
             
-            self.logger.debug(f"Successfully extracted verse {verse} from chapter {chapter}")
-            return verse_content, verse_in_context
+            self.logger.debug(f"Successfully extracted verses {verses} from chapter {chapter}")
+            return combined_verse_content, verse_in_context
             
         except Exception as e:
             self.logger.error(f"Error extracting verse content: {e}")

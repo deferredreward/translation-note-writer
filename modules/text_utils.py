@@ -4,7 +4,7 @@ Handles text formatting, cleaning, and transformation operations.
 """
 
 import re
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 
 def post_process_text(text: str) -> str:
@@ -260,3 +260,84 @@ def find_matches(text: str, words: List[str]) -> List[str]:
             matches.append(word)
 
     return matches
+
+
+def parse_verse_reference(ref: str) -> Tuple[int, List[int]]:
+    """Parse a verse reference that may contain a single verse or a range.
+    
+    Args:
+        ref: Verse reference in format "chapter:verse" or "chapter:verse-verse"
+             Examples: "29:10", "29:10-11", "1:5-8"
+    
+    Returns:
+        Tuple of (chapter_number, list_of_verse_numbers)
+        Examples: 
+            "29:10" -> (29, [10])
+            "29:10-11" -> (29, [10, 11])
+            "1:5-8" -> (1, [5, 6, 7, 8])
+    
+    Raises:
+        ValueError: If the reference format is invalid
+    """
+    if not ref or not isinstance(ref, str):
+        raise ValueError(f"Invalid reference: {ref}")
+    
+    if ':' not in ref:
+        raise ValueError(f"Invalid reference format (missing colon): {ref}")
+    
+    try:
+        chapter_str, verse_str = ref.split(':', 1)
+        chapter = int(chapter_str)
+        
+        # Handle verse ranges (e.g., "10-11") or single verses (e.g., "10")
+        if '-' in verse_str:
+            # Parse verse range
+            verse_parts = verse_str.split('-')
+            if len(verse_parts) != 2:
+                raise ValueError(f"Invalid verse range format: {verse_str}")
+            
+            start_verse = int(verse_parts[0])
+            end_verse = int(verse_parts[1])
+            
+            if start_verse > end_verse:
+                raise ValueError(f"Invalid verse range (start > end): {start_verse}-{end_verse}")
+            
+            verses = list(range(start_verse, end_verse + 1))
+        else:
+            # Single verse
+            verse = int(verse_str)
+            verses = [verse]
+        
+        return chapter, verses
+        
+    except (ValueError, IndexError) as e:
+        raise ValueError(f"Failed to parse verse reference '{ref}': {str(e)}")
+
+
+def format_verse_reference(chapter: int, verses: List[int]) -> str:
+    """Format chapter and verse numbers back into a reference string.
+    
+    Args:
+        chapter: Chapter number
+        verses: List of verse numbers
+    
+    Returns:
+        Formatted reference string
+        Examples:
+            (29, [10]) -> "29:10"
+            (29, [10, 11]) -> "29:10-11"
+            (1, [5, 6, 7, 8]) -> "1:5-8"
+    """
+    if not verses:
+        raise ValueError("Verses list cannot be empty")
+    
+    if len(verses) == 1:
+        return f"{chapter}:{verses[0]}"
+    
+    # Check if verses form a continuous range
+    if verses == list(range(verses[0], verses[-1] + 1)):
+        return f"{chapter}:{verses[0]}-{verses[-1]}"
+    else:
+        # Non-continuous verses - join with commas
+        verse_strs = [str(v) for v in verses]
+        return f"{chapter}:{','.join(verse_strs)}"

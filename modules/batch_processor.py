@@ -18,6 +18,7 @@ from .config_manager import ConfigManager
 from .ai_service import AIService
 from .sheet_manager import SheetManager
 from .cache_manager import CacheManager
+from .text_utils import parse_verse_reference
 from .processing_utils import (
     post_process_text, separate_items_by_processing_type,
     format_alternate_translation, generate_programmatic_note,
@@ -761,12 +762,10 @@ class BatchProcessor:
                 self.logger.warning(f"Invalid ref format: '{ref}'")
                 return {}
             
-            chapter, verse = ref.split(':', 1)
             try:
-                chapter = int(chapter)
-                verse = int(verse)
-            except ValueError:
-                self.logger.error(f"Invalid chapter:verse format: '{ref}'")
+                chapter, verses = parse_verse_reference(ref)
+            except ValueError as e:
+                self.logger.error(f"Invalid chapter:verse format: '{ref}' - {e}")
                 return {}
             
             result = {}
@@ -774,7 +773,7 @@ class BatchProcessor:
             # Get ULT text
             if ult_data:
                 ult_verse_content, ult_verse_in_context = self.ai_service._extract_verse_content(
-                    ult_data, book, chapter, verse
+                    ult_data, book, chapter, verses
                 )
                 result['ult_verse_content'] = ult_verse_content
                 result['ult_verse_in_context'] = ult_verse_in_context
@@ -782,7 +781,7 @@ class BatchProcessor:
             # Get UST text
             if ust_data:
                 ust_verse_content, ust_verse_in_context = self.ai_service._extract_verse_content(
-                    ust_data, book, chapter, verse
+                    ust_data, book, chapter, verses
                 )
                 result['ust_verse_content'] = ust_verse_content
                 result['ust_verse_in_context'] = ust_verse_in_context
