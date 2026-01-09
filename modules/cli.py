@@ -36,6 +36,7 @@ Examples:
   %(prog)s --mode complete --noai              # Run without making AI calls
   %(prog)s --cache-status                      # Show cache information
   %(prog)s --convert-sref                      # Convert SRef values
+  %(prog)s --convert-language                  # Run roundtrip language conversion
   %(prog)s --status                            # Show system status
   %(prog)s --clear-cache all                   # Clear all caches
   %(prog)s --mode continuous --immediate-mode      # Run with immediate AI processing
@@ -120,6 +121,11 @@ Examples:
             '--convert-sref', 
             action='store_true',
             help='Convert short SRef values to full support reference names and exit'
+        )
+        utility_group.add_argument(
+            '--convert-language',
+            action='store_true',
+            help='Run roundtrip English→Hebrew/Greek→English conversion (updates GLQuote, OrigL, ID columns) and exit'
         )
         utility_group.add_argument(
             '--status', 
@@ -271,6 +277,12 @@ Examples:
             if args.convert_sref:
                 app.logger.info("Converting SRef values...")
                 success = app.convert_sref_values()
+                sys.exit(0 if success else 1)
+            
+            # Language roundtrip conversion
+            if args.convert_language:
+                app.logger.info("Running roundtrip language conversion...")
+                success = app.convert_language_roundtrip()
                 sys.exit(0 if success else 1)
             
             # Status display

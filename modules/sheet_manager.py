@@ -206,8 +206,11 @@ class SheetManager:
             # Define allowed columns and their letters
             allowed_columns = {
                 'SRef': 'D',      # Column D
-                'Go?': 'F',       # Column F  
-                'AI TN': 'I'      # Column I
+                'GLQuote': 'E',   # Column E
+                'Go?': 'F',       # Column F
+                'AI TN': 'I',     # Column I
+                'OrigL': 'M',     # Column M - Original Language (Hebrew/Greek)
+                'ID': 'N'         # Column N - Unique 4-character ID
             }
             
             # Prepare batch update data for only allowed columns
@@ -260,7 +263,7 @@ class SheetManager:
                     self.logger.error(f"Error batch updating rows in sheet {sheet_id}: {e}")
                     raise
 
-                self.logger.info(f"Successfully updated {len(data)} cells in {len(updates)} rows (only allowed columns: D, F, I)")
+                self.logger.info(f"Successfully updated {len(data)} cells in {len(updates)} rows (only allowed columns: D, E, F, I, M, N)")
                 
                 # Call completion callback if provided
                 if completion_callback:

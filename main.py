@@ -850,6 +850,106 @@ class TranslationNotesAI:
             self.logger.error(f"Error converting SRef values: {e}")
             return False
     
+    def convert_language_roundtrip(self) -> bool:
+        """Run roundtrip language conversion (English→Hebrew/Greek→English) for all sheets.
+        
+        This updates the GLQuote, OrigL, and ID columns without running AI processing.
+        Useful for refreshing language conversion data independently.
+        
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            from modules.language_converter import LanguageConverter
+            from modules.processing_utils import update_conversion_data_immediately
+            
+            sheet_ids = self.config.get('google_sheets.sheet_ids', {})
+            total_sheets = len(sheet_ids)
+            successful_sheets = 0
+            
+            self.logger.info(f"Starting roundtrip language conversion for {total_sheets} sheet(s)")
+            print(f"\n🔄 Running roundtrip language conversion for {total_sheets} sheet(s)...")
+            
+            for editor_key, sheet_id in sheet_ids.items():
+                friendly_name = self.config.get_friendly_name_with_id(editor_key)
+                
+                try:
+                    self.logger.info(f"Processing {friendly_name}...")
+                    print(f"\n📋 Processing {friendly_name}...")
+                    
+                    # Get all items from the sheet (not just pending ones)
+                    # We want to update language conversion for all rows
+                    all_items = self.sheet_manager.get_all_rows_for_sref_conversion(sheet_id)
+                    
+                    if not all_items:
+                        self.logger.info(f"No items found for {friendly_name}, skipping")
+                        print(f"  ⚠️  No items found, skipping")
+                        continue
+                    
+                    # Detect book from items (gracefully handles blank first rows)
+                    user, book = self.cache_manager.detect_user_book_from_items(all_items)
+                    
+                    if not book:
+                        self.logger.warning(f"Could not detect book for {friendly_name}")
+                        print(f"  ⚠️  Could not detect book")
+                        print(f"  💡 Make sure your spreadsheet has a 'Book' column with values like: GEN, EXO, MAT, MRK, etc.")
+                        if all_items:
+                            available_columns = list(all_items[0].keys())
+                            if 'Book' not in available_columns:
+                                print(f"  ❌ No 'Book' column found in spreadsheet")
+                                print(f"  📊 Available columns: {', '.join(available_columns)}")
+                            else:
+                                print(f"  📋 'Book' column exists but all rows appear to be empty")
+                        continue
+                    
+                    self.logger.info(f"Detected book: {book}, converting {len(all_items)} item(s)")
+                    print(f"  📖 Book: {book}")
+                    print(f"  📝 Items: {len(all_items)}")
+                    
+                    # Run language conversion
+                    converter = LanguageConverter(cache_manager=self.cache_manager)
+                    enriched_items = converter.enrich_items_with_conversion(
+                        items=all_items,
+                        book_code=book,
+                        sheet_manager=self.sheet_manager,
+                        sheet_id=sheet_id,
+                        verbose=True
+                    )
+                    
+                    # Update sheet with conversion data
+                    if not self.config.get('debug.dry_run', False):
+                        update_conversion_data_immediately(
+                            items=enriched_items,
+                            sheet_id=sheet_id,
+                            sheet_manager=self.sheet_manager,
+                            config=self.config,
+                            logger=self.logger
+                        )
+                        self.logger.info(f"Successfully updated language conversion for {friendly_name}")
+                        print(f"  ✅ Successfully updated {len(enriched_items)} item(s)")
+                        successful_sheets += 1
+                    else:
+                        self.logger.info(f"DRY RUN: Would update {len(enriched_items)} items for {friendly_name}")
+                        print(f"  🔍 DRY RUN: Would update {len(enriched_items)} item(s)")
+                        successful_sheets += 1
+                    
+                except Exception as e:
+                    self.logger.error(f"Error converting language for {friendly_name}: {e}", exc_info=True)
+                    print(f"  ❌ Error: {e}")
+                    continue
+            
+            # Summary
+            self.logger.info(f"Language conversion complete: {successful_sheets}/{total_sheets} sheet(s) successful")
+            print(f"\n✨ Language conversion complete!")
+            print(f"   Successfully processed: {successful_sheets}/{total_sheets} sheet(s)")
+            
+            return successful_sheets > 0
+            
+        except Exception as e:
+            self.logger.error(f"Error in language conversion: {e}", exc_info=True)
+            print(f"\n❌ Error during language conversion: {e}")
+            return False
+    
     def health_check(self):
         """Perform a comprehensive health check and log status."""
         try:

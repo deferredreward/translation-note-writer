@@ -22,7 +22,8 @@ from .processing_utils import (
     format_alternate_translation, generate_programmatic_note,
     clean_ai_output, determine_note_type, format_final_note,
     prepare_update_data, ensure_biblical_text_cached,
-    should_include_alternate_translation, get_row_identifier
+    should_include_alternate_translation, get_row_identifier,
+    update_conversion_data_immediately
 )
 
 
@@ -396,6 +397,36 @@ class ContinuousBatchManager:
     def _process_pending_work(self, work: PendingWork):
         """Process pending work by creating and submitting batches."""
         try:
+            # First, perform round-trip language conversion for all items
+            # This enriches items with GLQuote, OrigL, and ID before any processing
+            user_detected, book = self.cache_manager.detect_user_book_from_items(work.items)
+            if book:
+                try:
+                    from .language_converter import LanguageConverter
+                    converter = LanguageConverter(cache_manager=self.cache_manager)
+                    work.items = converter.enrich_items_with_conversion(
+                        items=work.items,
+                        book_code=book,
+                        sheet_manager=self.sheet_manager,
+                        sheet_id=work.sheet_id,
+                        verbose=False
+                    )
+                    self.logger.debug(f"Completed language conversion for {len(work.items)} items in {book}")
+
+                    # Update sheet with conversion data immediately (before AI processing)
+                    update_conversion_data_immediately(
+                        items=work.items,
+                        sheet_id=work.sheet_id,
+                        sheet_manager=self.sheet_manager,
+                        config=self.config,
+                        logger=self.logger
+                    )
+                except Exception as e:
+                    self.logger.error(f"Error during language conversion for {book}: {e}", exc_info=True)
+                    # Continue processing even if conversion fails
+            else:
+                self.logger.warning(f"Could not detect book for language conversion, skipping")
+
             # Separate items by processing type first (before marking as in progress)
             programmatic_items, ai_items = self._separate_items_by_processing_type(work.items)
             
@@ -471,7 +502,10 @@ class ContinuousBatchManager:
                     try:
                         # Convert to the format expected by batch_update_rows
                         sheet_updates = []
-                        for update in updates:
+                        for i, update in enumerate(updates):
+                            # Get the original item to access conversion data
+                            original_item = items[i] if i < len(items) else {}
+
                             update_data = {
                                 'row_number': update['row'],
                                 'updates': {
@@ -479,6 +513,18 @@ class ContinuousBatchManager:
                                     'AI TN': update['ai_tn']
                                 }
                             }
+
+                            # Add language conversion data if present
+                            if 'conversion_data' in original_item:
+                                conv_data = original_item['conversion_data']
+                                if conv_data.get('GLQuote'):
+                                    update_data['updates']['GLQuote'] = conv_data['GLQuote']
+                                if conv_data.get('OrigL'):
+                                    update_data['updates']['OrigL'] = conv_data['OrigL']
+                                if conv_data.get('ID'):
+                                    update_data['updates']['ID'] = conv_data['ID']
+                                self.logger.debug(f"Added conversion data for programmatic item: ID={conv_data.get('ID')}")
+
                             sheet_updates.append(update_data)
                         
                         self.sheet_manager.batch_update_rows(sheet_id, sheet_updates, self.completion_callback)

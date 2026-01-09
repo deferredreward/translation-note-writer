@@ -30,9 +30,11 @@ class TSVConverterCache:
         self.cache_dir = cache_dir
         os.makedirs(cache_dir, exist_ok=True)
 
-    def _get_cache_key(self, bible_link: str, book_code: str) -> str:
-        """Generate a unique cache key"""
+    def _get_cache_key(self, bible_link: str, book_code: str, content_hash: Optional[str] = None) -> str:
+        """Generate a unique cache key; include content hash when provided."""
         key_string = f"{bible_link}_{book_code}"
+        if content_hash:
+            key_string += f"_{content_hash}"
         return hashlib.md5(key_string.encode()).hexdigest()
 
     def _get_cache_path(self, cache_key: str) -> str:
@@ -98,13 +100,14 @@ class TSVConverterCache:
 
     def should_use_cache(self, bible_link: str, book_code: str,
                          dcs_url: str = 'https://git.door43.org',
-                         verbose: bool = False) -> tuple[bool, Optional[Dict]]:
+                         verbose: bool = False,
+                         content_hash: Optional[str] = None) -> tuple[bool, Optional[Dict]]:
         """
         Check if cached data is still valid.
 
         Returns: (use_cache: bool, cached_data: dict or None)
         """
-        cache_key = self._get_cache_key(bible_link, book_code)
+        cache_key = self._get_cache_key(bible_link, book_code, content_hash)
         cache_path = self._get_cache_path(cache_key)
 
         # No cache file exists
@@ -146,9 +149,10 @@ class TSVConverterCache:
                 print(f"  Using cache (could not verify updates)")
             return True, cache_data
 
-        # Compare commit SHAs
+        # Compare commit SHAs and content hash if present
         cached_sha = cache_data.get('commit_sha')
-        if cached_sha == latest_commit['sha']:
+        cached_content_hash = cache_data.get('content_hash')
+        if cached_sha == latest_commit['sha'] and (content_hash is None or cached_content_hash == content_hash):
             if verbose:
                 print(f"  ✓ Cache valid (commit: {cached_sha[:8]})")
             return True, cache_data
@@ -159,14 +163,17 @@ class TSVConverterCache:
             print(f"    Cached: {cached_sha[:8] if cached_sha else 'unknown'}")
             print(f"    Latest: {latest_commit['sha'][:8]}")
             print(f"    Update: {latest_commit['message'][:60]}")
+            if content_hash is not None:
+                print(f"    Content hash: {content_hash}")
 
         return False, None
 
     def save_to_cache(self, bible_link: str, book_code: str, result: Dict[str, Any],
                      dcs_url: str = 'https://git.door43.org',
-                     verbose: bool = False):
+                     verbose: bool = False,
+                     content_hash: Optional[str] = None):
         """Save converter result to cache with metadata"""
-        cache_key = self._get_cache_key(bible_link, book_code)
+        cache_key = self._get_cache_key(bible_link, book_code, content_hash)
         cache_path = self._get_cache_path(cache_key)
 
         # Parse bible link
@@ -193,7 +200,8 @@ class TSVConverterCache:
             'commit_date': latest_commit['date'] if latest_commit else None,
             'commit_message': latest_commit['message'] if latest_commit else None,
             'cached_at': datetime.now().isoformat(),
-            'result': result
+            'result': result,
+            'content_hash': content_hash
         }
 
         try:
@@ -259,8 +267,10 @@ class TSVConverter:
     def _call_node_converter(self, command: str, bible_link: str,
                             book_code: str, tsv_content: str) -> Optional[Dict[str, Any]]:
         """Call the Node.js CLI wrapper"""
+        # Pass TSV via stdin to avoid argument length and special character issues
         result = subprocess.run(
-            ['node', 'cli_for_lang_conversion.js', command, bible_link, book_code, tsv_content],
+            ['node', 'cli_for_lang_conversion.js', command, bible_link, book_code, '-'],
+            input=tsv_content,
             capture_output=True,
             text=True,
             cwd=self.converter_path
@@ -288,12 +298,13 @@ class TSVConverter:
         Returns:
             dict with 'output' (TSV string) and 'errors' (list) or None
         """
-        cache_key = f"gl2ol_{bible_link}_{book_code}"
+        # Hash the TSV content to avoid stale cache across different inputs
+        content_hash = hashlib.md5(tsv_content.encode('utf-8')).hexdigest()
 
         # Check cache if enabled
         if use_cache and self.cache:
             should_use, cached_data = self.cache.should_use_cache(
-                bible_link, book_code, verbose=verbose
+                bible_link, book_code, verbose=verbose, content_hash=content_hash
             )
             if should_use and cached_data:
                 return cached_data['result']
@@ -306,7 +317,7 @@ class TSVConverter:
 
         # Save to cache
         if result and self.cache:
-            self.cache.save_to_cache(bible_link, book_code, result, verbose=verbose)
+            self.cache.save_to_cache(bible_link, book_code, result, verbose=verbose, content_hash=content_hash)
 
         return result
 
