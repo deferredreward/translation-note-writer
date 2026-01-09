@@ -664,16 +664,97 @@ def prepare_update_data(original_item: Dict[str, Any], ai_output: str,
                 'AI TN': final_note
             }
         }
-        
+
         # Add SRef if it was updated
         if original_item.get('SRef'):
             update_data['updates']['SRef'] = original_item['SRef']
-        
+
+        # NOTE: Language conversion data (GLQuote, OrigL, ID) is now written immediately
+        # after enrichment by update_conversion_data_immediately(), so we don't include
+        # it here to avoid duplicate writes. See batch_processor.py and
+        # continuous_batch_manager.py for the immediate update calls.
+
         return update_data
-        
+
     except Exception as e:
         logger.error(f"Error preparing update data: {e}")
         return None
+
+
+def update_conversion_data_immediately(items: List[Dict[str, Any]], sheet_id: str,
+                                      sheet_manager, config,
+                                      logger: Optional[logging.Logger] = None) -> int:
+    """Update sheet with ONLY conversion data columns (GLQuote, OrigL, ID).
+
+    This function writes the language conversion results immediately after enrichment,
+    before any AI processing happens. This allows:
+    - Fast feedback on conversion results
+    - Testing with --noai flag
+    - Separation of concerns (conversion vs AI)
+
+    Args:
+        items: List of items with conversion_data
+        sheet_id: Google Sheets ID
+        sheet_manager: Sheet manager instance
+        config: Config manager instance
+        logger: Optional logger instance
+
+    Returns:
+        Number of rows updated
+    """
+    if logger is None:
+        logger = logging.getLogger(__name__)
+
+    # Check dry run mode
+    if config.get('debug.dry_run', False):
+        count = sum(1 for item in items if 'conversion_data' in item)
+        logger.info(f"DRY RUN: Would update conversion data for {count} items")
+        return count
+
+    updates = []
+    for item in items:
+        if 'conversion_data' not in item:
+            continue
+
+        conv_data = item['conversion_data']
+        row_number = (item.get('row') or
+                     item.get('row # for n8n hide, don\'t delete') or
+                     item.get('row_number'))
+
+        if not row_number:
+            logger.warning(f"No row number found for item {item.get('Ref', 'unknown')}, skipping conversion data update")
+            continue
+
+        update_data = {
+            'row_number': row_number,
+            'updates': {}
+        }
+
+        # Add only conversion columns - be explicit about what we're updating
+        if conv_data.get('GLQuote'):
+            update_data['updates']['GLQuote'] = conv_data['GLQuote']
+            logger.debug(f"Row {row_number}: Will update GLQuote='{conv_data['GLQuote']}'")
+        if conv_data.get('OrigL'):
+            update_data['updates']['OrigL'] = conv_data['OrigL']
+            logger.debug(f"Row {row_number}: Will update OrigL (length={len(conv_data['OrigL'])})")
+        if conv_data.get('ID'):
+            update_data['updates']['ID'] = conv_data['ID']
+            logger.debug(f"Row {row_number}: Will update ID='{conv_data['ID']}'")
+
+        if update_data['updates']:
+            updates.append(update_data)
+
+    if updates:
+        try:
+            sheet_manager.batch_update_rows(sheet_id, updates)
+            logger.info(f"✓ Immediately updated conversion data (GLQuote/OrigL/ID) for {len(updates)} rows")
+            return len(updates)
+        except Exception as e:
+            logger.error(f"Error updating conversion data: {e}", exc_info=True)
+            return 0
+    else:
+        logger.debug("No conversion data to update")
+        return 0
 
 
 def get_row_identifier(sheet_id: str, item: Dict[str, Any]) -> str:

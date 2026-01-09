@@ -275,8 +275,14 @@ class CacheManager:
         if not items:
             return None, None
         
-        # Get the book from the first item (all items in a batch should be same book)
-        book = items[0].get('Book', '').strip()
+        # Look through items to find the first one with a valid book
+        # (first row might be blank, so we check all items)
+        book = None
+        for item in items:
+            book = item.get('Book', '').strip()
+            if book:
+                break
+        
         if not book:
             self.logger.warning("No book found in work items")
             return None, None

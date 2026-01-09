@@ -129,7 +129,21 @@ Verify your configuration is working:
 python test_config_migration.py
 ```
 
-### 6. Run the Application
+### 6. Language Conversion (Optional)
+
+Run the roundtrip English→Hebrew/Greek→English conversion to populate `GLQuote`, `OrigL`, and `ID` columns:
+
+```bash
+# Run language conversion for all sheets
+python3 main.py --convert-language
+
+# Test without making changes
+python3 main.py --convert-language --dry-run
+```
+
+See [LANGUAGE_CONVERSION.md](LANGUAGE_CONVERSION.md) for detailed documentation.
+
+### 7. Run the Application
 
 ```bash
 # Activate virtual environment
@@ -148,6 +162,18 @@ python main.py --mode complete --noai
 
 # Start continuous monitoring (old behavior)
 python main.py --mode continuous
+
+# Run language conversion only
+python main.py --convert-language
+
+# Convert SRef values
+python main.py --convert-sref
+
+# Show cache status
+python main.py --cache-status
+
+# Show batch processing status
+python main.py --status
 ```
 
 ## 🔄 Processing Modes

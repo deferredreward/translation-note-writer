@@ -24,7 +24,7 @@ from .processing_utils import (
     format_alternate_translation, generate_programmatic_note,
     clean_ai_output, determine_note_type, format_final_note,
     prepare_update_data, ensure_biblical_text_cached,
-    should_include_alternate_translation
+    should_include_alternate_translation, update_conversion_data_immediately
 )
 
 
@@ -146,11 +146,37 @@ class BatchProcessor:
                 self.logger.info(f"BATCH_PROCESSOR: Detected user='{user}', book='{book}' - ensuring biblical text cached")
                 # Ensure biblical text is cached for this user and book
                 self._ensure_biblical_text_cached(user, book)
+
+                # Perform round-trip language conversion for all items
+                # This enriches items with GLQuote, OrigL, and ID before any processing
+                try:
+                    from .language_converter import LanguageConverter
+                    converter = LanguageConverter(cache_manager=self.cache_manager)
+                    items = converter.enrich_items_with_conversion(
+                        items=items,
+                        book_code=book,
+                        sheet_manager=self.sheet_manager,
+                        sheet_id=sheet_id,
+                        verbose=False
+                    )
+                    self.logger.debug(f"Completed language conversion for {len(items)} items in {book}")
+
+                    # Update sheet with conversion data immediately (before AI processing)
+                    update_conversion_data_immediately(
+                        items=items,
+                        sheet_id=sheet_id,
+                        sheet_manager=self.sheet_manager,
+                        config=self.config,
+                        logger=self.logger
+                    )
+                except Exception as e:
+                    self.logger.error(f"Error during language conversion for {book}: {e}", exc_info=True)
+                    # Continue processing even if conversion fails
             else:
                 self.logger.warning(f"BATCH_PROCESSOR: Could not detect book from items for user '{user}' (missing Book column?)")
         else:
             self.logger.warning(f"BATCH_PROCESSOR: Could not determine user from sheet_id '{sheet_id}'")
-        
+
         # Step 1: Separate items that can be handled programmatically vs need AI
         programmatic_items, ai_items = self._separate_items_by_processing_type(items)
         
