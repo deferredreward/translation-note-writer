@@ -29,7 +29,7 @@ anthropic:
   batch_size: 4  # Number of rows per batch sent to AI
   max_concurrent_batches: 4  # Number of batches that can run at the same time
   max_batch_requests: 100  # Max requests per batch (API limit is 100,000)
-  batch_timeout_hours: 1  # How long to wait for batch completion
+  batch_timeout_hours: 24  # How long to wait for batch completion
   
   # Batch response polling settings
   batch_poll_interval: 60  # How often to check batch status (in seconds)
