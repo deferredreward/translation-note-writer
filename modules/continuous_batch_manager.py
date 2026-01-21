@@ -7,9 +7,10 @@ as batches complete to maintain maximum throughput.
 import logging
 import time
 import threading
+import os
 from typing import Dict, List, Any, Optional, Set, NamedTuple
 from datetime import datetime, timedelta
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from queue import Queue, Empty
 import json
 
@@ -94,6 +95,10 @@ class ContinuousBatchManager:
         self.running = False
         self.shutdown_requested = False
         self.soft_stop_requested = False
+
+        # Pending batches persistence file (in cache directory)
+        cache_dir = config.get('cache.cache_dir', 'cache')
+        self.pending_batches_file = os.path.join(cache_dir, 'pending_batches.json')
         
         # Permission error tracking
         self.blocked_sheets: Dict[str, datetime] = {}  # sheet_id -> blocked_until_time
@@ -109,7 +114,132 @@ class ContinuousBatchManager:
         
         self.logger.info(f"Continuous batch manager initialized - max concurrent: {self.max_concurrent_batches}")
         self.logger.info(f"Work check interval: {self.work_check_interval}s, minimum: {self.work_check_minimum_interval}s")
-    
+
+    def _save_pending_batches(self):
+        """Save running batches to disk for recovery after crashes/timeouts."""
+        try:
+            # Convert RunningBatch objects to serializable dicts
+            batches_data = {}
+            for batch_id, batch in self.running_batches.items():
+                batches_data[batch_id] = {
+                    'batch_id': batch.batch_id,
+                    'user': batch.user,
+                    'sheet_id': batch.sheet_id,
+                    'book': batch.book,
+                    'items': batch.items,
+                    'submitted_at': batch.submitted_at.isoformat(),
+                    'batch_type': batch.batch_type
+                }
+
+            # Ensure directory exists
+            os.makedirs(os.path.dirname(self.pending_batches_file), exist_ok=True)
+
+            # Write atomically using temp file
+            temp_file = self.pending_batches_file + '.tmp'
+            with open(temp_file, 'w') as f:
+                json.dump(batches_data, f, indent=2)
+            os.replace(temp_file, self.pending_batches_file)
+
+            self.logger.debug(f"Saved {len(batches_data)} pending batches to {self.pending_batches_file}")
+        except Exception as e:
+            self.logger.error(f"Error saving pending batches: {e}")
+
+    def _load_pending_batches(self) -> Dict[str, RunningBatch]:
+        """Load pending batches from disk."""
+        if not os.path.exists(self.pending_batches_file):
+            return {}
+
+        try:
+            with open(self.pending_batches_file, 'r') as f:
+                batches_data = json.load(f)
+
+            batches = {}
+            for batch_id, data in batches_data.items():
+                batches[batch_id] = RunningBatch(
+                    batch_id=data['batch_id'],
+                    user=data['user'],
+                    sheet_id=data['sheet_id'],
+                    book=data['book'],
+                    items=data['items'],
+                    submitted_at=datetime.fromisoformat(data['submitted_at']),
+                    batch_type=data['batch_type']
+                )
+
+            self.logger.info(f"Loaded {len(batches)} pending batches from {self.pending_batches_file}")
+            return batches
+        except Exception as e:
+            self.logger.error(f"Error loading pending batches: {e}")
+            return {}
+
+    def resume_batches(self) -> int:
+        """Resume processing of batches that were pending before a crash/timeout.
+
+        This method:
+        1. Loads pending batches from disk
+        2. Checks their status on Anthropic's API
+        3. Processes completed batches through the normal pipeline
+        4. Returns the count of items recovered
+
+        Returns:
+            Number of items successfully recovered
+        """
+        pending = self._load_pending_batches()
+        if not pending:
+            self.logger.info("No pending batches to resume")
+            return 0
+
+        self.logger.info(f"Found {len(pending)} pending batches to check")
+
+        recovered_count = 0
+        completed_batches = []
+
+        for batch_id, batch_info in pending.items():
+            friendly_name = self.config.get_friendly_name_with_id(batch_info.user)
+            self.logger.info(f"Checking batch {batch_id} for {friendly_name}...")
+
+            try:
+                # Check batch status on Anthropic API
+                batch_status = self.ai_service.get_batch_status(batch_id)
+
+                if batch_status.processing_status == 'ended':
+                    self.logger.info(f"Batch {batch_id} completed - processing results")
+
+                    # Process through normal pipeline
+                    raw_results = self.ai_service.get_batch_results(batch_status)
+                    processed_results = self.ai_service.process_batch_results(raw_results, batch_info.items)
+
+                    # Update sheet with results
+                    success_count = self._update_sheet_with_results(processed_results, batch_info.sheet_id)
+                    recovered_count += success_count
+
+                    self.logger.info(f"Recovered {success_count}/{len(batch_info.items)} items from batch {batch_id}")
+                    completed_batches.append(batch_id)
+
+                elif batch_status.processing_status in ['canceled', 'expired']:
+                    self.logger.warning(f"Batch {batch_id} has status: {batch_status.processing_status} - cannot recover")
+                    completed_batches.append(batch_id)
+
+                else:
+                    self.logger.info(f"Batch {batch_id} still processing ({batch_status.processing_status}) - will retry later")
+
+            except Exception as e:
+                self.logger.error(f"Error checking batch {batch_id}: {e}")
+
+        # Remove completed/failed batches from pending file
+        if completed_batches:
+            for batch_id in completed_batches:
+                pending.pop(batch_id, None)
+
+            # Update the pending batches file
+            with self.lock:
+                self.running_batches = pending
+            self._save_pending_batches()
+
+            self.logger.info(f"Removed {len(completed_batches)} completed batches from pending file")
+
+        self.logger.info(f"Resume complete: recovered {recovered_count} items")
+        return recovered_count
+
     def start(self):
         """Start the continuous batch processing."""
         if self.running:
@@ -596,7 +726,8 @@ class ContinuousBatchManager:
                     
                     with self.lock:
                         self.running_batches[batch_id] = running_batch
-                    
+                        self._save_pending_batches()
+
                     self.logger.info(f"Submitted AI batch {batch_num} for {friendly_name_with_id} (ID: {batch_id}, {len(batch_items)} items)")
                     batch_num += 1
                 except Exception as e:
@@ -736,7 +867,9 @@ class ContinuousBatchManager:
                     for batch_id in completed_batches:
                         if batch_id in self.running_batches:
                             del self.running_batches[batch_id]
-                
+                    if completed_batches:
+                        self._save_pending_batches()
+
                 if completed_batches:
                     self.logger.info(f"Removed {len(completed_batches)} completed batches - {len(self.running_batches)} still running")
                 

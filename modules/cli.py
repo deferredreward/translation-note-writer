@@ -39,6 +39,7 @@ Examples:
   %(prog)s --convert-language                  # Run roundtrip language conversion
   %(prog)s --status                            # Show system status
   %(prog)s --clear-cache all                   # Clear all caches
+  %(prog)s --resume                            # Recover batches from previous crash/timeout
   %(prog)s --mode continuous --immediate-mode      # Run with immediate AI processing
             """
         )
@@ -118,7 +119,7 @@ Examples:
         # Utility commands
         utility_group = parser.add_argument_group('Utility Commands')
         utility_group.add_argument(
-            '--convert-sref', 
+            '--convert-sref',
             action='store_true',
             help='Convert short SRef values to full support reference names and exit'
         )
@@ -128,9 +129,14 @@ Examples:
             help='Run roundtrip English→Hebrew/Greek→English conversion (updates GLQuote, OrigL, ID columns) and exit'
         )
         utility_group.add_argument(
-            '--status', 
+            '--status',
             action='store_true',
             help='Show current batch processing status and exit'
+        )
+        utility_group.add_argument(
+            '--resume',
+            action='store_true',
+            help='Resume processing of pending batches from previous run (after crash/timeout) and exit'
         )
         
         return parser
@@ -289,7 +295,14 @@ Examples:
             if args.status:
                 self._display_status(app)
                 sys.exit(0)
-            
+
+            # Resume pending batches
+            if args.resume:
+                app.logger.info("Resuming pending batches...")
+                recovered = app.continuous_batch_manager.resume_batches()
+                app.logger.info(f"Resume complete: recovered {recovered} items")
+                sys.exit(0)
+
             return False  # No utility command handled
             
         except SystemExit:
