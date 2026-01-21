@@ -587,46 +587,36 @@ class TranslationNotesAI:
     
     def _process_items_immediately(self, items: List[Dict[str, Any]], sheet_id: str, editor_name: str) -> int:
         """Process items immediately using synchronous AI calls.
-        
+
         Args:
             items: List of sanitized items to process
             sheet_id: Google Sheets ID
             editor_name: Editor name for logging
-            
+
         Returns:
             Number of items successfully processed
         """
-        from modules.processing_utils import prepare_update_data, ensure_biblical_text_cached
-        
+        from modules.processing_utils import prepare_update_data
+        from modules.processing_pipeline import ItemProcessingPipeline
+
         self.logger.info(f"Processing {len(items)} items immediately for {editor_name}")
-        
+
         try:
-            # Initialize editor_key and book variables
-            editor_key = None
-            book = None
-            
-            # Ensure biblical text is cached (same as continuous batch processing)
-            if items:
-                # Get the editor key from sheet_id
-                sheet_ids = self.config.get('google_sheets.sheet_ids', {})
-                for key, sid in sheet_ids.items():
-                    if sid == sheet_id:
-                        editor_key = key
-                        break
-                
-                if editor_key:
-                    # Use the same book detection as continuous batch processing
-                    _, book = self.cache_manager.detect_user_book_from_items(items)
-                    if book:
-                        self.logger.info(f"Ensuring biblical text cached for {editor_key}/{book}")
-                        ensure_biblical_text_cached(editor_key, book, self.cache_manager, self.sheet_manager, self.config, self.logger)
-                    else:
-                        self.logger.warning("Could not determine book from items (missing Book column?)")
-                else:
-                    self.logger.warning(f"Could not determine editor key for sheet {sheet_id}")
-            
+            # Use the unified processing pipeline for pre-processing
+            # This handles: user detection, book detection, biblical text caching,
+            # language conversion, and immediate conversion data updates
+            pipeline = ItemProcessingPipeline(
+                cache_manager=self.cache_manager,
+                sheet_manager=self.sheet_manager,
+                config=self.config,
+                logger=self.logger
+            )
+            prepared = pipeline.prepare_items(items, sheet_id)
+
             # Process items using immediate AI service with user/book context
-            results = self.ai_service.process_items_immediately(items, user=editor_key, book=book)
+            results = self.ai_service.process_items_immediately(
+                prepared.items, user=prepared.user, book=prepared.book
+            )
             
             # Prepare updates for successful results
             updates = []

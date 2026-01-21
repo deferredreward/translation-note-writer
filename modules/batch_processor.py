@@ -23,8 +23,7 @@ from .processing_utils import (
     post_process_text, separate_items_by_processing_type,
     format_alternate_translation, generate_programmatic_note,
     clean_ai_output, determine_note_type, format_final_note,
-    prepare_update_data, ensure_biblical_text_cached,
-    should_include_alternate_translation, update_conversion_data_immediately
+    prepare_update_data, should_include_alternate_translation
 )
 
 
@@ -117,65 +116,36 @@ class BatchProcessor:
     
     def process_items(self, items: List[Dict[str, Any]], sheet_id: str) -> int:
         """Process a list of items in batches with parallel processing.
-        
+
         Args:
             items: List of items to process
             sheet_id: Google Sheets ID for updates
-            
+
         Returns:
             Number of items successfully processed
         """
         if not items:
             return 0
-        
-        # Step 0: Determine user and book for biblical text caching
-        user = None
-        book = None
-        
-        # Get the user from sheet_id
-        sheet_ids = self.config.get('google_sheets.sheet_ids', {})
-        for key, sid in sheet_ids.items():
-            if sid == sheet_id:
-                user = key
-                break
-        
-        if user:
-            # Detect the current book from items
-            _, book = self.cache_manager.detect_user_book_from_items(items)
-            if book:
-                self.logger.info(f"BATCH_PROCESSOR: Detected user='{user}', book='{book}' - ensuring biblical text cached")
-                # Ensure biblical text is cached for this user and book
-                self._ensure_biblical_text_cached(user, book)
 
-                # Perform round-trip language conversion for all items
-                # This enriches items with GLQuote, OrigL, and ID before any processing
-                try:
-                    from .language_converter import LanguageConverter
-                    converter = LanguageConverter(cache_manager=self.cache_manager)
-                    items = converter.enrich_items_with_conversion(
-                        items=items,
-                        book_code=book,
-                        sheet_manager=self.sheet_manager,
-                        sheet_id=sheet_id,
-                        verbose=False
-                    )
-                    self.logger.debug(f"Completed language conversion for {len(items)} items in {book}")
+        # Use the unified processing pipeline for pre-processing
+        # This handles: user detection, book detection, biblical text caching,
+        # language conversion, and immediate conversion data updates
+        from .processing_pipeline import ItemProcessingPipeline
 
-                    # Update sheet with conversion data immediately (before AI processing)
-                    update_conversion_data_immediately(
-                        items=items,
-                        sheet_id=sheet_id,
-                        sheet_manager=self.sheet_manager,
-                        config=self.config,
-                        logger=self.logger
-                    )
-                except Exception as e:
-                    self.logger.error(f"Error during language conversion for {book}: {e}", exc_info=True)
-                    # Continue processing even if conversion fails
-            else:
-                self.logger.warning(f"BATCH_PROCESSOR: Could not detect book from items for user '{user}' (missing Book column?)")
-        else:
-            self.logger.warning(f"BATCH_PROCESSOR: Could not determine user from sheet_id '{sheet_id}'")
+        pipeline = ItemProcessingPipeline(
+            cache_manager=self.cache_manager,
+            sheet_manager=self.sheet_manager,
+            config=self.config,
+            logger=self.logger
+        )
+        prepared = pipeline.prepare_items(items, sheet_id)
+
+        user = prepared.user
+        book = prepared.book
+        items = prepared.items
+
+        self.logger.info(f"BATCH_PROCESSOR: Pipeline prepared {len(items)} items "
+                        f"(user='{user}', book='{book}', conversions={prepared.conversion_count})")
 
         # Step 1: Separate items that can be handled programmatically vs need AI
         programmatic_items, ai_items = self._separate_items_by_processing_type(items)
@@ -615,7 +585,7 @@ class BatchProcessor:
 
     def process_items_for_user(self, user: str, items: List[Dict[str, Any]], dry_run: bool = False):
         """Process items for a specific user.
-        
+
         Args:
             user: Username
             items: List of items to process
@@ -624,26 +594,34 @@ class BatchProcessor:
         if not items:
             self.logger.info(f"No items to process for {user}")
             return
-        
+
         self.logger.info(f"Processing {len(items)} items for {user}")
-        
+
         # Get sheet_id for user
         sheet_id = self.config.get_google_sheets_config()['sheet_ids'].get(user)
         if not sheet_id:
             self.logger.error(f"No sheet ID configured for user {user}")
             return
-        
-        # Detect the current book from items
-        _, book = self.cache_manager.detect_user_book_from_items(items)
-        if not book:
+
+        # Use the unified processing pipeline for pre-processing
+        from .processing_pipeline import ItemProcessingPipeline
+
+        pipeline = ItemProcessingPipeline(
+            cache_manager=self.cache_manager,
+            sheet_manager=self.sheet_manager,
+            config=self.config,
+            logger=self.logger
+        )
+        prepared = pipeline.prepare_items(items, sheet_id, user=user)
+
+        if not prepared.book:
             self.logger.error(f"Could not detect book for user {user}")
             return
-        
+
+        book = prepared.book
+        items = prepared.items
         self.logger.info(f"Detected book {book} for user {user}")
-        
-        # Ensure biblical text is cached for this user and book
-        self._ensure_biblical_text_cached(user, book)
-        
+
         # Separate items by processing type
         programmatic_items, ai_items = self._separate_items_by_processing_type(items)
         
@@ -665,49 +643,6 @@ class BatchProcessor:
         
         total_processed = len(programmatic_items) + len(ai_items)
         self.logger.info(f"Processed {total_processed} items for {user}")
-
-    def _ensure_biblical_text_cached(self, user: str, book: str):
-        """Ensure biblical text is cached for the user and book.
-        
-        Args:
-            user: Username
-            book: Book code
-        """
-        import time
-        import platform
-        start_time = time.time()
-        
-        self.logger.info(f"BIBLICAL_CACHE: Starting biblical text caching for user='{user}', book='{book}' on {platform.system()}")
-        
-        # Check cache status before attempting to cache
-        ult_cached_before = self.cache_manager.get_biblical_text_for_user('ULT', user, book) is not None
-        ust_cached_before = self.cache_manager.get_biblical_text_for_user('UST', user, book) is not None
-        self.logger.info(f"BIBLICAL_CACHE: Cache status BEFORE - ULT: {'✓' if ult_cached_before else '✗'}, UST: {'✓' if ust_cached_before else '✗'}")
-        
-        try:
-            ensure_biblical_text_cached(user, book, self.cache_manager, self.sheet_manager, self.config, self.logger)
-            
-            # Check cache status after attempting to cache
-            ult_cached_after = self.cache_manager.get_biblical_text_for_user('ULT', user, book) is not None
-            ust_cached_after = self.cache_manager.get_biblical_text_for_user('UST', user, book) is not None
-            elapsed_time = time.time() - start_time
-            
-            self.logger.info(f"BIBLICAL_CACHE: Cache status AFTER - ULT: {'✓' if ult_cached_after else '✗'}, UST: {'✓' if ust_cached_after else '✗'} (took {elapsed_time:.2f}s)")
-            
-            # Check for Linux-specific silent failures
-            if not ult_cached_after or not ust_cached_after:
-                self.logger.error(f"BIBLICAL_CACHE: SILENT FAILURE detected on {platform.system()} - biblical text caching appeared to succeed but cache is still empty")
-                self.logger.error(f"BIBLICAL_CACHE: This may indicate a Linux-specific issue with Door43 scraping or cache persistence")
-            else:
-                self.logger.info(f"BIBLICAL_CACHE: SUCCESS - Biblical text successfully cached for {user}/{book}")
-                
-        except Exception as e:
-            elapsed_time = time.time() - start_time
-            self.logger.error(f"BIBLICAL_CACHE: EXCEPTION during caching for {user}/{book} after {elapsed_time:.2f}s: {e}")
-            self.logger.error(f"BIBLICAL_CACHE: Platform: {platform.system()}, Python: {platform.python_version()}")
-            import traceback
-            self.logger.error(f"BIBLICAL_CACHE: Full traceback: {traceback.format_exc()}")
-            raise
 
     def _dry_run_ai_items(self, items: List[Dict[str, Any]], user: str, book: str):
         """Perform dry run of AI items processing.
