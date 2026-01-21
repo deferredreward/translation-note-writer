@@ -23,8 +23,7 @@ from .processing_utils import (
     format_alternate_translation, generate_programmatic_note,
     clean_ai_output, determine_note_type, format_final_note,
     prepare_update_data, ensure_biblical_text_cached,
-    should_include_alternate_translation, get_row_identifier,
-    update_conversion_data_immediately
+    should_include_alternate_translation, get_row_identifier
 )
 
 
@@ -527,35 +526,25 @@ class ContinuousBatchManager:
     def _process_pending_work(self, work: PendingWork):
         """Process pending work by creating and submitting batches."""
         try:
-            # First, perform round-trip language conversion for all items
-            # This enriches items with GLQuote, OrigL, and ID before any processing
-            user_detected, book = self.cache_manager.detect_user_book_from_items(work.items)
-            if book:
-                try:
-                    from .language_converter import LanguageConverter
-                    converter = LanguageConverter(cache_manager=self.cache_manager)
-                    work.items = converter.enrich_items_with_conversion(
-                        items=work.items,
-                        book_code=book,
-                        sheet_manager=self.sheet_manager,
-                        sheet_id=work.sheet_id,
-                        verbose=False
-                    )
-                    self.logger.debug(f"Completed language conversion for {len(work.items)} items in {book}")
+            # Use the unified processing pipeline for pre-processing
+            # This handles: user detection (already have work.user), book detection,
+            # biblical text caching, language conversion, and immediate conversion data updates
+            from .processing_pipeline import ItemProcessingPipeline
 
-                    # Update sheet with conversion data immediately (before AI processing)
-                    update_conversion_data_immediately(
-                        items=work.items,
-                        sheet_id=work.sheet_id,
-                        sheet_manager=self.sheet_manager,
-                        config=self.config,
-                        logger=self.logger
-                    )
-                except Exception as e:
-                    self.logger.error(f"Error during language conversion for {book}: {e}", exc_info=True)
-                    # Continue processing even if conversion fails
-            else:
-                self.logger.warning(f"Could not detect book for language conversion, skipping")
+            pipeline = ItemProcessingPipeline(
+                cache_manager=self.cache_manager,
+                sheet_manager=self.sheet_manager,
+                config=self.config,
+                logger=self.logger
+            )
+            prepared = pipeline.prepare_items(work.items, work.sheet_id, user=work.user)
+
+            # Update work items with enriched items from pipeline
+            work.items = prepared.items
+            book = prepared.book
+
+            self.logger.info(f"CONTINUOUS: Pipeline prepared {len(work.items)} items for {work.user} "
+                           f"(book='{book}', conversions={prepared.conversion_count})")
 
             # Separate items by processing type first (before marking as in progress)
             programmatic_items, ai_items = self._separate_items_by_processing_type(work.items)
