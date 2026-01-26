@@ -53,77 +53,132 @@ class BiblicalTextScraper:
         if not SELENIUM_AVAILABLE:
             self.logger.warning("Selenium not available. Install with: pip install selenium")
     
-    def scrape_biblical_text(self, book_code: str, text_type: str = 'ULT') -> Optional[Dict[str, Any]]:
+    def scrape_biblical_text(self, book_code: str, text_type: str = 'ULT',
+                             door43_username: str = None) -> Optional[Dict[str, Any]]:
         """Scrape biblical text from Door43.
-        
+
         Args:
             book_code: 3-letter book code (e.g., 'DEU', 'OBA')
             text_type: 'ULT' or 'UST'
-            
+            door43_username: Optional Door43 username to try user's branch first
+
         Returns:
             Dictionary with book and chapters data
         """
         if not SELENIUM_AVAILABLE:
             self.logger.error("Selenium is required for scraping Door43. Please install: pip install selenium")
             return None
-        
+
         try:
             # Convert book code to lowercase for URL
             book_lower = self.book_codes.get(book_code.upper())
             if not book_lower:
                 self.logger.error(f"Unknown book code: {book_code}")
                 return None
-            
-            # Build URL
+
+            book_upper = book_code.upper()
             text_lower = text_type.lower()
-            url = f"{self.base_url}/en_{text_lower}/master?book={book_lower}"
-            
-            self.logger.info(f"Scraping {text_type} for {book_code} from: {url}")
-            
+
             # Setup Chrome driver
             driver = self._setup_driver()
             if not driver:
                 return None
-            
+
             try:
-                # Load the page
-                driver.get(url)
-                
-                # Wait for page to load
-                WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.TAG_NAME, "body"))
-                )
-                
-                # Check the USFM checkbox
-                usfm_checked = self._check_usfm_checkbox(driver)
-                if not usfm_checked:
-                    self.logger.warning("Could not find or check USFM checkbox, trying to extract content anyway")
-                
-                # Wait for content to load
-                time.sleep(3)
-                
-                # Get the USFM content
-                usfm_content = self._extract_usfm_content(driver)
-                
-                if not usfm_content:
-                    self.logger.warning("No USFM content found, trying alternative extraction methods")
-                    usfm_content = self._extract_alternative_content(driver)
-                
-                if not usfm_content:
-                    self.logger.error("No content found with any extraction method")
-                    return None
-                
-                # Parse USFM content
-                parsed_data = self._parse_usfm_content(usfm_content, book_code)
-                
-                self.logger.info(f"Successfully scraped {text_type} for {book_code}: {len(parsed_data.get('chapters', []))} chapters")
-                return parsed_data
-                
+                # Try user branch first if username provided
+                if door43_username:
+                    user_branch = f"auto-{door43_username}-{book_upper}"
+                    user_url = f"{self.base_url}/en_{text_lower}/{user_branch}?book={book_lower}"
+
+                    self.logger.info(f"Trying user branch for {text_type} {book_code}: {user_url}")
+                    result = self._try_scrape_url(driver, user_url, book_code)
+
+                    if result and not self._is_error_page(driver):
+                        self.logger.info(f"Successfully scraped {text_type} for {book_code} from user branch: {len(result.get('chapters', []))} chapters")
+                        return result
+                    else:
+                        self.logger.info(f"User branch not found or error for {door43_username}/{book_upper}, falling back to master")
+
+                # Fall back to (or use directly) master branch
+                master_url = f"{self.base_url}/en_{text_lower}/master?book={book_lower}"
+                self.logger.info(f"Scraping {text_type} for {book_code} from master: {master_url}")
+
+                result = self._try_scrape_url(driver, master_url, book_code)
+                if result:
+                    self.logger.info(f"Successfully scraped {text_type} for {book_code} from master: {len(result.get('chapters', []))} chapters")
+                return result
+
             finally:
                 driver.quit()
-                
+
         except Exception as e:
             self.logger.error(f"Error scraping {text_type} for {book_code}: {e}")
+            return None
+
+    def _is_error_page(self, driver: webdriver.Chrome) -> bool:
+        """Check if the current page shows a Door43 error (branch doesn't exist).
+
+        Args:
+            driver: Chrome WebDriver instance
+
+        Returns:
+            True if page shows error indicating branch doesn't exist
+        """
+        try:
+            page_text = driver.find_element(By.TAG_NAME, "body").text
+            return "Unable to get a valid catalog entry for this resource" in page_text
+        except Exception:
+            return False
+
+    def _try_scrape_url(self, driver: webdriver.Chrome, url: str, book_code: str) -> Optional[Dict[str, Any]]:
+        """Try to scrape biblical text from a specific URL.
+
+        Args:
+            driver: Chrome WebDriver instance
+            url: URL to scrape
+            book_code: Book code for parsing
+
+        Returns:
+            Dictionary with book and chapters data, or None if failed
+        """
+        try:
+            # Load the page
+            driver.get(url)
+
+            # Wait for page to load
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.TAG_NAME, "body"))
+            )
+
+            # Check for error page before proceeding
+            if self._is_error_page(driver):
+                return None
+
+            # Check the USFM checkbox
+            usfm_checked = self._check_usfm_checkbox(driver)
+            if not usfm_checked:
+                self.logger.warning("Could not find or check USFM checkbox, trying to extract content anyway")
+
+            # Wait for content to load
+            time.sleep(3)
+
+            # Get the USFM content
+            usfm_content = self._extract_usfm_content(driver)
+
+            if not usfm_content:
+                self.logger.warning("No USFM content found, trying alternative extraction methods")
+                usfm_content = self._extract_alternative_content(driver)
+
+            if not usfm_content:
+                self.logger.error("No content found with any extraction method")
+                return None
+
+            # Parse USFM content
+            parsed_data = self._parse_usfm_content(usfm_content, book_code)
+            return parsed_data
+
+        except Exception as e:
+            self.logger.error(f"Error scraping from {url}: {e}")
             return None
     
     def _setup_driver(self) -> Optional[webdriver.Chrome]:

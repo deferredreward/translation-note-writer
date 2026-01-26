@@ -70,28 +70,35 @@ class ConfigManager:
 
                 self.set(config_key, env_value)
         
-        # Load editor sheet IDs and names from environment variables
+        # Load editor sheet IDs, names, and Door43 usernames from environment variables
         sheet_ids = {}
         editor_names = {}
-        
+        editor_users = {}
+
         # Load generic editor pattern (SHEET_ID_EDITOR1, SHEET_ID_EDITOR2, etc.)
         for i in range(1, 6):  # Support up to 5 editors
             sheet_env_var = f'SHEET_ID_EDITOR{i}'
             name_env_var = f'EDITOR{i}_NAME'
-            
+            user_env_var = f'EDITOR{i}_USER'
+
             sheet_id = os.getenv(sheet_env_var)
             editor_name = os.getenv(name_env_var, f'Editor {i}')  # Default to "Editor N" if name not set
-            
+            door43_user = os.getenv(user_env_var)
+
             if sheet_id:
                 editor_key = f'editor{i}'
                 sheet_ids[editor_key] = sheet_id
                 editor_names[editor_key] = editor_name
-        
-        # Set the sheet_ids and editor_names in config
+                if door43_user:
+                    editor_users[editor_key] = door43_user
+
+        # Set the sheet_ids, editor_names, and editor_users in config
         if sheet_ids:
             self.set('google_sheets.sheet_ids', sheet_ids)
         if editor_names:
             self.set('google_sheets.editor_names', editor_names)
+        if editor_users:
+            self.set('google_sheets.editor_users', editor_users)
     
     def get(self, key: str, default: Any = None) -> Any:
         """Get a configuration value using dot notation.
