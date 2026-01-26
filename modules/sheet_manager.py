@@ -429,7 +429,7 @@ class SheetManager:
             
             # If not found or tabs not configured, try scraping Door43
             self.logger.info(f"Biblical text for {book_code} not found in sheet tabs, trying Door43 scraping for {text_type}")
-            data = self._fetch_from_door43(text_type, book_code)
+            data = self._fetch_from_door43(text_type, book_code, user=user)
             if data:
                 return data
 
@@ -792,33 +792,48 @@ class SheetManager:
             self.logger.error(f"Error in fallback parsing for {book_code}: {e}")
             return {'book': book_code, 'chapters': []}
     
-    def _fetch_from_door43(self, text_type: str, book_code: str) -> Optional[Dict[str, Any]]:
+    def _fetch_from_door43(self, text_type: str, book_code: str, user: str = None) -> Optional[Dict[str, Any]]:
         """Fetch biblical text from Door43 using the scraper.
-        
+
+        If a user is provided and their Door43 username is configured (EDITOR{N}_USER),
+        the scraper will first try the user's branch (auto-{username}-{BOOK}) and
+        fall back to master if the branch doesn't exist.
+
         Args:
             text_type: 'ULT' or 'UST'
             book_code: The 3-letter book code
-            
+            user: Optional user key (e.g., 'editor3') to try user's branch first
+
         Returns:
             Biblical text data or None
         """
         try:
             # Import the scraper
             from .biblical_text_scraper import BiblicalTextScraper
-            
+
+            # Look up Door43 username if user provided
+            door43_username = None
+            if user:
+                editor_users = self.config.get('google_sheets.editor_users', {})
+                door43_username = editor_users.get(user)
+                if door43_username:
+                    self.logger.info(f"Will try Door43 user branch for {user} ({door43_username})")
+                else:
+                    self.logger.debug(f"No Door43 username configured for {user}, using master branch only")
+
             scraper = BiblicalTextScraper()
-            
-            # Use the provided book_code
+
+            # Use the provided book_code and optional door43_username
             self.logger.info(f"Scraping {text_type} for {book_code} from Door43")
-            result = scraper.scrape_biblical_text(book_code, text_type)
-            
+            result = scraper.scrape_biblical_text(book_code, text_type, door43_username=door43_username)
+
             if result:
                 self.logger.info(f"Successfully scraped {text_type} from Door43: {len(result.get('chapters', []))} chapters")
                 return result
             else:
                 self.logger.warning(f"Door43 scraping failed for {text_type}")
                 return None
-                
+
         except ImportError as e:
             self.logger.error(f"Could not import biblical text scraper: {e}")
             self.logger.error("Make sure selenium is installed: pip install selenium")
