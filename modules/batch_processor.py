@@ -114,12 +114,17 @@ class BatchProcessor:
         
         self.logger.info(f"Batch processor initialized with batch size: {self.batch_size}")
     
-    def process_items(self, items: List[Dict[str, Any]], sheet_id: str) -> int:
+    def process_items(self, items: List[Dict[str, Any]], sheet_id: str, user: str = None) -> int:
         """Process a list of items in batches with parallel processing.
+
+        DEPRECATED: This method is deprecated. Use ItemProcessor.check_and_process_sheet()
+        instead, which provides unified processing for all modes (L/LA/AI) including
+        J1 trigger detection.
 
         Args:
             items: List of items to process
             sheet_id: Google Sheets ID for updates
+            user: User key (e.g., 'editor3') for cache operations
 
         Returns:
             Number of items successfully processed
@@ -127,19 +132,52 @@ class BatchProcessor:
         if not items:
             return 0
 
-        # Use the unified processing pipeline for pre-processing
-        # This handles: user detection, book detection, biblical text caching,
-        # language conversion, and immediate conversion data updates
-        from .processing_pipeline import ItemProcessingPipeline
+        # Delegate to ItemProcessor for unified processing
+        from .item_processor import ItemProcessor
 
-        pipeline = ItemProcessingPipeline(
-            cache_manager=self.cache_manager,
-            sheet_manager=self.sheet_manager,
+        processor = ItemProcessor(
             config=self.config,
-            logger=self.logger
+            ai_service=self.ai_service,
+            sheet_manager=self.sheet_manager,
+            cache_manager=self.cache_manager,
+            logger=self.logger,
+            completion_callback=self.completion_callback
         )
-        prepared = pipeline.prepare_items(items, sheet_id)
 
+        # The items already have processing_mode set, so we need to process them
+        # using the ItemProcessor's internal methods
+        from .processing_pipeline import PreparedItems
+
+        # Separate items by processing mode
+        language_only_items = [i for i in items if i.get('processing_mode') == 'language_only']
+        language_and_ai_items = [i for i in items if i.get('processing_mode') == 'language_and_ai']
+        ai_only_items = [i for i in items if i.get('processing_mode') == 'ai_only']
+
+        self.logger.info(f"BATCH_PROCESSOR: Processing modes: L={len(language_only_items)}, "
+                        f"LA={len(language_and_ai_items)}, AI={len(ai_only_items)}")
+
+        total_processed = 0
+
+        # Process language-only items (Go? = 'L')
+        if language_only_items:
+            total_processed += processor._process_language_only(language_only_items, sheet_id, user)
+
+        # Process language+AI items (Go? = 'LA')
+        if language_and_ai_items:
+            total_processed += processor._process_language_and_ai(
+                language_and_ai_items, sheet_id, user, immediate_mode=False
+            )
+
+        # Process AI-only items (default)
+        if ai_only_items:
+            total_processed += processor._process_ai_only(
+                ai_only_items, sheet_id, user, immediate_mode=False
+            )
+
+        return total_processed
+
+    def _process_ai_items_from_prepared(self, prepared, sheet_id: str) -> int:
+        """Process prepared items through AI (common logic for LA and AI-only modes)."""
         user = prepared.user
         book = prepared.book
         items = prepared.items
@@ -147,30 +185,30 @@ class BatchProcessor:
         self.logger.info(f"BATCH_PROCESSOR: Pipeline prepared {len(items)} items "
                         f"(user='{user}', book='{book}', conversions={prepared.conversion_count})")
 
-        # Step 1: Separate items that can be handled programmatically vs need AI
+        # Separate items that can be handled programmatically vs need AI
         programmatic_items, ai_items = self._separate_items_by_processing_type(items)
-        
+
         total_processed = 0
-        
-        # Step 2: Handle programmatic items immediately (no AI needed)
+
+        # Handle programmatic items immediately (no AI needed)
         if programmatic_items:
             self.logger.info(f"Processing {len(programmatic_items)} items programmatically (no AI needed)")
             programmatic_processed = self._process_programmatic_items(programmatic_items, sheet_id)
             total_processed += programmatic_processed
             self.logger.info(f"Programmatically processed {programmatic_processed}/{len(programmatic_items)} items")
-        
-        # Step 3: Process AI items in parallel batches
+
+        # Process AI items in parallel batches
         if ai_items:
             self.logger.info(f"Processing {len(ai_items)} items that require AI in parallel batches")
-            
+
             if self.config.get('debug.dry_run', False):
                 ai_processed = self._process_ai_items_dry_run(ai_items, sheet_id, user=user, book=book)
             else:
                 ai_processed = self._process_ai_items_parallel(ai_items, sheet_id, user=user, book=book)
-            
+
             total_processed += ai_processed
             self.logger.info(f"AI processed {ai_processed}/{len(ai_items)} items")
-        
+
         return total_processed
 
     def _separate_items_by_processing_type(self, items: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:

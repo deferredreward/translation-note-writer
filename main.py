@@ -24,7 +24,8 @@ from modules import (
     BatchProcessor, ContinuousBatchManager, ErrorNotifier,
     SecurityValidator, ConfigSecurityValidator,
     NotificationSystem, post_process_text,
-    TranslationNotesAICLI, main_cli_entry_point
+    TranslationNotesAICLI, main_cli_entry_point,
+    ItemProcessor
 )
 
 
@@ -181,7 +182,16 @@ class TranslationNotesAI:
                 sheet_manager=self.sheet_manager,
                 cache_manager=self.cache_manager
             )
-            
+
+            # Initialize unified item processor for complete/once modes
+            self.item_processor = ItemProcessor(
+                config=self.config,
+                ai_service=self.ai_service,
+                sheet_manager=self.sheet_manager,
+                cache_manager=self.cache_manager,
+                logger=self.logger
+            )
+
             # Initialize error notifier
             self.error_notifier = ErrorNotifier(self.config)
             
@@ -519,139 +529,36 @@ class TranslationNotesAI:
     
     def _process_sheet_work(self, sheet_id: str, editor_key: str, auto_convert_sref: bool) -> int:
         """Process work for a single sheet.
-        
+
         Args:
             sheet_id: Google Sheets ID
             editor_key: Editor key (raw ID like 'editor3')
             auto_convert_sref: Whether to auto-convert SRef values
-            
+
         Returns:
             Number of items processed
         """
-        processed_count = 0
-        
         # Check for suggestion requests first
         self._check_and_process_suggestion_requests(sheet_id, editor_key)
-        
+
         # Get friendly name for logging
         editor_name = self.config.get_friendly_name_with_id(editor_key)
-        
+
         # Convert SRef values if enabled
         if auto_convert_sref:
             self._convert_sref_values_for_sheet(sheet_id, editor_name)
-        
-        # Get and process pending work (with optional limit)
-        processing_config = self.config.get_processing_config()
-        max_items = processing_config.get('max_items_per_work_cycle', 0)
-        max_items = max_items if max_items > 0 else None  # Convert 0 to None for no limit
-        
-        pending_items = self.sheet_manager.get_pending_work(sheet_id, max_items=max_items)
-        if pending_items:
-            self.logger.info(f"Found {len(pending_items)} pending items for {editor_name}")
-            
-            # Validate and sanitize the data
-            sanitized_items = self._sanitize_sheet_data(pending_items)
-            
-            if sanitized_items:
-                if self.immediate_mode_enabled:
-                    # Use immediate processing for predictable timing
-                    processed_count = self._process_items_immediately(sanitized_items, sheet_id, editor_name)
-                else:
-                    # Use batch processing as normal
-                    processed_count = self.batch_processor.process_items(sanitized_items, sheet_id)
-                self.logger.info(f"Processed {processed_count} items for {editor_name}")
-        
+
+        # Delegate ALL processing to ItemProcessor (handles J1 trigger + pending work)
+        processed_count = self.item_processor.check_and_process_sheet(
+            sheet_id=sheet_id,
+            user=editor_key,
+            immediate_mode=self.immediate_mode_enabled
+        )
+
+        if processed_count > 0:
+            self.logger.info(f"Processed {processed_count} items for {editor_name}")
+
         return processed_count
-    
-    def _sanitize_sheet_data(self, items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Sanitize sheet data using our security validator.
-        
-        Args:
-            items: List of sheet data items
-            
-        Returns:
-            List of sanitized items
-        """
-        sanitized_items = []
-        
-        for item in items:
-            try:
-                sanitized_item = self.security_validator.validate_sheet_data(item)
-                sanitized_items.append(sanitized_item)
-                
-            except ValueError as e:
-                self.logger.warning(f"Skipping invalid item: {e}")
-                continue
-        
-        return sanitized_items
-    
-    def _process_items_immediately(self, items: List[Dict[str, Any]], sheet_id: str, editor_name: str) -> int:
-        """Process items immediately using synchronous AI calls.
-
-        Args:
-            items: List of sanitized items to process
-            sheet_id: Google Sheets ID
-            editor_name: Editor name for logging
-
-        Returns:
-            Number of items successfully processed
-        """
-        from modules.processing_utils import prepare_update_data
-        from modules.processing_pipeline import ItemProcessingPipeline
-
-        self.logger.info(f"Processing {len(items)} items immediately for {editor_name}")
-
-        try:
-            # Use the unified processing pipeline for pre-processing
-            # This handles: user detection, book detection, biblical text caching,
-            # language conversion, and immediate conversion data updates
-            pipeline = ItemProcessingPipeline(
-                cache_manager=self.cache_manager,
-                sheet_manager=self.sheet_manager,
-                config=self.config,
-                logger=self.logger
-            )
-            prepared = pipeline.prepare_items(items, sheet_id)
-
-            # Process items using immediate AI service with user/book context
-            results = self.ai_service.process_items_immediately(
-                prepared.items, user=prepared.user, book=prepared.book
-            )
-            
-            # Prepare updates for successful results
-            updates = []
-            success_count = 0
-            
-            for result in results:
-                if result['success']:
-                    # Use the same processing pipeline as batch processing
-                    update_data = prepare_update_data(result['original_item'], result['output'], self.logger)
-                    if update_data:
-                        updates.append(update_data)
-                        success_count += 1
-                    else:
-                        self.logger.error(f"Failed to prepare update data for item: {result['original_item'].get('Ref', 'unknown')}")
-                else:
-                    self.logger.error(f"AI processing failed for item {result['original_item'].get('Ref', 'unknown')}: {result.get('error', 'Unknown error')}")
-            
-            # Update the sheet with results
-            if updates:
-                if not self.config.get('debug.dry_run', False):
-                    self.sheet_manager.batch_update_rows(sheet_id, updates)
-                    self.logger.info(f"Successfully updated {len(updates)} rows in {editor_name}")
-                    
-                    # Call completion callback if set
-                    if hasattr(self, 'batch_processor') and hasattr(self.batch_processor, 'completion_callback') and self.batch_processor.completion_callback:
-                        self.batch_processor.completion_callback(len(updates), f"Immediate processing for {editor_name}")
-                else:
-                    self.logger.info(f"DRY RUN: Would update {len(updates)} rows in {editor_name}")
-            
-            return success_count
-            
-        except Exception as e:
-            self.logger.error(f"Error during immediate processing for {editor_name}: {e}")
-            self.handle_error(e, f"Immediate processing for {editor_name}")
-            return 0
     
     def _convert_sref_values_for_sheet(self, sheet_id: str, editor_name: str):
         """Convert SRef values for a specific sheet."""

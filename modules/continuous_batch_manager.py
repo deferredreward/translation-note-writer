@@ -23,7 +23,8 @@ from .processing_utils import (
     format_alternate_translation, generate_programmatic_note,
     clean_ai_output, determine_note_type, format_final_note,
     prepare_update_data, ensure_biblical_text_cached,
-    should_include_alternate_translation, get_row_identifier
+    should_include_alternate_translation, get_row_identifier,
+    update_conversion_data_immediately
 )
 
 
@@ -110,7 +111,19 @@ class ContinuousBatchManager:
         self.lock = threading.RLock()
         self.monitor_thread = None
         self.work_checker_thread = None
-        
+
+        # Create ItemProcessor for shared processing logic (L mode, J1 trigger)
+        # Import here to avoid circular imports at module level
+        from .item_processor import ItemProcessor
+        self.item_processor = ItemProcessor(
+            config=config,
+            ai_service=ai_service,
+            sheet_manager=sheet_manager,
+            cache_manager=cache_manager,
+            logger=self.logger,
+            completion_callback=completion_callback
+        )
+
         self.logger.info(f"Continuous batch manager initialized - max concurrent: {self.max_concurrent_batches}")
         self.logger.info(f"Work check interval: {self.work_check_interval}s, minimum: {self.work_check_minimum_interval}s")
 
@@ -352,7 +365,10 @@ class ContinuousBatchManager:
         # Skip scanning for new work if soft stop is requested
         if self.soft_stop_requested:
             return
-            
+
+        # Check for language conversion triggers FIRST (before normal work scanning)
+        self._check_language_conversion_triggers()
+
         sheet_ids = self.config.get('google_sheets.sheet_ids', {})
         support_references = self.cache_manager.get_cached_data('support_references')
         
@@ -524,46 +540,35 @@ class ContinuousBatchManager:
                 self.logger.error(f"Error processing work from queue: {e}")
     
     def _process_pending_work(self, work: PendingWork):
-        """Process pending work by creating and submitting batches."""
+        """Process pending work by creating and submitting batches.
+
+        Items are processed based on their processing_mode:
+        - 'language_only': Language conversion only, no AI notes
+        - 'language_and_ai': Language conversion + AI notes
+        - 'ai_only': AI notes only, no language conversion
+        """
         try:
-            # Use the unified processing pipeline for pre-processing
-            # This handles: user detection (already have work.user), book detection,
-            # biblical text caching, language conversion, and immediate conversion data updates
-            from .processing_pipeline import ItemProcessingPipeline
+            # Separate items by processing mode FIRST
+            language_only_items = [i for i in work.items if i.get('processing_mode') == 'language_only']
+            language_and_ai_items = [i for i in work.items if i.get('processing_mode') == 'language_and_ai']
+            ai_only_items = [i for i in work.items if i.get('processing_mode') == 'ai_only']
 
-            pipeline = ItemProcessingPipeline(
-                cache_manager=self.cache_manager,
-                sheet_manager=self.sheet_manager,
-                config=self.config,
-                logger=self.logger
-            )
-            prepared = pipeline.prepare_items(work.items, work.sheet_id, user=work.user)
+            friendly_name = self.config.get_friendly_name_with_id(work.user)
+            self.logger.info(f"Processing modes for {friendly_name}: L={len(language_only_items)}, "
+                           f"LA={len(language_and_ai_items)}, AI={len(ai_only_items)}")
 
-            # Update work items with enriched items from pipeline
-            work.items = prepared.items
-            book = prepared.book
+            # Process language-only items (Go? = 'L')
+            if language_only_items:
+                self._process_language_only_items(language_only_items, work.user, work.sheet_id)
 
-            self.logger.info(f"CONTINUOUS: Pipeline prepared {len(work.items)} items for {work.user} "
-                           f"(book='{book}', conversions={prepared.conversion_count})")
+            # Process language+AI items (Go? = 'LA')
+            if language_and_ai_items:
+                self._process_language_and_ai_items(language_and_ai_items, work.user, work.sheet_id)
 
-            # Separate items by processing type first (before marking as in progress)
-            programmatic_items, ai_items = self._separate_items_by_processing_type(work.items)
-            
-            # Mark only the items we're actually going to process
-            with self.lock:
-                for item in programmatic_items + ai_items:
-                    row_id = self._get_row_identifier(work.sheet_id, item)
-                    self.rows_in_progress.add(row_id)
-                    self.logger.debug(f"Marked row {item.get('row', 'unknown')} as being processed for {work.user}")
-            
-            # Process programmatic items immediately (they don't need AI batches)
-            if programmatic_items:
-                self._process_programmatic_items_immediately(programmatic_items, work.user, work.sheet_id)
-            
-            # Submit AI items as batches
-            if ai_items:
-                self._submit_ai_batches(ai_items, work.user, work.sheet_id)
-        
+            # Process AI-only items (default behavior)
+            if ai_only_items:
+                self._process_ai_only_items(ai_only_items, work.user, work.sheet_id)
+
         except Exception as e:
             self.logger.error(f"Error processing pending work for {work.user}: {e}")
             # If there's an error, make sure to unmark ALL rows that might have been marked
@@ -575,7 +580,136 @@ class ContinuousBatchManager:
     def _separate_items_by_processing_type(self, items: List[Dict[str, Any]]) -> tuple:
         """Separate items into programmatic vs AI processing."""
         return separate_items_by_processing_type(items, self.ai_service, self.cache_manager, self.logger)
-    
+
+    def _check_language_conversion_triggers(self):
+        """Check all sheets for language conversion trigger.
+
+        Delegates to ItemProcessor for the actual J1 trigger processing.
+        """
+        sheet_ids = self.config.get('google_sheets.sheet_ids', {})
+
+        for user, sheet_id in sheet_ids.items():
+            if self.shutdown_requested or self.soft_stop_requested:
+                break
+
+            if self._is_sheet_blocked(sheet_id, user):
+                continue
+
+            try:
+                # Delegate J1 trigger check and processing to ItemProcessor
+                self.item_processor._check_and_process_language_trigger(sheet_id, user)
+
+            except Exception as e:
+                if self._is_permission_error(e):
+                    self._block_sheet_for_permission_error(sheet_id, user)
+                else:
+                    friendly_name = self.config.get_friendly_name_with_id(user)
+                    self.logger.error(f"Error checking language trigger for {friendly_name}: {e}")
+
+    def _process_language_only_items(self, items: List[Dict[str, Any]], user: str, sheet_id: str):
+        """Process items that only need language conversion (Go? = 'L').
+
+        Delegates to ItemProcessor for the actual processing, with rows_in_progress tracking.
+        """
+        if not items:
+            return
+
+        # Mark rows as in progress
+        with self.lock:
+            for item in items:
+                row_id = self._get_row_identifier(sheet_id, item)
+                self.rows_in_progress.add(row_id)
+
+        try:
+            # Delegate to ItemProcessor for L mode processing
+            self.item_processor._process_language_only(items, sheet_id, user)
+
+        finally:
+            # Unmark rows as in progress
+            with self.lock:
+                for item in items:
+                    row_id = self._get_row_identifier(sheet_id, item)
+                    self.rows_in_progress.discard(row_id)
+
+    def _process_language_and_ai_items(self, items: List[Dict[str, Any]], user: str, sheet_id: str):
+        """Process items needing language conversion + AI (Go? = 'LA').
+
+        Uses ItemProcessor for language conversion, then submits to batch queue for AI.
+        """
+        if not items:
+            return
+
+        friendly_name = self.config.get_friendly_name_with_id(user)
+        self.logger.info(f"Processing {len(items)} language+AI items for {friendly_name}")
+
+        # Clear ULT/UST cache for fresh data (LA mode should get fresh data)
+        _, book = self.cache_manager.detect_user_book_from_items(items)
+        if book:
+            self.item_processor._clear_biblical_text_cache(user, book)
+
+        # Use ItemProcessor's pipeline for language conversion
+        prepared = self.item_processor.pipeline.prepare_items(
+            items, sheet_id, user=user, run_language_conversion=True
+        )
+
+        self.logger.info(f"CONTINUOUS: Pipeline prepared {len(prepared.items)} LA items for {user} "
+                       f"(book='{prepared.book}', conversions={prepared.conversion_count})")
+
+        # Continue with batch AI processing flow (uses continuous mode's queue)
+        self._process_items_for_ai(prepared.items, user, sheet_id)
+
+    def _process_ai_only_items(self, items: List[Dict[str, Any]], user: str, sheet_id: str):
+        """Process items that only need AI notes (no language conversion).
+
+        This is the default behavior for regular Go? values (YES, GO, etc.)
+        """
+        if not items:
+            return
+
+        friendly_name = self.config.get_friendly_name_with_id(user)
+        self.logger.info(f"Processing {len(items)} AI-only items for {friendly_name}")
+
+        # Use pipeline WITHOUT language conversion
+        from .processing_pipeline import ItemProcessingPipeline
+
+        pipeline = ItemProcessingPipeline(
+            cache_manager=self.cache_manager,
+            sheet_manager=self.sheet_manager,
+            config=self.config,
+            logger=self.logger
+        )
+        prepared = pipeline.prepare_items(items, sheet_id, user=user,
+                                           run_language_conversion=False)
+
+        self.logger.info(f"CONTINUOUS: Pipeline prepared {len(prepared.items)} AI-only items for {user} "
+                       f"(book='{prepared.book}')")
+
+        # Continue with normal AI processing flow
+        self._process_items_for_ai(prepared.items, user, sheet_id)
+
+    def _process_items_for_ai(self, items: List[Dict[str, Any]], user: str, sheet_id: str):
+        """Common AI processing flow for both LA and AI-only modes.
+
+        This handles separating programmatic vs AI items and processing them.
+        """
+        # Separate items by processing type (programmatic vs AI)
+        programmatic_items, ai_items = self._separate_items_by_processing_type(items)
+
+        # Mark only the items we're actually going to process
+        with self.lock:
+            for item in programmatic_items + ai_items:
+                row_id = self._get_row_identifier(sheet_id, item)
+                self.rows_in_progress.add(row_id)
+                self.logger.debug(f"Marked row {item.get('row', 'unknown')} as being processed for {user}")
+
+        # Process programmatic items immediately (they don't need AI batches)
+        if programmatic_items:
+            self._process_programmatic_items_immediately(programmatic_items, user, sheet_id)
+
+        # Submit AI items as batches
+        if ai_items:
+            self._submit_ai_batches(ai_items, user, sheet_id)
+
     def _should_include_alternate_translation(self, templates: List[Dict[str, Any]]) -> bool:
         """Check if any template contains "Alternate translation".
         
@@ -898,6 +1032,13 @@ class ContinuousBatchManager:
                     self.rows_in_progress.discard(row_id)
                     self.logger.debug(f"Unmarked row {item.get('row', 'unknown')} after batch {batch_id} completion for {friendly_name_with_id}")
     
+    def _clear_biblical_text_cache(self, user: str, book: str):
+        """Clear ULT/UST cache for the user and book.
+
+        Delegates to ItemProcessor for the actual cache clearing.
+        """
+        self.item_processor._clear_biblical_text_cache(user, book)
+
     def _ensure_biblical_text_cached(self, user: str, book: str):
         """Ensure biblical text is cached for the user and book."""
         sheet_id = self.config.get('google_sheets.sheet_ids', {}).get(user)

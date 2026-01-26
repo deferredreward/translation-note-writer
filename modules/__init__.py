@@ -10,6 +10,7 @@ from .ai_service import AIService
 from .cache_manager import CacheManager
 from .batch_processor import BatchProcessor
 from .continuous_batch_manager import ContinuousBatchManager
+from .item_processor import ItemProcessor
 from .error_notifier import ErrorNotifier
 from .prompt_manager import PromptManager
 from .biblical_text_scraper import BiblicalTextScraper
@@ -29,6 +30,7 @@ __all__ = [
     'CacheManager',
     'BatchProcessor',
     'ContinuousBatchManager',
+    'ItemProcessor',
     'ErrorNotifier',
     'PromptManager',
     'BiblicalTextScraper',
