@@ -246,9 +246,16 @@ class AIService:
             gl_quote = biblical_text['ult_verse_content']
             self.logger.info(f"Using entire verse text as GLQuote: {gl_quote[:100]}...")
         
-        # Parse explanation for info and template cues
+        # Parse explanation for info, template cues, and TCM mode
         explanation_raw = item.get('Explanation', '')
-        clean_explanation, info_text, template_text = self._parse_explanation(explanation_raw)
+        clean_explanation, info_text, template_text, tcm_mode = self._parse_explanation(explanation_raw)
+
+        # Format templates, prepending TCM instruction if in TCM mode
+        formatted_templates = self._format_templates(templates)
+        if tcm_mode:
+            tcm_instruction = self.prompt_manager.prompts.get('tcm_instruction', '')
+            if tcm_instruction:
+                formatted_templates = tcm_instruction + "\n\n" + formatted_templates
 
         # Prepare template variables
         template_vars = {
@@ -261,7 +268,7 @@ class AIService:
             'info': info_text,
             'template': template_text,
             'ai_tn': item.get('AI TN', ''),
-            'templates': self._format_templates(templates),
+            'templates': formatted_templates,
             **biblical_text
         }
         
@@ -657,19 +664,27 @@ class AIService:
         
         return '\n\n'.join(formatted)
 
-    def _parse_explanation(self, explanation: str) -> Tuple[str, str, str]:
-        """Parse the explanation column for info and template cues.
+    def _parse_explanation(self, explanation: str) -> Tuple[str, str, str, bool]:
+        """Parse the explanation column for info, template cues, and TCM mode.
 
         Args:
             explanation: Raw explanation text from the sheet
 
         Returns:
-            Tuple of (clean_explanation, info_text, template_text)
+            Tuple of (clean_explanation, info_text, template_text, tcm_mode)
         """
         if not explanation:
-            return "", "", ""
+            return "", "", "", False
 
-        parts = re.split(r"\s*(?=[it]:)", explanation)
+        # Check for TCM (This Could Mean) trigger at the start
+        tcm_mode = False
+        working_explanation = explanation.strip()
+        if working_explanation.upper().startswith('TCM'):
+            tcm_mode = True
+            working_explanation = working_explanation[3:].strip()
+            self.logger.info("TCM mode detected - note will present multiple interpretations")
+
+        parts = re.split(r"\s*(?=[it]:)", working_explanation)
         info_segments = []
         template_segments = []
         remaining = []
@@ -693,7 +708,7 @@ class AIService:
 
         clean_explanation = " ".join(remaining)
 
-        return clean_explanation, info_text, template_text
+        return clean_explanation, info_text, template_text, tcm_mode
     
     def submit_batch(self, requests: List[Dict[str, Any]]) -> str:
         """Submit a batch of requests to Anthropic.
