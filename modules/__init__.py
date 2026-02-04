@@ -20,6 +20,8 @@ from .notification_system import NotificationSystem, CallbackNotificationSystem,
 from .cli import TranslationNotesAICLI, create_cli, main_cli_entry_point
 from .language_converter import LanguageConverter
 from .tsv_notes_cache import TSVNotesCache
+from .tsv_work_provider import TSVWorkProvider
+from .tsv_result_writer import TSVResultWriter
 
 __all__ = [
     # Core modules
@@ -38,6 +40,10 @@ __all__ = [
     # Language conversion
     'LanguageConverter',
     'TSVNotesCache',
+
+    # TSV mode (alternative to Google Sheets)
+    'TSVWorkProvider',
+    'TSVResultWriter',
 
     # Security and validation
     'SecurityValidator',
