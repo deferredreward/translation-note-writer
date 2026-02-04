@@ -88,9 +88,24 @@ processing:
   # Processing filters
   process_go_values: ["*"]  # "*" means any non-empty value triggers processing
                             # Or specify exact values like: ["YES", "GO", "READY"]
-  skip_go_values: ["AI"]    # Skip rows where Go? contains these values (case-insensitive)
+  skip_go_values: ["AI", "L-done"]  # Skip rows where Go? contains these values (case-insensitive)
   skip_ai_completed: true   # Skip rows where Go? = "AI" (legacy setting)
-  
+
+  # Go? column processing modes
+  # These determine what processing happens based on the Go? column value
+  language_only_go_values: ["L"]     # Language conversion only, no AI notes
+  language_and_ai_go_values: ["LA"]  # Language conversion + AI notes
+  language_only_completion_marker: "L-done"  # What to set Go? to after language-only processing
+
+  # Sheet-level language conversion trigger
+  # When this cell is set to the trigger value, run language conversion on ALL rows
+  language_trigger:
+    enabled: true
+    sheet_name: "output for converter"  # Sheet tab name to check
+    trigger_cell: "J1"                   # Cell containing YES/NO
+    trigger_value: "YES"                 # Value that triggers conversion
+    reset_value: "NO"                    # Value to set after processing
+
   # SRef conversion settings
   auto_convert_sref: true   # Automatically convert short SRef values to full support reference names
                            # This happens BEFORE template matching and AI processing

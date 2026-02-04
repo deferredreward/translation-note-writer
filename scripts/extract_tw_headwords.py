@@ -9,7 +9,7 @@ def extract_headwords(repo_path: str) -> list:
     Args:
         repo_path: Path to the en_tw repository.
     Returns:
-        List of dictionaries with twarticle, file, headwords.
+        List of dictionaries with twarticle, file, category, headwords.
     """
     bible_path = Path(repo_path) / "bible"
     if not bible_path.is_dir():
@@ -30,23 +30,36 @@ def extract_headwords(repo_path: str) -> list:
             tw_entries.append({
                 "twarticle": md_file.stem,
                 "file": md_file.name,
+                "category": subdir,
                 "headwords": headwords,
             })
     return tw_entries
 
 
 def main():
-    repo_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "..", "en_tw_repo")
+    # Look for en_tw_repo in the project directory
+    project_root = Path(os.path.dirname(os.path.dirname(__file__)))
+    repo_path = project_root / "en_tw_repo"
+
+    if not repo_path.exists():
+        # Fallback to parent directory
+        repo_path = project_root.parent / "en_tw_repo"
+
     try:
-        entries = extract_headwords(repo_path)
+        entries = extract_headwords(str(repo_path))
     except Exception as e:
         print(f"Error extracting headwords: {e}")
         return
 
-    output_path = Path(os.path.dirname(os.path.dirname(__file__))) / "cache" / "tw_headwords.json"
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(entries, f, ensure_ascii=False, indent=2)
-    print(f"Saved {len(entries)} entries to {output_path}")
+    # Save to both data/ (source) and cache/ (runtime)
+    data_path = project_root / "data" / "tw_headwords.json"
+    cache_path = project_root / "cache" / "tw_headwords.json"
+
+    for output_path in [data_path, cache_path]:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(entries, f, ensure_ascii=False, indent=2)
+        print(f"Saved {len(entries)} entries to {output_path}")
 
 
 if __name__ == "__main__":

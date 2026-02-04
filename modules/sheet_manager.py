@@ -98,9 +98,11 @@ class SheetManager:
             
             processing_config = self.config.get_processing_config()
             process_go_values = processing_config['process_go_values']
-            skip_go_values = processing_config.get('skip_go_values', ['AI'])
+            skip_go_values = processing_config.get('skip_go_values', ['AI', 'L-done'])
             skip_ai_completed = processing_config['skip_ai_completed']
-            
+            language_only_go_values = processing_config.get('language_only_go_values', ['L'])
+            language_and_ai_go_values = processing_config.get('language_and_ai_go_values', ['LA'])
+
             for i, row in enumerate(values[1:], start=2):  # Start from row 2 (skip header)
                 try:
                     # Create item dictionary
@@ -110,35 +112,50 @@ class SheetManager:
                             item[header] = row[j]
                         else:
                             item[header] = ''
-                    
+
                     # Add row number for updates
                     item['row'] = i
-                    
+
                     # Check if this item should be processed
                     go_value = item.get('Go?', '').strip()
-                    
+
                     # Skip empty Go? values
                     if not go_value:
                         continue
-                    
+
                     # Skip if in skip list (case-insensitive)
                     if go_value.upper() in [v.upper() for v in skip_go_values]:
                         continue
-                    
+
                     # Legacy check for AI completed
                     if skip_ai_completed and go_value.upper() == 'AI':
                         continue
-                    
+
+                    # Determine processing mode based on Go? value
+                    go_value_upper = go_value.upper()
+                    processing_mode = 'ai_only'  # Default mode
+
+                    if go_value_upper in [v.upper() for v in language_only_go_values]:
+                        processing_mode = 'language_only'
+                    elif go_value_upper in [v.upper() for v in language_and_ai_go_values]:
+                        processing_mode = 'language_and_ai'
+
                     # Check if it should be processed
                     should_process = False
-                    if '*' in process_go_values:
+                    if processing_mode in ['language_only', 'language_and_ai']:
+                        # Language modes always process
+                        should_process = True
+                    elif '*' in process_go_values:
                         # Process any non-empty value that's not in skip list
                         should_process = True
                     else:
                         # Process only specific values
-                        should_process = go_value.upper() in [v.upper() for v in process_go_values]
-                    
+                        should_process = go_value_upper in [v.upper() for v in process_go_values]
+
                     if should_process:
+                        # Add processing mode to item
+                        item['processing_mode'] = processing_mode
+
                         # Validate required fields
                         if self._validate_item(item):
                             pending_items.append(item)
@@ -1205,5 +1222,150 @@ class SheetManager:
                     'updates': {'SRef': updated_sref}
                 })
                 self.logger.info(f"Row {item['row']}: SRef conversion '{original_sref}' -> '{updated_sref}'")
-        
-        return updates_needed 
+
+        return updates_needed
+
+    def check_language_conversion_trigger(self, sheet_id: str) -> bool:
+        """Check if language conversion trigger is set on 'output for converter' sheet.
+
+        Args:
+            sheet_id: Google Sheets ID
+
+        Returns:
+            True if trigger cell contains the trigger value ('YES')
+        """
+        try:
+            trigger_config = self.config.get_language_trigger_config()
+
+            if not trigger_config.get('enabled', True):
+                return False
+
+            sheet_name = trigger_config['sheet_name']
+            trigger_cell = trigger_config['trigger_cell']
+            trigger_value = trigger_config['trigger_value']
+
+            escaped_sheet_name = self._escape_sheet_name(sheet_name)
+            range_name = f"{escaped_sheet_name}!{trigger_cell}"
+
+            result = self.service.spreadsheets().values().get(
+                spreadsheetId=sheet_id,
+                range=range_name
+            ).execute()
+
+            values = result.get('values', [])
+            if values and len(values) > 0 and len(values[0]) > 0:
+                value = values[0][0].strip().upper()
+                is_triggered = value == trigger_value.upper()
+                if is_triggered:
+                    self.logger.info(f"Language conversion trigger detected in sheet {sheet_id}")
+                return is_triggered
+
+            return False
+
+        except HttpError as e:
+            if e.resp.status == 400 and 'Unable to parse range' in str(e):
+                self.logger.debug(f"Sheet '{sheet_name}' not found in {sheet_id}, trigger check skipped")
+            else:
+                self.logger.debug(f"Error checking language conversion trigger: {e}")
+            return False
+        except Exception as e:
+            self.logger.debug(f"Error checking language conversion trigger: {e}")
+            return False
+
+    def reset_language_conversion_trigger(self, sheet_id: str):
+        """Reset the language conversion trigger to the reset value ('NO').
+
+        Args:
+            sheet_id: Google Sheets ID
+        """
+        try:
+            trigger_config = self.config.get_language_trigger_config()
+            sheet_name = trigger_config['sheet_name']
+            trigger_cell = trigger_config['trigger_cell']
+            reset_value = trigger_config['reset_value']
+
+            escaped_sheet_name = self._escape_sheet_name(sheet_name)
+            range_name = f"{escaped_sheet_name}!{trigger_cell}"
+
+            body = {
+                'values': [[reset_value]]
+            }
+
+            self.service.spreadsheets().values().update(
+                spreadsheetId=sheet_id,
+                range=range_name,
+                valueInputOption='RAW',
+                body=body
+            ).execute()
+
+            self.logger.info(f"Reset language conversion trigger to '{reset_value}' in sheet {sheet_id}")
+
+        except Exception as e:
+            self.logger.error(f"Error resetting language conversion trigger: {e}")
+
+    def get_all_rows_for_language_conversion(self, sheet_id: str) -> List[Dict[str, Any]]:
+        """Get all rows from the main sheet for bulk language conversion.
+
+        This gets ALL rows regardless of Go? status, for use with the sheet-level
+        language conversion trigger.
+
+        Args:
+            sheet_id: Google Sheets ID
+
+        Returns:
+            List of all row items
+        """
+        try:
+            # Get the main sheet data
+            sheet_name = self.sheets_config['main_tab_name']
+            escaped_sheet_name = self._escape_sheet_name(sheet_name)
+            range_name = f"{escaped_sheet_name}!A:Z"  # Get all columns
+
+            result = self.service.spreadsheets().values().get(
+                spreadsheetId=sheet_id,
+                range=range_name
+            ).execute()
+
+            values = result.get('values', [])
+
+            if not values:
+                self.logger.debug(f"No data found in sheet {sheet_id}")
+                return []
+
+            # Parse the data
+            headers = values[0] if values else []
+            all_items = []
+
+            for i, row in enumerate(values[1:], start=2):  # Start from row 2 (skip header)
+                try:
+                    # Create item dictionary
+                    item = {}
+                    for j, header in enumerate(headers):
+                        if j < len(row):
+                            item[header] = row[j]
+                        else:
+                            item[header] = ''
+
+                    # Add row number for updates
+                    item['row'] = i
+
+                    # Include all rows that have a Ref field (required for conversion)
+                    if item.get('Ref', '').strip():
+                        all_items.append(item)
+
+                except Exception as e:
+                    self.logger.error(f"Error processing row {i}: {e}")
+
+            self.logger.info(f"Found {len(all_items)} rows for language conversion in sheet {sheet_id}")
+            return all_items
+
+        except HttpError as e:
+            if e.resp.status == 403:
+                self.logger.error(f"Permission denied getting rows from sheet {sheet_id}: {e}")
+                raise SheetPermissionError(f"Permission denied for sheet {sheet_id}") from e
+            else:
+                self.logger.error(f"HTTP error getting rows from sheet {sheet_id}: {e}")
+                return []
+        except Exception as e:
+            self.logger.error(f"Error getting all rows from sheet {sheet_id}: {e}")
+            return []

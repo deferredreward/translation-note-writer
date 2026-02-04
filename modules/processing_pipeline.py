@@ -71,7 +71,8 @@ class ItemProcessingPipeline:
         self.logger = logger or logging.getLogger(__name__)
 
     def prepare_items(self, items: List[Dict[str, Any]], sheet_id: str,
-                      user: Optional[str] = None) -> PreparedItems:
+                      user: Optional[str] = None,
+                      run_language_conversion: bool = False) -> PreparedItems:
         """Prepare items for AI processing.
 
         This is the single entry point for all processing modes. It performs
@@ -81,6 +82,9 @@ class ItemProcessingPipeline:
             items: List of items to prepare
             sheet_id: Google Sheets ID
             user: Optional pre-determined user (if not provided, will be detected)
+            run_language_conversion: If True, perform language conversion (GL to OL roundtrip).
+                                      Set to True for 'L' (language only) or 'LA' (language + AI) modes.
+                                      Default is False for regular AI-only processing.
 
         Returns:
             PreparedItems with user, book, and enriched items
@@ -105,18 +109,22 @@ class ItemProcessingPipeline:
         if user and book:
             self._ensure_biblical_text_cached(user, book)
 
-        # Step 4: Perform language conversion (if we have book)
+        # Step 4: Perform language conversion ONLY if requested (for 'L' or 'LA' modes)
         enriched_items = items
         conversion_count = 0
 
-        if book:
+        if run_language_conversion and book:
+            self.logger.info(f"PIPELINE: Running language conversion for {len(items)} items (book={book})")
             enriched_items, conversion_count = self._perform_language_conversion(
                 items, book, sheet_id
             )
 
-        # Step 5: Update sheet with conversion data immediately
-        if conversion_count > 0:
-            self._update_conversion_data(enriched_items, sheet_id)
+            # Step 5: Update sheet with conversion data immediately
+            if conversion_count > 0:
+                self._update_conversion_data(enriched_items, sheet_id)
+        else:
+            if not run_language_conversion:
+                self.logger.debug(f"PIPELINE: Skipping language conversion (not requested)")
 
         return PreparedItems(
             user=user,

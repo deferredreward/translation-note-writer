@@ -130,15 +130,35 @@ def separate_items_by_processing_type(items: List[Dict[str, Any]],
         gl_quote = item.get('GLQuote', '')
         ref = item.get('Ref', 'unknown')
 
+        # Check for translate-names with TW matches (names + kt categories)
+        # kt includes divine names/titles like "Most High", "Lord", etc.
+        if 'translate-names' in sref.lower():
+            has_twn = 'twn' in explanation.lower()
+            logger.info(f"DEBUG: {ref} - translate-names found, explanation contains TWN: {has_twn}")
+
+            if not has_twn:
+                if tw_headwords is None:
+                    tw_headwords = cache_manager.load_tw_headwords()
+
+                from .tw_search import find_matches
+                matches = find_matches(gl_quote, tw_headwords, category_filter=["names", "kt"])
+                if matches:
+                    item['tw_matches'] = matches
+                    logger.info(f"PROGRAMMATIC: {ref} - translate-names headword matches {matches}")
+                    programmatic_items.append(item)
+                    continue
+            else:
+                logger.info(f"AI NEEDED: {ref} - translate-names with TWN override in explanation")
+
         # Check for translate-unknown with TW matches (but only if TWN is NOT in explanation)
         if 'translate-unknown' in sref.lower():
             has_twn = 'twn' in explanation.lower()
             logger.info(f"DEBUG: {ref} - translate-unknown found, explanation contains TWN: {has_twn}, explanation: '{explanation}'")
-            
+
             if not has_twn:
                 if tw_headwords is None:
                     tw_headwords = cache_manager.load_tw_headwords()
-                
+
                 from .tw_search import find_matches
                 matches = find_matches(gl_quote, tw_headwords)
                 if matches:

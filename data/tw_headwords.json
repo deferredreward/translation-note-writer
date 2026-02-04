@@ -2,6 +2,7 @@
   {
     "twarticle": "abomination",
     "file": "abomination.md",
+    "category": "kt",
     "headwords": [
       "abomination",
       "abominable"
@@ -10,6 +11,7 @@
   {
     "twarticle": "adoption",
     "file": "adoption.md",
+    "category": "kt",
     "headwords": [
       "adoption",
       "adopt",
@@ -19,6 +21,7 @@
   {
     "twarticle": "adultery",
     "file": "adultery.md",
+    "category": "kt",
     "headwords": [
       "adultery",
       "adulterous",
@@ -29,6 +32,7 @@
   {
     "twarticle": "almighty",
     "file": "almighty.md",
+    "category": "kt",
     "headwords": [
       "Almighty"
     ]
@@ -36,6 +40,7 @@
   {
     "twarticle": "altar",
     "file": "altar.md",
+    "category": "kt",
     "headwords": [
       "altar"
     ]
@@ -43,6 +48,7 @@
   {
     "twarticle": "amen",
     "file": "amen.md",
+    "category": "kt",
     "headwords": [
       "amen",
       "truly"
@@ -51,6 +57,7 @@
   {
     "twarticle": "angel",
     "file": "angel.md",
+    "category": "kt",
     "headwords": [
       "angel",
       "archangel"
@@ -59,6 +66,7 @@
   {
     "twarticle": "anoint",
     "file": "anoint.md",
+    "category": "kt",
     "headwords": [
       "anoint",
       "anointed",
@@ -68,6 +76,7 @@
   {
     "twarticle": "antichrist",
     "file": "antichrist.md",
+    "category": "kt",
     "headwords": [
       "antichrist"
     ]
@@ -75,6 +84,7 @@
   {
     "twarticle": "apostle",
     "file": "apostle.md",
+    "category": "kt",
     "headwords": [
       "apostle",
       "apostleship"
@@ -83,6 +93,7 @@
   {
     "twarticle": "appoint",
     "file": "appoint.md",
+    "category": "kt",
     "headwords": [
       "appoint",
       "appointed"
@@ -91,6 +102,7 @@
   {
     "twarticle": "ark",
     "file": "ark.md",
+    "category": "kt",
     "headwords": [
       "ark"
     ]
@@ -98,6 +110,7 @@
   {
     "twarticle": "arkofthecovenant",
     "file": "arkofthecovenant.md",
+    "category": "kt",
     "headwords": [
       "ark of the covenant",
       "ark of Yahweh",
@@ -109,6 +122,7 @@
   {
     "twarticle": "atonement",
     "file": "atonement.md",
+    "category": "kt",
     "headwords": [
       "atonement",
       "atone",
@@ -118,6 +132,7 @@
   {
     "twarticle": "atonementlid",
     "file": "atonementlid.md",
+    "category": "kt",
     "headwords": [
       "atonement lid"
     ]
@@ -125,6 +140,7 @@
   {
     "twarticle": "authority",
     "file": "authority.md",
+    "category": "kt",
     "headwords": [
       "authority"
     ]
@@ -132,6 +148,7 @@
   {
     "twarticle": "baptize",
     "file": "baptize.md",
+    "category": "kt",
     "headwords": [
       "baptize",
       "baptized",
@@ -141,6 +158,7 @@
   {
     "twarticle": "beget",
     "file": "beget.md",
+    "category": "kt",
     "headwords": [
       "beget",
       "begot",
@@ -151,6 +169,7 @@
   {
     "twarticle": "believe",
     "file": "believe.md",
+    "category": "kt",
     "headwords": [
       "believe",
       "believer",
@@ -162,6 +181,7 @@
   {
     "twarticle": "beloved",
     "file": "beloved.md",
+    "category": "kt",
     "headwords": [
       "beloved"
     ]
@@ -169,6 +189,7 @@
   {
     "twarticle": "birthright",
     "file": "birthright.md",
+    "category": "kt",
     "headwords": [
       "birthright"
     ]
@@ -176,6 +197,7 @@
   {
     "twarticle": "blameless",
     "file": "blameless.md",
+    "category": "kt",
     "headwords": [
       "blameless"
     ]
@@ -183,6 +205,7 @@
   {
     "twarticle": "blasphemy",
     "file": "blasphemy.md",
+    "category": "kt",
     "headwords": [
       "blasphemy",
       "blaspheme",
@@ -192,6 +215,7 @@
   {
     "twarticle": "bless",
     "file": "bless.md",
+    "category": "kt",
     "headwords": [
       "bless",
       "blessed",
@@ -201,6 +225,7 @@
   {
     "twarticle": "bond",
     "file": "bond.md",
+    "category": "kt",
     "headwords": [
       "bind",
       "bond",
@@ -210,6 +235,7 @@
   {
     "twarticle": "bornagain",
     "file": "bornagain.md",
+    "category": "kt",
     "headwords": [
       "born again",
       "born of God",
@@ -219,6 +245,7 @@
   {
     "twarticle": "call-speakloudly",
     "file": "call-speakloudly.md",
+    "category": "kt",
     "headwords": [
       "call",
       "called",
@@ -229,6 +256,7 @@
   {
     "twarticle": "call-toname",
     "file": "call-toname.md",
+    "category": "kt",
     "headwords": [
       "call",
       "called"
@@ -237,6 +265,7 @@
   {
     "twarticle": "call-tosummon",
     "file": "call-tosummon.md",
+    "category": "kt",
     "headwords": [
       "call",
       "called"
@@ -245,6 +274,7 @@
   {
     "twarticle": "centurion",
     "file": "centurion.md",
+    "category": "kt",
     "headwords": [
       "centurion"
     ]
@@ -252,6 +282,7 @@
   {
     "twarticle": "christ",
     "file": "christ.md",
+    "category": "kt",
     "headwords": [
       "Christ",
       "Messiah"
@@ -260,6 +291,7 @@
   {
     "twarticle": "christian",
     "file": "christian.md",
+    "category": "kt",
     "headwords": [
       "Christian"
     ]
@@ -267,6 +299,7 @@
   {
     "twarticle": "church",
     "file": "church.md",
+    "category": "kt",
     "headwords": [
       "church",
       "Church"
@@ -275,6 +308,7 @@
   {
     "twarticle": "circumcise",
     "file": "circumcise.md",
+    "category": "kt",
     "headwords": [
       "circumcise",
       "circumcised",
@@ -284,16 +318,9 @@
     ]
   },
   {
-    "twarticle": "clean",
-    "file": "clean.md",
-    "headwords": [
-      "clean",
-      "wash"
-    ]
-  },
-  {
     "twarticle": "compassion",
     "file": "compassion.md",
+    "category": "kt",
     "headwords": [
       "compassion",
       "compassionate"
@@ -302,6 +329,7 @@
   {
     "twarticle": "condemn",
     "file": "condemn.md",
+    "category": "kt",
     "headwords": [
       "condemn",
       "condemned",
@@ -311,6 +339,7 @@
   {
     "twarticle": "confess",
     "file": "confess.md",
+    "category": "kt",
     "headwords": [
       "confess",
       "confession"
@@ -319,6 +348,7 @@
   {
     "twarticle": "conscience",
     "file": "conscience.md",
+    "category": "kt",
     "headwords": [
       "conscience"
     ]
@@ -326,6 +356,7 @@
   {
     "twarticle": "consecrate",
     "file": "consecrate.md",
+    "category": "kt",
     "headwords": [
       "consecrate",
       "consecrated",
@@ -335,6 +366,7 @@
   {
     "twarticle": "cornerstone",
     "file": "cornerstone.md",
+    "category": "kt",
     "headwords": [
       "cornerstone"
     ]
@@ -342,6 +374,7 @@
   {
     "twarticle": "covenant",
     "file": "covenant.md",
+    "category": "kt",
     "headwords": [
       "covenant"
     ]
@@ -349,6 +382,7 @@
   {
     "twarticle": "covenantfaith",
     "file": "covenantfaith.md",
+    "category": "kt",
     "headwords": [
       "covenant faithfulness",
       "covenant loyalty",
@@ -358,6 +392,7 @@
   {
     "twarticle": "cross",
     "file": "cross.md",
+    "category": "kt",
     "headwords": [
       "cross"
     ]
@@ -365,6 +400,7 @@
   {
     "twarticle": "crucify",
     "file": "crucify.md",
+    "category": "kt",
     "headwords": [
       "crucify",
       "crucified"
@@ -373,6 +409,7 @@
   {
     "twarticle": "curse",
     "file": "curse.md",
+    "category": "kt",
     "headwords": [
       "curse",
       "cursed",
@@ -380,15 +417,9 @@
     ]
   },
   {
-    "twarticle": "daughterofzion",
-    "file": "daughterofzion.md",
-    "headwords": [
-      "daughter of Zion"
-    ]
-  },
-  {
     "twarticle": "dayofthelord",
     "file": "dayofthelord.md",
+    "category": "kt",
     "headwords": [
       "day of the Lord",
       "day of Yahweh"
@@ -397,6 +428,7 @@
   {
     "twarticle": "deacon",
     "file": "deacon.md",
+    "category": "kt",
     "headwords": [
       "deacon"
     ]
@@ -404,6 +436,7 @@
   {
     "twarticle": "demon",
     "file": "demon.md",
+    "category": "kt",
     "headwords": [
       "demon",
       "evil spirit",
@@ -413,6 +446,7 @@
   {
     "twarticle": "demonpossessed",
     "file": "demonpossessed.md",
+    "category": "kt",
     "headwords": [
       "demon-possessed"
     ]
@@ -420,6 +454,7 @@
   {
     "twarticle": "disciple",
     "file": "disciple.md",
+    "category": "kt",
     "headwords": [
       "disciple"
     ]
@@ -427,6 +462,7 @@
   {
     "twarticle": "divine",
     "file": "divine.md",
+    "category": "kt",
     "headwords": [
       "divine"
     ]
@@ -434,6 +470,7 @@
   {
     "twarticle": "dominion",
     "file": "dominion.md",
+    "category": "kt",
     "headwords": [
       "dominion"
     ]
@@ -441,6 +478,7 @@
   {
     "twarticle": "elect",
     "file": "elect.md",
+    "category": "kt",
     "headwords": [
       "chosen",
       "choose",
@@ -452,6 +490,7 @@
   {
     "twarticle": "ephod",
     "file": "ephod.md",
+    "category": "kt",
     "headwords": [
       "ephod"
     ]
@@ -459,6 +498,7 @@
   {
     "twarticle": "eternity",
     "file": "eternity.md",
+    "category": "kt",
     "headwords": [
       "eternity",
       "everlasting",
@@ -469,6 +509,7 @@
   {
     "twarticle": "eunuch",
     "file": "eunuch.md",
+    "category": "kt",
     "headwords": [
       "eunuch"
     ]
@@ -476,6 +517,7 @@
   {
     "twarticle": "evangelism",
     "file": "evangelism.md",
+    "category": "kt",
     "headwords": [
       "evangelist"
     ]
@@ -483,6 +525,7 @@
   {
     "twarticle": "evil",
     "file": "evil.md",
+    "category": "kt",
     "headwords": [
       "evil",
       "wicked",
@@ -492,6 +535,7 @@
   {
     "twarticle": "exalt",
     "file": "exalt.md",
+    "category": "kt",
     "headwords": [
       "exalt",
       "exalted",
@@ -501,6 +545,7 @@
   {
     "twarticle": "exhort",
     "file": "exhort.md",
+    "category": "kt",
     "headwords": [
       "exhort",
       "exhortation"
@@ -509,6 +554,7 @@
   {
     "twarticle": "faith",
     "file": "faith.md",
+    "category": "kt",
     "headwords": [
       "faith"
     ]
@@ -516,6 +562,7 @@
   {
     "twarticle": "faithful",
     "file": "faithful.md",
+    "category": "kt",
     "headwords": [
       "faithful",
       "faithfulness",
@@ -525,6 +572,7 @@
   {
     "twarticle": "faithless",
     "file": "faithless.md",
+    "category": "kt",
     "headwords": [
       "faithless",
       "unfaithful",
@@ -534,6 +582,7 @@
   {
     "twarticle": "falsegod",
     "file": "falsegod.md",
+    "category": "kt",
     "headwords": [
       "god",
       "false god",
@@ -547,6 +596,7 @@
   {
     "twarticle": "favor",
     "file": "favor.md",
+    "category": "kt",
     "headwords": [
       "favor",
       "favorable",
@@ -556,6 +606,7 @@
   {
     "twarticle": "fear",
     "file": "fear.md",
+    "category": "kt",
     "headwords": [
       "fear",
       "afraid",
@@ -565,6 +616,7 @@
   {
     "twarticle": "fellowship",
     "file": "fellowship.md",
+    "category": "kt",
     "headwords": [
       "fellowship"
     ]
@@ -572,6 +624,7 @@
   {
     "twarticle": "foolish",
     "file": "foolish.md",
+    "category": "kt",
     "headwords": [
       "fool",
       "foolish",
@@ -581,6 +634,7 @@
   {
     "twarticle": "forgive",
     "file": "forgive.md",
+    "category": "kt",
     "headwords": [
       "forgive",
       "forgiven",
@@ -592,6 +646,7 @@
   {
     "twarticle": "fulfill",
     "file": "fulfill.md",
+    "category": "kt",
     "headwords": [
       "fulfill",
       "fulfilled",
@@ -601,6 +656,7 @@
   {
     "twarticle": "gentile",
     "file": "gentile.md",
+    "category": "kt",
     "headwords": [
       "Gentile"
     ]
@@ -608,6 +664,7 @@
   {
     "twarticle": "glory",
     "file": "glory.md",
+    "category": "kt",
     "headwords": [
       "glory",
       "glorious",
@@ -617,6 +674,7 @@
   {
     "twarticle": "god",
     "file": "god.md",
+    "category": "kt",
     "headwords": [
       "God"
     ]
@@ -624,6 +682,7 @@
   {
     "twarticle": "godly",
     "file": "godly.md",
+    "category": "kt",
     "headwords": [
       "godly",
       "godliness",
@@ -636,6 +695,7 @@
   {
     "twarticle": "godthefather",
     "file": "godthefather.md",
+    "category": "kt",
     "headwords": [
       "God the Father",
       "heavenly Father",
@@ -645,6 +705,7 @@
   {
     "twarticle": "good",
     "file": "good.md",
+    "category": "kt",
     "headwords": [
       "good",
       "right",
@@ -656,6 +717,7 @@
   {
     "twarticle": "goodnews",
     "file": "goodnews.md",
+    "category": "kt",
     "headwords": [
       "good news",
       "gospel"
@@ -664,6 +726,7 @@
   {
     "twarticle": "grace",
     "file": "grace.md",
+    "category": "kt",
     "headwords": [
       "grace",
       "gracious"
@@ -672,6 +735,7 @@
   {
     "twarticle": "guilt",
     "file": "guilt.md",
+    "category": "kt",
     "headwords": [
       "guilt",
       "guilty"
@@ -680,6 +744,7 @@
   {
     "twarticle": "hades",
     "file": "hades.md",
+    "category": "kt",
     "headwords": [
       "Hades",
       "Sheol"
@@ -688,6 +753,7 @@
   {
     "twarticle": "heaven",
     "file": "heaven.md",
+    "category": "kt",
     "headwords": [
       "heaven",
       "sky",
@@ -698,6 +764,7 @@
   {
     "twarticle": "hebrew",
     "file": "hebrew.md",
+    "category": "kt",
     "headwords": [
       "Hebrew"
     ]
@@ -705,6 +772,7 @@
   {
     "twarticle": "hell",
     "file": "hell.md",
+    "category": "kt",
     "headwords": [
       "hell",
       "lake of fire"
@@ -713,14 +781,16 @@
   {
     "twarticle": "highpriest",
     "file": "highpriest.md",
+    "category": "kt",
     "headwords": [
       "high priest",
-      "chief priests"
+      "chief priest"
     ]
   },
   {
     "twarticle": "holy",
     "file": "holy.md",
+    "category": "kt",
     "headwords": [
       "holy",
       "holiness",
@@ -731,6 +801,7 @@
   {
     "twarticle": "holyone",
     "file": "holyone.md",
+    "category": "kt",
     "headwords": [
       "Holy One"
     ]
@@ -738,6 +809,7 @@
   {
     "twarticle": "holyplace",
     "file": "holyplace.md",
+    "category": "kt",
     "headwords": [
       "holy place"
     ]
@@ -745,6 +817,7 @@
   {
     "twarticle": "holyspirit",
     "file": "holyspirit.md",
+    "category": "kt",
     "headwords": [
       "Holy Spirit",
       "Spirit of God",
@@ -755,6 +828,7 @@
   {
     "twarticle": "honor",
     "file": "honor.md",
+    "category": "kt",
     "headwords": [
       "honor"
     ]
@@ -762,6 +836,7 @@
   {
     "twarticle": "hope",
     "file": "hope.md",
+    "category": "kt",
     "headwords": [
       "hope",
       "hoped"
@@ -770,6 +845,7 @@
   {
     "twarticle": "houseofgod",
     "file": "houseofgod.md",
+    "category": "kt",
     "headwords": [
       "house of God",
       "your house",
@@ -785,6 +861,7 @@
   {
     "twarticle": "humble",
     "file": "humble.md",
+    "category": "kt",
     "headwords": [
       "humble",
       "humbled",
@@ -794,6 +871,7 @@
   {
     "twarticle": "hypocrite",
     "file": "hypocrite.md",
+    "category": "kt",
     "headwords": [
       "hypocrite",
       "hypocrisy"
@@ -802,6 +880,7 @@
   {
     "twarticle": "iamyahweh",
     "file": "iamyahweh.md",
+    "category": "kt",
     "headwords": [
       "I am Yahweh"
     ]
@@ -809,6 +888,7 @@
   {
     "twarticle": "imageofgod",
     "file": "imageofgod.md",
+    "category": "kt",
     "headwords": [
       "image of God",
       "image"
@@ -817,6 +897,7 @@
   {
     "twarticle": "inchrist",
     "file": "inchrist.md",
+    "category": "kt",
     "headwords": [
       "in Christ",
       "in Jesus",
@@ -827,6 +908,7 @@
   {
     "twarticle": "inherit",
     "file": "inherit.md",
+    "category": "kt",
     "headwords": [
       "inherit",
       "inheritance",
@@ -836,6 +918,7 @@
   {
     "twarticle": "iniquity",
     "file": "iniquity.md",
+    "category": "kt",
     "headwords": [
       "iniquity"
     ]
@@ -843,6 +926,7 @@
   {
     "twarticle": "innocent",
     "file": "innocent.md",
+    "category": "kt",
     "headwords": [
       "innocent"
     ]
@@ -850,6 +934,7 @@
   {
     "twarticle": "intercede",
     "file": "intercede.md",
+    "category": "kt",
     "headwords": [
       "intercede",
       "intercession"
@@ -858,6 +943,7 @@
   {
     "twarticle": "israel",
     "file": "israel.md",
+    "category": "kt",
     "headwords": [
       "Israel",
       "Israelites"
@@ -866,6 +952,7 @@
   {
     "twarticle": "jealous",
     "file": "jealous.md",
+    "category": "kt",
     "headwords": [
       "jealous",
       "jealousy"
@@ -874,6 +961,7 @@
   {
     "twarticle": "jesus",
     "file": "jesus.md",
+    "category": "kt",
     "headwords": [
       "Jesus",
       "Jesus Christ",
@@ -883,6 +971,7 @@
   {
     "twarticle": "jew",
     "file": "jew.md",
+    "category": "kt",
     "headwords": [
       "Jew",
       "Jewish"
@@ -891,6 +980,7 @@
   {
     "twarticle": "judge",
     "file": "judge.md",
+    "category": "kt",
     "headwords": [
       "judge",
       "judgment"
@@ -899,6 +989,7 @@
   {
     "twarticle": "judgmentday",
     "file": "judgmentday.md",
+    "category": "kt",
     "headwords": [
       "day of judgment"
     ]
@@ -906,6 +997,7 @@
   {
     "twarticle": "justice",
     "file": "justice.md",
+    "category": "kt",
     "headwords": [
       "just",
       "justice",
@@ -918,6 +1010,7 @@
   {
     "twarticle": "kingdomofgod",
     "file": "kingdomofgod.md",
+    "category": "kt",
     "headwords": [
       "kingdom of God",
       "kingdom of heaven"
@@ -926,6 +1019,7 @@
   {
     "twarticle": "kingofthejews",
     "file": "kingofthejews.md",
+    "category": "kt",
     "headwords": [
       "King of the Jews"
     ]
@@ -933,6 +1027,7 @@
   {
     "twarticle": "lamb",
     "file": "lamb.md",
+    "category": "kt",
     "headwords": [
       "lamb",
       "Lamb of God"
@@ -941,6 +1036,7 @@
   {
     "twarticle": "lament",
     "file": "lament.md",
+    "category": "kt",
     "headwords": [
       "lament",
       "lamentation"
@@ -949,6 +1045,7 @@
   {
     "twarticle": "lastday",
     "file": "lastday.md",
+    "category": "kt",
     "headwords": [
       "last day",
       "last days",
@@ -958,6 +1055,7 @@
   {
     "twarticle": "lawofmoses",
     "file": "lawofmoses.md",
+    "category": "kt",
     "headwords": [
       "law",
       "law of Moses",
@@ -968,6 +1066,7 @@
   {
     "twarticle": "lord",
     "file": "lord.md",
+    "category": "kt",
     "headwords": [
       "lord",
       "Lord",
@@ -978,6 +1077,7 @@
   {
     "twarticle": "lordssupper",
     "file": "lordssupper.md",
+    "category": "kt",
     "headwords": [
       "Lord’s Supper"
     ]
@@ -985,6 +1085,7 @@
   {
     "twarticle": "lordyahweh",
     "file": "lordyahweh.md",
+    "category": "kt",
     "headwords": [
       "Lord Yahweh",
       "Yahweh God"
@@ -993,6 +1094,7 @@
   {
     "twarticle": "love",
     "file": "love.md",
+    "category": "kt",
     "headwords": [
       "love",
       "beloved"
@@ -1001,6 +1103,7 @@
   {
     "twarticle": "majesty",
     "file": "majesty.md",
+    "category": "kt",
     "headwords": [
       "majesty"
     ]
@@ -1008,6 +1111,7 @@
   {
     "twarticle": "manna",
     "file": "manna.md",
+    "category": "kt",
     "headwords": [
       "manna"
     ]
@@ -1015,6 +1119,7 @@
   {
     "twarticle": "mercy",
     "file": "mercy.md",
+    "category": "kt",
     "headwords": [
       "mercy",
       "merciful"
@@ -1023,6 +1128,7 @@
   {
     "twarticle": "minister",
     "file": "minister.md",
+    "category": "kt",
     "headwords": [
       "to minister",
       "ministry"
@@ -1031,6 +1137,7 @@
   {
     "twarticle": "miracle",
     "file": "miracle.md",
+    "category": "kt",
     "headwords": [
       "miracle",
       "wonder",
@@ -1040,6 +1147,7 @@
   {
     "twarticle": "mosthigh",
     "file": "mosthigh.md",
+    "category": "kt",
     "headwords": [
       "Most High"
     ]
@@ -1047,6 +1155,7 @@
   {
     "twarticle": "myrrh",
     "file": "myrrh.md",
+    "category": "kt",
     "headwords": [
       "myrrh"
     ]
@@ -1054,6 +1163,7 @@
   {
     "twarticle": "nazirite",
     "file": "nazirite.md",
+    "category": "kt",
     "headwords": [
       "Nazirite",
       "Nazirite vow"
@@ -1062,6 +1172,7 @@
   {
     "twarticle": "parable",
     "file": "parable.md",
+    "category": "kt",
     "headwords": [
       "parable"
     ]
@@ -1069,6 +1180,7 @@
   {
     "twarticle": "passover",
     "file": "passover.md",
+    "category": "kt",
     "headwords": [
       "Passover"
     ]
@@ -1076,6 +1188,7 @@
   {
     "twarticle": "pentecost",
     "file": "pentecost.md",
+    "category": "kt",
     "headwords": [
       "Pentecost",
       "Festival of Weeks"
@@ -1084,6 +1197,7 @@
   {
     "twarticle": "peopleofgod",
     "file": "peopleofgod.md",
+    "category": "kt",
     "headwords": [
       "people of God"
     ]
@@ -1091,6 +1205,7 @@
   {
     "twarticle": "perish",
     "file": "perish.md",
+    "category": "kt",
     "headwords": [
       "perish"
     ]
@@ -1098,6 +1213,7 @@
   {
     "twarticle": "pharisee",
     "file": "pharisee.md",
+    "category": "kt",
     "headwords": [
       "Pharisee"
     ]
@@ -1105,6 +1221,7 @@
   {
     "twarticle": "pray",
     "file": "pray.md",
+    "category": "kt",
     "headwords": [
       "pray",
       "prayer"
@@ -1113,6 +1230,7 @@
   {
     "twarticle": "predestine",
     "file": "predestine.md",
+    "category": "kt",
     "headwords": [
       "predestine",
       "predestined"
@@ -1121,6 +1239,7 @@
   {
     "twarticle": "priest",
     "file": "priest.md",
+    "category": "kt",
     "headwords": [
       "priest",
       "priesthood"
@@ -1129,6 +1248,7 @@
   {
     "twarticle": "promise",
     "file": "promise.md",
+    "category": "kt",
     "headwords": [
       "promise",
       "promised"
@@ -1137,6 +1257,7 @@
   {
     "twarticle": "promisedland",
     "file": "promisedland.md",
+    "category": "kt",
     "headwords": [
       "Promised Land"
     ]
@@ -1144,6 +1265,7 @@
   {
     "twarticle": "prophet",
     "file": "prophet.md",
+    "category": "kt",
     "headwords": [
       "prophet",
       "prophecy",
@@ -1155,6 +1277,7 @@
   {
     "twarticle": "propitiation",
     "file": "propitiation.md",
+    "category": "kt",
     "headwords": [
       "propitiation"
     ]
@@ -1162,6 +1285,7 @@
   {
     "twarticle": "psalm",
     "file": "psalm.md",
+    "category": "kt",
     "headwords": [
       "psalm"
     ]
@@ -1169,6 +1293,7 @@
   {
     "twarticle": "purify",
     "file": "purify.md",
+    "category": "kt",
     "headwords": [
       "pure",
       "purify",
@@ -1178,6 +1303,7 @@
   {
     "twarticle": "rabbi",
     "file": "rabbi.md",
+    "category": "kt",
     "headwords": [
       "Rabbi"
     ]
@@ -1185,6 +1311,7 @@
   {
     "twarticle": "ransom",
     "file": "ransom.md",
+    "category": "kt",
     "headwords": [
       "ransom",
       "ransomed"
@@ -1193,6 +1320,7 @@
   {
     "twarticle": "reconcile",
     "file": "reconcile.md",
+    "category": "kt",
     "headwords": [
       "reconcile",
       "reconciled",
@@ -1202,6 +1330,7 @@
   {
     "twarticle": "redeem",
     "file": "redeem.md",
+    "category": "kt",
     "headwords": [
       "redeem",
       "redeemer",
@@ -1211,6 +1340,7 @@
   {
     "twarticle": "remnant",
     "file": "remnant.md",
+    "category": "kt",
     "headwords": [
       "remnant"
     ]
@@ -1218,6 +1348,7 @@
   {
     "twarticle": "repent",
     "file": "repent.md",
+    "category": "kt",
     "headwords": [
       "repent",
       "repentance"
@@ -1226,6 +1357,7 @@
   {
     "twarticle": "restore",
     "file": "restore.md",
+    "category": "kt",
     "headwords": [
       "restore",
       "restoration"
@@ -1234,6 +1366,7 @@
   {
     "twarticle": "resurrection",
     "file": "resurrection.md",
+    "category": "kt",
     "headwords": [
       "resurrection"
     ]
@@ -1241,6 +1374,7 @@
   {
     "twarticle": "righteous",
     "file": "righteous.md",
+    "category": "kt",
     "headwords": [
       "righteous",
       "righteousness",
@@ -1253,6 +1387,7 @@
   {
     "twarticle": "sabbath",
     "file": "sabbath.md",
+    "category": "kt",
     "headwords": [
       "Sabbath"
     ]
@@ -1260,6 +1395,7 @@
   {
     "twarticle": "sadducee",
     "file": "sadducee.md",
+    "category": "kt",
     "headwords": [
       "Sadducee"
     ]
@@ -1267,6 +1403,7 @@
   {
     "twarticle": "saint",
     "file": "saint.md",
+    "category": "kt",
     "headwords": [
       "saint"
     ]
@@ -1274,6 +1411,7 @@
   {
     "twarticle": "sanctify",
     "file": "sanctify.md",
+    "category": "kt",
     "headwords": [
       "sanctify",
       "sanctification"
@@ -1282,6 +1420,7 @@
   {
     "twarticle": "sanctuary",
     "file": "sanctuary.md",
+    "category": "kt",
     "headwords": [
       "sanctuary"
     ]
@@ -1289,6 +1428,7 @@
   {
     "twarticle": "satan",
     "file": "satan.md",
+    "category": "kt",
     "headwords": [
       "Satan",
       "devil",
@@ -1298,6 +1438,7 @@
   {
     "twarticle": "save",
     "file": "save.md",
+    "category": "kt",
     "headwords": [
       "save",
       "saved",
@@ -1308,6 +1449,7 @@
   {
     "twarticle": "savior",
     "file": "savior.md",
+    "category": "kt",
     "headwords": [
       "Savior",
       "savior"
@@ -1316,6 +1458,7 @@
   {
     "twarticle": "scribe",
     "file": "scribe.md",
+    "category": "kt",
     "headwords": [
       "scribe"
     ]
@@ -1323,13 +1466,15 @@
   {
     "twarticle": "shaddai",
     "file": "shaddai.md",
+    "category": "kt",
     "headwords": [
-      "shaddai"
+      "Shaddai"
     ]
   },
   {
     "twarticle": "sign",
     "file": "sign.md",
+    "category": "kt",
     "headwords": [
       "sign",
       "proof",
@@ -1339,6 +1484,7 @@
   {
     "twarticle": "sin",
     "file": "sin.md",
+    "category": "kt",
     "headwords": [
       "sin",
       "sinful",
@@ -1349,6 +1495,7 @@
   {
     "twarticle": "sonofgod",
     "file": "sonofgod.md",
+    "category": "kt",
     "headwords": [
       "Son of God",
       "the Son"
@@ -1357,6 +1504,7 @@
   {
     "twarticle": "sonofman",
     "file": "sonofman.md",
+    "category": "kt",
     "headwords": [
       "Son of Man",
       "son of man"
@@ -1365,6 +1513,7 @@
   {
     "twarticle": "sonsofgod",
     "file": "sonsofgod.md",
+    "category": "kt",
     "headwords": [
       "sons of God",
       "children of God"
@@ -1373,15 +1522,16 @@
   {
     "twarticle": "soul",
     "file": "soul.md",
+    "category": "kt",
     "headwords": [
       "soul",
-      "self",
-      "person"
+      "self"
     ]
   },
   {
     "twarticle": "spirit",
     "file": "spirit.md",
+    "category": "kt",
     "headwords": [
       "spirit",
       "wind",
@@ -1391,6 +1541,7 @@
   {
     "twarticle": "stone",
     "file": "stone.md",
+    "category": "kt",
     "headwords": [
       "stone",
       "stoning"
@@ -1399,6 +1550,7 @@
   {
     "twarticle": "synagogue",
     "file": "synagogue.md",
+    "category": "kt",
     "headwords": [
       "synagogue"
     ]
@@ -1406,6 +1558,7 @@
   {
     "twarticle": "tabernacle",
     "file": "tabernacle.md",
+    "category": "kt",
     "headwords": [
       "tabernacle"
     ]
@@ -1413,6 +1566,7 @@
   {
     "twarticle": "temple",
     "file": "temple.md",
+    "category": "kt",
     "headwords": [
       "temple",
       "house",
@@ -1422,6 +1576,7 @@
   {
     "twarticle": "tempt",
     "file": "tempt.md",
+    "category": "kt",
     "headwords": [
       "tempt",
       "temptation"
@@ -1430,6 +1585,7 @@
   {
     "twarticle": "test",
     "file": "test.md",
+    "category": "kt",
     "headwords": [
       "test",
       "tested",
@@ -1440,6 +1596,7 @@
   {
     "twarticle": "testimony",
     "file": "testimony.md",
+    "category": "kt",
     "headwords": [
       "testimony",
       "testify",
@@ -1451,6 +1608,7 @@
   {
     "twarticle": "tetrarch",
     "file": "tetrarch.md",
+    "category": "kt",
     "headwords": [
       "tetrarch"
     ]
@@ -1458,6 +1616,7 @@
   {
     "twarticle": "thetwelve",
     "file": "thetwelve.md",
+    "category": "kt",
     "headwords": [
       "the twelve",
       "the eleven"
@@ -1466,6 +1625,7 @@
   {
     "twarticle": "transgression",
     "file": "transgression.md",
+    "category": "kt",
     "headwords": [
       "transgress",
       "transgression"
@@ -1474,6 +1634,7 @@
   {
     "twarticle": "trespass",
     "file": "trespass.md",
+    "category": "kt",
     "headwords": [
       "trespass"
     ]
@@ -1481,6 +1642,7 @@
   {
     "twarticle": "trust",
     "file": "trust.md",
+    "category": "kt",
     "headwords": [
       "trust",
       "trusted",
@@ -1491,6 +1653,7 @@
   {
     "twarticle": "unleavenedbread",
     "file": "unleavenedbread.md",
+    "category": "kt",
     "headwords": [
       "unleavened bread"
     ]
@@ -1498,6 +1661,7 @@
   {
     "twarticle": "willofgod",
     "file": "willofgod.md",
+    "category": "kt",
     "headwords": [
       "will of God"
     ]
@@ -1505,6 +1669,7 @@
   {
     "twarticle": "wise",
     "file": "wise.md",
+    "category": "kt",
     "headwords": [
       "wise",
       "wisdom"
@@ -1513,6 +1678,7 @@
   {
     "twarticle": "woe",
     "file": "woe.md",
+    "category": "kt",
     "headwords": [
       "woe"
     ]
@@ -1520,6 +1686,7 @@
   {
     "twarticle": "wordofgod",
     "file": "wordofgod.md",
+    "category": "kt",
     "headwords": [
       "word of God",
       "word of Yahweh",
@@ -1531,6 +1698,7 @@
   {
     "twarticle": "world",
     "file": "world.md",
+    "category": "kt",
     "headwords": [
       "world",
       "worldly"
@@ -1539,6 +1707,7 @@
   {
     "twarticle": "worship",
     "file": "worship.md",
+    "category": "kt",
     "headwords": [
       "prostrate",
       "bow down",
@@ -1548,6 +1717,7 @@
   {
     "twarticle": "wrath",
     "file": "wrath.md",
+    "category": "kt",
     "headwords": [
       "wrath",
       "fury"
@@ -1556,13 +1726,16 @@
   {
     "twarticle": "yahweh",
     "file": "yahweh.md",
+    "category": "kt",
     "headwords": [
-      "Yahweh"
+      "Yahweh",
+      "Yah"
     ]
   },
   {
     "twarticle": "yahwehofhosts",
     "file": "yahwehofhosts.md",
+    "category": "kt",
     "headwords": [
       "Yahweh of hosts",
       "God of hosts",
@@ -1574,6 +1747,7 @@
   {
     "twarticle": "zealous",
     "file": "zealous.md",
+    "category": "kt",
     "headwords": [
       "zeal",
       "zealous"
@@ -1582,6 +1756,7 @@
   {
     "twarticle": "zion",
     "file": "zion.md",
+    "category": "kt",
     "headwords": [
       "Zion",
       "Mount Zion"
@@ -1590,6 +1765,7 @@
   {
     "twarticle": "aaron",
     "file": "aaron.md",
+    "category": "names",
     "headwords": [
       "Aaron"
     ]
@@ -1597,6 +1773,7 @@
   {
     "twarticle": "abel",
     "file": "abel.md",
+    "category": "names",
     "headwords": [
       "Abel"
     ]
@@ -1604,6 +1781,7 @@
   {
     "twarticle": "abiathar",
     "file": "abiathar.md",
+    "category": "names",
     "headwords": [
       "Abiathar"
     ]
@@ -1611,6 +1789,7 @@
   {
     "twarticle": "abijah",
     "file": "abijah.md",
+    "category": "names",
     "headwords": [
       "Abijah"
     ]
@@ -1618,13 +1797,15 @@
   {
     "twarticle": "abimelech",
     "file": "abimelech.md",
+    "category": "names",
     "headwords": [
-      "Abimelek"
+      "Abimelech"
     ]
   },
   {
     "twarticle": "abner",
     "file": "abner.md",
+    "category": "names",
     "headwords": [
       "Abner"
     ]
@@ -1632,6 +1813,7 @@
   {
     "twarticle": "abraham",
     "file": "abraham.md",
+    "category": "names",
     "headwords": [
       "Abraham",
       "Abram"
@@ -1640,6 +1822,7 @@
   {
     "twarticle": "absalom",
     "file": "absalom.md",
+    "category": "names",
     "headwords": [
       "Absalom"
     ]
@@ -1647,6 +1830,7 @@
   {
     "twarticle": "adam",
     "file": "adam.md",
+    "category": "names",
     "headwords": [
       "Adam"
     ]
@@ -1654,6 +1838,7 @@
   {
     "twarticle": "adonijah",
     "file": "adonijah.md",
+    "category": "names",
     "headwords": [
       "Adonijah"
     ]
@@ -1661,6 +1846,7 @@
   {
     "twarticle": "ahab",
     "file": "ahab.md",
+    "category": "names",
     "headwords": [
       "Ahab"
     ]
@@ -1668,6 +1854,7 @@
   {
     "twarticle": "ahasuerus",
     "file": "ahasuerus.md",
+    "category": "names",
     "headwords": [
       "Ahasuerus"
     ]
@@ -1675,6 +1862,7 @@
   {
     "twarticle": "ahaz",
     "file": "ahaz.md",
+    "category": "names",
     "headwords": [
       "Ahaz"
     ]
@@ -1682,6 +1870,7 @@
   {
     "twarticle": "ahaziah",
     "file": "ahaziah.md",
+    "category": "names",
     "headwords": [
       "Ahaziah"
     ]
@@ -1689,6 +1878,7 @@
   {
     "twarticle": "ahijah",
     "file": "ahijah.md",
+    "category": "names",
     "headwords": [
       "Ahijah"
     ]
@@ -1696,6 +1886,7 @@
   {
     "twarticle": "ai",
     "file": "ai.md",
+    "category": "names",
     "headwords": [
       "Ai"
     ]
@@ -1703,6 +1894,7 @@
   {
     "twarticle": "amalekite",
     "file": "amalekite.md",
+    "category": "names",
     "headwords": [
       "Amalek",
       "Amalekite"
@@ -1711,6 +1903,7 @@
   {
     "twarticle": "amaziah",
     "file": "amaziah.md",
+    "category": "names",
     "headwords": [
       "Amaziah"
     ]
@@ -1718,6 +1911,7 @@
   {
     "twarticle": "ammon",
     "file": "ammon.md",
+    "category": "names",
     "headwords": [
       "Ammon",
       "Ammonite"
@@ -1726,6 +1920,7 @@
   {
     "twarticle": "amnon",
     "file": "amnon.md",
+    "category": "names",
     "headwords": [
       "Amnon"
     ]
@@ -1733,6 +1928,7 @@
   {
     "twarticle": "amorite",
     "file": "amorite.md",
+    "category": "names",
     "headwords": [
       "Amorite"
     ]
@@ -1740,6 +1936,7 @@
   {
     "twarticle": "amos",
     "file": "amos.md",
+    "category": "names",
     "headwords": [
       "Amos"
     ]
@@ -1747,6 +1944,7 @@
   {
     "twarticle": "amoz",
     "file": "amoz.md",
+    "category": "names",
     "headwords": [
       "Amoz"
     ]
@@ -1754,6 +1952,7 @@
   {
     "twarticle": "anak",
     "file": "anak.md",
+    "category": "names",
     "headwords": [
       "Anak",
       "Anakites"
@@ -1762,6 +1961,7 @@
   {
     "twarticle": "andrew",
     "file": "andrew.md",
+    "category": "names",
     "headwords": [
       "Andrew"
     ]
@@ -1769,6 +1969,7 @@
   {
     "twarticle": "annas",
     "file": "annas.md",
+    "category": "names",
     "headwords": [
       "Annas"
     ]
@@ -1776,6 +1977,7 @@
   {
     "twarticle": "antioch",
     "file": "antioch.md",
+    "category": "names",
     "headwords": [
       "Antioch"
     ]
@@ -1783,6 +1985,7 @@
   {
     "twarticle": "apollos",
     "file": "apollos.md",
+    "category": "names",
     "headwords": [
       "Apollos"
     ]
@@ -1790,6 +1993,7 @@
   {
     "twarticle": "aquila",
     "file": "aquila.md",
+    "category": "names",
     "headwords": [
       "Aquila"
     ]
@@ -1797,6 +2001,7 @@
   {
     "twarticle": "arabah",
     "file": "arabah.md",
+    "category": "names",
     "headwords": [
       "Arabah"
     ]
@@ -1804,6 +2009,7 @@
   {
     "twarticle": "arabia",
     "file": "arabia.md",
+    "category": "names",
     "headwords": [
       "Arabia",
       "Arabian"
@@ -1812,6 +2018,7 @@
   {
     "twarticle": "aram",
     "file": "aram.md",
+    "category": "names",
     "headwords": [
       "Aram",
       "Aramean",
@@ -1822,6 +2029,7 @@
   {
     "twarticle": "ararat",
     "file": "ararat.md",
+    "category": "names",
     "headwords": [
       "Ararat"
     ]
@@ -1829,6 +2037,7 @@
   {
     "twarticle": "artaxerxes",
     "file": "artaxerxes.md",
+    "category": "names",
     "headwords": [
       "Artaxerxes"
     ]
@@ -1836,6 +2045,7 @@
   {
     "twarticle": "asa",
     "file": "asa.md",
+    "category": "names",
     "headwords": [
       "Asa"
     ]
@@ -1843,6 +2053,7 @@
   {
     "twarticle": "asaph",
     "file": "asaph.md",
+    "category": "names",
     "headwords": [
       "Asaph"
     ]
@@ -1850,6 +2061,7 @@
   {
     "twarticle": "ashdod",
     "file": "ashdod.md",
+    "category": "names",
     "headwords": [
       "Ashdod",
       "Azotus"
@@ -1858,6 +2070,7 @@
   {
     "twarticle": "asher",
     "file": "asher.md",
+    "category": "names",
     "headwords": [
       "Asher"
     ]
@@ -1865,6 +2078,7 @@
   {
     "twarticle": "asherim",
     "file": "asherim.md",
+    "category": "names",
     "headwords": [
       "Asherah",
       "Asherah pole",
@@ -1874,6 +2088,7 @@
   {
     "twarticle": "ashkelon",
     "file": "ashkelon.md",
+    "category": "names",
     "headwords": [
       "Ashkelon"
     ]
@@ -1881,6 +2096,7 @@
   {
     "twarticle": "asia",
     "file": "asia.md",
+    "category": "names",
     "headwords": [
       "Asia"
     ]
@@ -1888,6 +2104,7 @@
   {
     "twarticle": "assyria",
     "file": "assyria.md",
+    "category": "names",
     "headwords": [
       "Assyria",
       "Assyrian",
@@ -1897,6 +2114,7 @@
   {
     "twarticle": "athaliah",
     "file": "athaliah.md",
+    "category": "names",
     "headwords": [
       "Athaliah"
     ]
@@ -1904,6 +2122,7 @@
   {
     "twarticle": "azariah",
     "file": "azariah.md",
+    "category": "names",
     "headwords": [
       "Azariah"
     ]
@@ -1911,6 +2130,7 @@
   {
     "twarticle": "baal",
     "file": "baal.md",
+    "category": "names",
     "headwords": [
       "Baal"
     ]
@@ -1918,6 +2138,7 @@
   {
     "twarticle": "baasha",
     "file": "baasha.md",
+    "category": "names",
     "headwords": [
       "Baasha"
     ]
@@ -1925,6 +2146,7 @@
   {
     "twarticle": "babel",
     "file": "babel.md",
+    "category": "names",
     "headwords": [
       "Babel"
     ]
@@ -1932,6 +2154,7 @@
   {
     "twarticle": "babylon",
     "file": "babylon.md",
+    "category": "names",
     "headwords": [
       "Babylon",
       "Babylonia",
@@ -1941,6 +2164,7 @@
   {
     "twarticle": "balaam",
     "file": "balaam.md",
+    "category": "names",
     "headwords": [
       "Balaam"
     ]
@@ -1948,6 +2172,7 @@
   {
     "twarticle": "barabbas",
     "file": "barabbas.md",
+    "category": "names",
     "headwords": [
       "Barabbas"
     ]
@@ -1955,6 +2180,7 @@
   {
     "twarticle": "barnabas",
     "file": "barnabas.md",
+    "category": "names",
     "headwords": [
       "Barnabas"
     ]
@@ -1962,6 +2188,7 @@
   {
     "twarticle": "bartholomew",
     "file": "bartholomew.md",
+    "category": "names",
     "headwords": [
       "Bartholomew"
     ]
@@ -1969,6 +2196,7 @@
   {
     "twarticle": "baruch",
     "file": "baruch.md",
+    "category": "names",
     "headwords": [
       "Baruch"
     ]
@@ -1976,6 +2204,7 @@
   {
     "twarticle": "bashan",
     "file": "bashan.md",
+    "category": "names",
     "headwords": [
       "Bashan"
     ]
@@ -1983,6 +2212,7 @@
   {
     "twarticle": "bathsheba",
     "file": "bathsheba.md",
+    "category": "names",
     "headwords": [
       "Bathsheba"
     ]
@@ -1990,6 +2220,7 @@
   {
     "twarticle": "beelzebul",
     "file": "beelzebul.md",
+    "category": "names",
     "headwords": [
       "Beelzebul"
     ]
@@ -1997,6 +2228,7 @@
   {
     "twarticle": "beersheba",
     "file": "beersheba.md",
+    "category": "names",
     "headwords": [
       "Beersheba"
     ]
@@ -2004,6 +2236,7 @@
   {
     "twarticle": "benaiah",
     "file": "benaiah.md",
+    "category": "names",
     "headwords": [
       "Benaiah"
     ]
@@ -2011,6 +2244,7 @@
   {
     "twarticle": "benjamin",
     "file": "benjamin.md",
+    "category": "names",
     "headwords": [
       "Benjamin",
       "Benjaminite"
@@ -2019,6 +2253,7 @@
   {
     "twarticle": "berea",
     "file": "berea.md",
+    "category": "names",
     "headwords": [
       "Berea"
     ]
@@ -2026,6 +2261,7 @@
   {
     "twarticle": "bethany",
     "file": "bethany.md",
+    "category": "names",
     "headwords": [
       "Bethany"
     ]
@@ -2033,6 +2269,7 @@
   {
     "twarticle": "bethel",
     "file": "bethel.md",
+    "category": "names",
     "headwords": [
       "Bethel"
     ]
@@ -2040,6 +2277,7 @@
   {
     "twarticle": "bethlehem",
     "file": "bethlehem.md",
+    "category": "names",
     "headwords": [
       "Bethlehem",
       "Ephrathah"
@@ -2048,6 +2286,7 @@
   {
     "twarticle": "bethshemesh",
     "file": "bethshemesh.md",
+    "category": "names",
     "headwords": [
       "Beth Shemesh"
     ]
@@ -2055,6 +2294,7 @@
   {
     "twarticle": "bethuel",
     "file": "bethuel.md",
+    "category": "names",
     "headwords": [
       "Bethuel"
     ]
@@ -2062,6 +2302,7 @@
   {
     "twarticle": "bilhah",
     "file": "bilhah.md",
+    "category": "names",
     "headwords": [
       "Bilhah"
     ]
@@ -2069,6 +2310,7 @@
   {
     "twarticle": "boaz",
     "file": "boaz.md",
+    "category": "names",
     "headwords": [
       "Boaz"
     ]
@@ -2076,6 +2318,7 @@
   {
     "twarticle": "caesar",
     "file": "caesar.md",
+    "category": "names",
     "headwords": [
       "Caesar"
     ]
@@ -2083,6 +2326,7 @@
   {
     "twarticle": "caesarea",
     "file": "caesarea.md",
+    "category": "names",
     "headwords": [
       "Caesarea",
       "Caesarea Philippi"
@@ -2091,6 +2335,7 @@
   {
     "twarticle": "caiaphas",
     "file": "caiaphas.md",
+    "category": "names",
     "headwords": [
       "Caiaphas"
     ]
@@ -2098,6 +2343,7 @@
   {
     "twarticle": "cain",
     "file": "cain.md",
+    "category": "names",
     "headwords": [
       "Cain"
     ]
@@ -2105,6 +2351,7 @@
   {
     "twarticle": "caleb",
     "file": "caleb.md",
+    "category": "names",
     "headwords": [
       "Caleb"
     ]
@@ -2112,6 +2359,7 @@
   {
     "twarticle": "cana",
     "file": "cana.md",
+    "category": "names",
     "headwords": [
       "Cana"
     ]
@@ -2119,6 +2367,7 @@
   {
     "twarticle": "canaan",
     "file": "canaan.md",
+    "category": "names",
     "headwords": [
       "Canaan",
       "Canaanite"
@@ -2127,6 +2376,7 @@
   {
     "twarticle": "capernaum",
     "file": "capernaum.md",
+    "category": "names",
     "headwords": [
       "Capernaum"
     ]
@@ -2134,6 +2384,7 @@
   {
     "twarticle": "carmel",
     "file": "carmel.md",
+    "category": "names",
     "headwords": [
       "Carmel",
       "Mount Carmel"
@@ -2142,6 +2393,7 @@
   {
     "twarticle": "chaldeans",
     "file": "chaldeans.md",
+    "category": "names",
     "headwords": [
       "Chaldea",
       "Chaldean"
@@ -2150,13 +2402,15 @@
   {
     "twarticle": "cherethites",
     "file": "cherethites.md",
+    "category": "names",
     "headwords": [
-      "Kerethites"
+      "Cherethites"
     ]
   },
   {
     "twarticle": "cilicia",
     "file": "cilicia.md",
+    "category": "names",
     "headwords": [
       "Cilicia"
     ]
@@ -2164,6 +2418,7 @@
   {
     "twarticle": "cityofdavid",
     "file": "cityofdavid.md",
+    "category": "names",
     "headwords": [
       "city of David"
     ]
@@ -2171,6 +2426,7 @@
   {
     "twarticle": "colossae",
     "file": "colossae.md",
+    "category": "names",
     "headwords": [
       "Colossae",
       "Colossians"
@@ -2179,6 +2435,7 @@
   {
     "twarticle": "corinth",
     "file": "corinth.md",
+    "category": "names",
     "headwords": [
       "Corinth",
       "Corinthians"
@@ -2187,6 +2444,7 @@
   {
     "twarticle": "cornelius",
     "file": "cornelius.md",
+    "category": "names",
     "headwords": [
       "Cornelius"
     ]
@@ -2194,6 +2452,7 @@
   {
     "twarticle": "crete",
     "file": "crete.md",
+    "category": "names",
     "headwords": [
       "Crete",
       "Cretan"
@@ -2202,6 +2461,7 @@
   {
     "twarticle": "cush",
     "file": "cush.md",
+    "category": "names",
     "headwords": [
       "Cush"
     ]
@@ -2209,6 +2469,7 @@
   {
     "twarticle": "cyprus",
     "file": "cyprus.md",
+    "category": "names",
     "headwords": [
       "Cyprus"
     ]
@@ -2216,6 +2477,7 @@
   {
     "twarticle": "cyrene",
     "file": "cyrene.md",
+    "category": "names",
     "headwords": [
       "Cyrene"
     ]
@@ -2223,6 +2485,7 @@
   {
     "twarticle": "cyrus",
     "file": "cyrus.md",
+    "category": "names",
     "headwords": [
       "Cyrus"
     ]
@@ -2230,6 +2493,7 @@
   {
     "twarticle": "damascus",
     "file": "damascus.md",
+    "category": "names",
     "headwords": [
       "Damascus"
     ]
@@ -2237,6 +2501,7 @@
   {
     "twarticle": "dan",
     "file": "dan.md",
+    "category": "names",
     "headwords": [
       "Dan"
     ]
@@ -2244,6 +2509,7 @@
   {
     "twarticle": "daniel",
     "file": "daniel.md",
+    "category": "names",
     "headwords": [
       "Daniel"
     ]
@@ -2251,6 +2517,7 @@
   {
     "twarticle": "darius",
     "file": "darius.md",
+    "category": "names",
     "headwords": [
       "Darius"
     ]
@@ -2258,6 +2525,7 @@
   {
     "twarticle": "david",
     "file": "david.md",
+    "category": "names",
     "headwords": [
       "David"
     ]
@@ -2265,6 +2533,7 @@
   {
     "twarticle": "delilah",
     "file": "delilah.md",
+    "category": "names",
     "headwords": [
       "Delilah"
     ]
@@ -2272,6 +2541,7 @@
   {
     "twarticle": "eden",
     "file": "eden.md",
+    "category": "names",
     "headwords": [
       "Eden",
       "garden of Eden"
@@ -2280,6 +2550,7 @@
   {
     "twarticle": "edom",
     "file": "edom.md",
+    "category": "names",
     "headwords": [
       "Edom",
       "Edomite",
@@ -2289,6 +2560,7 @@
   {
     "twarticle": "egypt",
     "file": "egypt.md",
+    "category": "names",
     "headwords": [
       "Egypt",
       "Egyptian"
@@ -2297,6 +2569,7 @@
   {
     "twarticle": "ekron",
     "file": "ekron.md",
+    "category": "names",
     "headwords": [
       "Ekron",
       "Ekronites"
@@ -2305,6 +2578,7 @@
   {
     "twarticle": "elam",
     "file": "elam.md",
+    "category": "names",
     "headwords": [
       "Elam",
       "Elamites"
@@ -2313,6 +2587,7 @@
   {
     "twarticle": "eleazar",
     "file": "eleazar.md",
+    "category": "names",
     "headwords": [
       "Eleazar"
     ]
@@ -2320,6 +2595,7 @@
   {
     "twarticle": "eliakim",
     "file": "eliakim.md",
+    "category": "names",
     "headwords": [
       "Eliakim"
     ]
@@ -2327,6 +2603,7 @@
   {
     "twarticle": "elijah",
     "file": "elijah.md",
+    "category": "names",
     "headwords": [
       "Elijah"
     ]
@@ -2334,6 +2611,7 @@
   {
     "twarticle": "elisha",
     "file": "elisha.md",
+    "category": "names",
     "headwords": [
       "Elisha"
     ]
@@ -2341,6 +2619,7 @@
   {
     "twarticle": "elizabeth",
     "file": "elizabeth.md",
+    "category": "names",
     "headwords": [
       "Elizabeth"
     ]
@@ -2348,6 +2627,7 @@
   {
     "twarticle": "engedi",
     "file": "engedi.md",
+    "category": "names",
     "headwords": [
       "En Gedi"
     ]
@@ -2355,6 +2635,7 @@
   {
     "twarticle": "enoch",
     "file": "enoch.md",
+    "category": "names",
     "headwords": [
       "Enoch"
     ]
@@ -2362,6 +2643,7 @@
   {
     "twarticle": "ephesus",
     "file": "ephesus.md",
+    "category": "names",
     "headwords": [
       "Ephesus",
       "Ephesian"
@@ -2370,6 +2652,7 @@
   {
     "twarticle": "ephraim",
     "file": "ephraim.md",
+    "category": "names",
     "headwords": [
       "Ephraim",
       "Ephraimite"
@@ -2378,6 +2661,7 @@
   {
     "twarticle": "ephrathah",
     "file": "ephrathah.md",
+    "category": "names",
     "headwords": [
       "Ephrath",
       "Ephrathah"
@@ -2386,6 +2670,7 @@
   {
     "twarticle": "esau",
     "file": "esau.md",
+    "category": "names",
     "headwords": [
       "Esau"
     ]
@@ -2393,14 +2678,16 @@
   {
     "twarticle": "esther",
     "file": "esther.md",
+    "category": "names",
     "headwords": [
       "Esther",
-      "Hadasseh"
+      "Hadassah"
     ]
   },
   {
     "twarticle": "ethiopia",
     "file": "ethiopia.md",
+    "category": "names",
     "headwords": [
       "Ethiopia",
       "Ethiopian"
@@ -2409,6 +2696,7 @@
   {
     "twarticle": "euphrates",
     "file": "euphrates.md",
+    "category": "names",
     "headwords": [
       "Euphrates River",
       "the River"
@@ -2417,6 +2705,7 @@
   {
     "twarticle": "eve",
     "file": "eve.md",
+    "category": "names",
     "headwords": [
       "Eve"
     ]
@@ -2424,6 +2713,7 @@
   {
     "twarticle": "ezekiel",
     "file": "ezekiel.md",
+    "category": "names",
     "headwords": [
       "Ezekiel"
     ]
@@ -2431,6 +2721,7 @@
   {
     "twarticle": "ezra",
     "file": "ezra.md",
+    "category": "names",
     "headwords": [
       "Ezra"
     ]
@@ -2438,6 +2729,7 @@
   {
     "twarticle": "gabriel",
     "file": "gabriel.md",
+    "category": "names",
     "headwords": [
       "Gabriel"
     ]
@@ -2445,6 +2737,7 @@
   {
     "twarticle": "gad",
     "file": "gad.md",
+    "category": "names",
     "headwords": [
       "Gad"
     ]
@@ -2452,6 +2745,7 @@
   {
     "twarticle": "galatia",
     "file": "galatia.md",
+    "category": "names",
     "headwords": [
       "Galatia",
       "Galatians"
@@ -2460,6 +2754,7 @@
   {
     "twarticle": "galilee",
     "file": "galilee.md",
+    "category": "names",
     "headwords": [
       "Galilee",
       "Galilean"
@@ -2468,6 +2763,7 @@
   {
     "twarticle": "gath",
     "file": "gath.md",
+    "category": "names",
     "headwords": [
       "Gath",
       "Gittite"
@@ -2476,6 +2772,7 @@
   {
     "twarticle": "gaza",
     "file": "gaza.md",
+    "category": "names",
     "headwords": [
       "Gaza"
     ]
@@ -2483,6 +2780,7 @@
   {
     "twarticle": "gerar",
     "file": "gerar.md",
+    "category": "names",
     "headwords": [
       "Gerar"
     ]
@@ -2490,6 +2788,7 @@
   {
     "twarticle": "geshur",
     "file": "geshur.md",
+    "category": "names",
     "headwords": [
       "Geshur",
       "Geshurites"
@@ -2498,6 +2797,7 @@
   {
     "twarticle": "gethsemane",
     "file": "gethsemane.md",
+    "category": "names",
     "headwords": [
       "Gethsemane"
     ]
@@ -2505,6 +2805,7 @@
   {
     "twarticle": "gibeah",
     "file": "gibeah.md",
+    "category": "names",
     "headwords": [
       "Gibeah"
     ]
@@ -2512,6 +2813,7 @@
   {
     "twarticle": "gibeon",
     "file": "gibeon.md",
+    "category": "names",
     "headwords": [
       "Gibeon",
       "Gibeonite"
@@ -2520,6 +2822,7 @@
   {
     "twarticle": "gideon",
     "file": "gideon.md",
+    "category": "names",
     "headwords": [
       "Gideon"
     ]
@@ -2527,6 +2830,7 @@
   {
     "twarticle": "gilead",
     "file": "gilead.md",
+    "category": "names",
     "headwords": [
       "Gilead",
       "Gileadite"
@@ -2535,6 +2839,7 @@
   {
     "twarticle": "gilgal",
     "file": "gilgal.md",
+    "category": "names",
     "headwords": [
       "Gilgal"
     ]
@@ -2542,6 +2847,7 @@
   {
     "twarticle": "girgashites",
     "file": "girgashites.md",
+    "category": "names",
     "headwords": [
       "Girgashites"
     ]
@@ -2549,6 +2855,7 @@
   {
     "twarticle": "golgotha",
     "file": "golgotha.md",
+    "category": "names",
     "headwords": [
       "Golgotha"
     ]
@@ -2556,6 +2863,7 @@
   {
     "twarticle": "goliath",
     "file": "goliath.md",
+    "category": "names",
     "headwords": [
       "Goliath"
     ]
@@ -2563,6 +2871,7 @@
   {
     "twarticle": "gomorrah",
     "file": "gomorrah.md",
+    "category": "names",
     "headwords": [
       "Gomorrah"
     ]
@@ -2570,6 +2879,7 @@
   {
     "twarticle": "goshen",
     "file": "goshen.md",
+    "category": "names",
     "headwords": [
       "Goshen"
     ]
@@ -2577,6 +2887,7 @@
   {
     "twarticle": "greece",
     "file": "greece.md",
+    "category": "names",
     "headwords": [
       "Greece",
       "Grecian"
@@ -2585,6 +2896,7 @@
   {
     "twarticle": "greek",
     "file": "greek.md",
+    "category": "names",
     "headwords": [
       "Greek",
       "Grecian",
@@ -2594,6 +2906,7 @@
   {
     "twarticle": "habakkuk",
     "file": "habakkuk.md",
+    "category": "names",
     "headwords": [
       "Habakkuk"
     ]
@@ -2601,6 +2914,7 @@
   {
     "twarticle": "hagar",
     "file": "hagar.md",
+    "category": "names",
     "headwords": [
       "Hagar"
     ]
@@ -2608,6 +2922,7 @@
   {
     "twarticle": "haggai",
     "file": "haggai.md",
+    "category": "names",
     "headwords": [
       "Haggai"
     ]
@@ -2615,6 +2930,7 @@
   {
     "twarticle": "ham",
     "file": "ham.md",
+    "category": "names",
     "headwords": [
       "Ham"
     ]
@@ -2622,6 +2938,7 @@
   {
     "twarticle": "hamath",
     "file": "hamath.md",
+    "category": "names",
     "headwords": [
       "Hamath",
       "Hamathites",
@@ -2631,6 +2948,7 @@
   {
     "twarticle": "hamor",
     "file": "hamor.md",
+    "category": "names",
     "headwords": [
       "Hamor"
     ]
@@ -2638,6 +2956,7 @@
   {
     "twarticle": "hananiah",
     "file": "hananiah.md",
+    "category": "names",
     "headwords": [
       "Hananiah"
     ]
@@ -2645,6 +2964,7 @@
   {
     "twarticle": "hannah",
     "file": "hannah.md",
+    "category": "names",
     "headwords": [
       "Hannah"
     ]
@@ -2652,6 +2972,7 @@
   {
     "twarticle": "haran",
     "file": "haran.md",
+    "category": "names",
     "headwords": [
       "Haran"
     ]
@@ -2659,6 +2980,7 @@
   {
     "twarticle": "hebron",
     "file": "hebron.md",
+    "category": "names",
     "headwords": [
       "Hebron",
       "Kiriath Arba"
@@ -2667,6 +2989,7 @@
   {
     "twarticle": "herodantipas",
     "file": "herodantipas.md",
+    "category": "names",
     "headwords": [
       "Herod",
       "Herod Antipas"
@@ -2675,6 +2998,7 @@
   {
     "twarticle": "herodias",
     "file": "herodias.md",
+    "category": "names",
     "headwords": [
       "Herodias"
     ]
@@ -2682,6 +3006,7 @@
   {
     "twarticle": "herodthegreat",
     "file": "herodthegreat.md",
+    "category": "names",
     "headwords": [
       "Herod",
       "Herod the Great"
@@ -2690,6 +3015,7 @@
   {
     "twarticle": "heshbon",
     "file": "heshbon.md",
+    "category": "names",
     "headwords": [
       "Heshbon"
     ]
@@ -2697,6 +3023,7 @@
   {
     "twarticle": "hezekiah",
     "file": "hezekiah.md",
+    "category": "names",
     "headwords": [
       "Hezekiah"
     ]
@@ -2704,6 +3031,7 @@
   {
     "twarticle": "hilkiah",
     "file": "hilkiah.md",
+    "category": "names",
     "headwords": [
       "Hilkiah"
     ]
@@ -2711,6 +3039,7 @@
   {
     "twarticle": "hittite",
     "file": "hittite.md",
+    "category": "names",
     "headwords": [
       "Hittite"
     ]
@@ -2718,6 +3047,7 @@
   {
     "twarticle": "hivite",
     "file": "hivite.md",
+    "category": "names",
     "headwords": [
       "Hivite"
     ]
@@ -2725,6 +3055,7 @@
   {
     "twarticle": "hosea",
     "file": "hosea.md",
+    "category": "names",
     "headwords": [
       "Hosea"
     ]
@@ -2732,6 +3063,7 @@
   {
     "twarticle": "hoshea",
     "file": "hoshea.md",
+    "category": "names",
     "headwords": [
       "Hoshea"
     ]
@@ -2739,6 +3071,7 @@
   {
     "twarticle": "houseofdavid",
     "file": "houseofdavid.md",
+    "category": "names",
     "headwords": [
       "house of David"
     ]
@@ -2746,6 +3079,7 @@
   {
     "twarticle": "iconium",
     "file": "iconium.md",
+    "category": "names",
     "headwords": [
       "Iconium"
     ]
@@ -2753,6 +3087,7 @@
   {
     "twarticle": "isaac",
     "file": "isaac.md",
+    "category": "names",
     "headwords": [
       "Isaac"
     ]
@@ -2760,6 +3095,7 @@
   {
     "twarticle": "isaiah",
     "file": "isaiah.md",
+    "category": "names",
     "headwords": [
       "Isaiah"
     ]
@@ -2767,6 +3103,7 @@
   {
     "twarticle": "ishmael",
     "file": "ishmael.md",
+    "category": "names",
     "headwords": [
       "Ishmael",
       "Ishmaelite"
@@ -2775,6 +3112,7 @@
   {
     "twarticle": "issachar",
     "file": "issachar.md",
+    "category": "names",
     "headwords": [
       "Issachar"
     ]
@@ -2782,6 +3120,7 @@
   {
     "twarticle": "jacob",
     "file": "jacob.md",
+    "category": "names",
     "headwords": [
       "Jacob",
       "Israel"
@@ -2790,6 +3129,7 @@
   {
     "twarticle": "jamesbrotherofjesus",
     "file": "jamesbrotherofjesus.md",
+    "category": "names",
     "headwords": [
       "James (brother of Jesus)"
     ]
@@ -2797,6 +3137,7 @@
   {
     "twarticle": "jamessonofalphaeus",
     "file": "jamessonofalphaeus.md",
+    "category": "names",
     "headwords": [
       "James (son of Alphaeus)"
     ]
@@ -2804,6 +3145,7 @@
   {
     "twarticle": "jamessonofzebedee",
     "file": "jamessonofzebedee.md",
+    "category": "names",
     "headwords": [
       "James (son of Zebedee)"
     ]
@@ -2811,6 +3153,7 @@
   {
     "twarticle": "japheth",
     "file": "japheth.md",
+    "category": "names",
     "headwords": [
       "Japheth"
     ]
@@ -2818,6 +3161,7 @@
   {
     "twarticle": "jebusites",
     "file": "jebusites.md",
+    "category": "names",
     "headwords": [
       "Jebus",
       "Jebusite"
@@ -2826,6 +3170,7 @@
   {
     "twarticle": "jehoiachin",
     "file": "jehoiachin.md",
+    "category": "names",
     "headwords": [
       "Jehoiachin"
     ]
@@ -2833,6 +3178,7 @@
   {
     "twarticle": "jehoiada",
     "file": "jehoiada.md",
+    "category": "names",
     "headwords": [
       "Jehoiada"
     ]
@@ -2840,6 +3186,7 @@
   {
     "twarticle": "jehoiakim",
     "file": "jehoiakim.md",
+    "category": "names",
     "headwords": [
       "Jehoiakim"
     ]
@@ -2847,6 +3194,7 @@
   {
     "twarticle": "jehoram",
     "file": "jehoram.md",
+    "category": "names",
     "headwords": [
       "Jehoram",
       "Joram"
@@ -2855,6 +3203,7 @@
   {
     "twarticle": "jehoshaphat",
     "file": "jehoshaphat.md",
+    "category": "names",
     "headwords": [
       "Jehoshaphat"
     ]
@@ -2862,6 +3211,7 @@
   {
     "twarticle": "jehu",
     "file": "jehu.md",
+    "category": "names",
     "headwords": [
       "Jehu"
     ]
@@ -2869,6 +3219,7 @@
   {
     "twarticle": "jephthah",
     "file": "jephthah.md",
+    "category": "names",
     "headwords": [
       "Jephthah"
     ]
@@ -2876,6 +3227,7 @@
   {
     "twarticle": "jeremiah",
     "file": "jeremiah.md",
+    "category": "names",
     "headwords": [
       "Jeremiah"
     ]
@@ -2883,6 +3235,7 @@
   {
     "twarticle": "jericho",
     "file": "jericho.md",
+    "category": "names",
     "headwords": [
       "Jericho"
     ]
@@ -2890,6 +3243,7 @@
   {
     "twarticle": "jeroboam",
     "file": "jeroboam.md",
+    "category": "names",
     "headwords": [
       "Jeroboam"
     ]
@@ -2897,6 +3251,7 @@
   {
     "twarticle": "jerusalem",
     "file": "jerusalem.md",
+    "category": "names",
     "headwords": [
       "Jerusalem"
     ]
@@ -2904,6 +3259,7 @@
   {
     "twarticle": "jesse",
     "file": "jesse.md",
+    "category": "names",
     "headwords": [
       "Jesse"
     ]
@@ -2911,6 +3267,7 @@
   {
     "twarticle": "jethro",
     "file": "jethro.md",
+    "category": "names",
     "headwords": [
       "Jethro",
       "Reuel"
@@ -2919,6 +3276,7 @@
   {
     "twarticle": "jezebel",
     "file": "jezebel.md",
+    "category": "names",
     "headwords": [
       "Jezebel"
     ]
@@ -2926,6 +3284,7 @@
   {
     "twarticle": "jezreel",
     "file": "jezreel.md",
+    "category": "names",
     "headwords": [
       "Jezreel",
       "Jezreelite"
@@ -2934,6 +3293,7 @@
   {
     "twarticle": "joab",
     "file": "joab.md",
+    "category": "names",
     "headwords": [
       "Joab"
     ]
@@ -2941,6 +3301,7 @@
   {
     "twarticle": "joash",
     "file": "joash.md",
+    "category": "names",
     "headwords": [
       "Joash"
     ]
@@ -2948,6 +3309,7 @@
   {
     "twarticle": "job",
     "file": "job.md",
+    "category": "names",
     "headwords": [
       "Job"
     ]
@@ -2955,6 +3317,7 @@
   {
     "twarticle": "joel",
     "file": "joel.md",
+    "category": "names",
     "headwords": [
       "Joel"
     ]
@@ -2962,6 +3325,7 @@
   {
     "twarticle": "johnmark",
     "file": "johnmark.md",
+    "category": "names",
     "headwords": [
       "John Mark"
     ]
@@ -2969,6 +3333,7 @@
   {
     "twarticle": "johntheapostle",
     "file": "johntheapostle.md",
+    "category": "names",
     "headwords": [
       "John (the apostle)"
     ]
@@ -2976,6 +3341,7 @@
   {
     "twarticle": "johnthebaptist",
     "file": "johnthebaptist.md",
+    "category": "names",
     "headwords": [
       "John (the Baptist)"
     ]
@@ -2983,6 +3349,7 @@
   {
     "twarticle": "jonah",
     "file": "jonah.md",
+    "category": "names",
     "headwords": [
       "Jonah"
     ]
@@ -2990,6 +3357,7 @@
   {
     "twarticle": "jonathan",
     "file": "jonathan.md",
+    "category": "names",
     "headwords": [
       "Jonathan"
     ]
@@ -2997,6 +3365,7 @@
   {
     "twarticle": "joppa",
     "file": "joppa.md",
+    "category": "names",
     "headwords": [
       "Joppa"
     ]
@@ -3004,6 +3373,7 @@
   {
     "twarticle": "joram",
     "file": "joram.md",
+    "category": "names",
     "headwords": [
       "Joram"
     ]
@@ -3011,6 +3381,7 @@
   {
     "twarticle": "jordanriver",
     "file": "jordanriver.md",
+    "category": "names",
     "headwords": [
       "Jordan River",
       "Jordan"
@@ -3019,6 +3390,7 @@
   {
     "twarticle": "josephnt",
     "file": "josephnt.md",
+    "category": "names",
     "headwords": [
       "Joseph (NT)"
     ]
@@ -3026,6 +3398,7 @@
   {
     "twarticle": "josephot",
     "file": "josephot.md",
+    "category": "names",
     "headwords": [
       "Joseph (OT)"
     ]
@@ -3033,6 +3406,7 @@
   {
     "twarticle": "joshua",
     "file": "joshua.md",
+    "category": "names",
     "headwords": [
       "Joshua"
     ]
@@ -3040,6 +3414,7 @@
   {
     "twarticle": "josiah",
     "file": "josiah.md",
+    "category": "names",
     "headwords": [
       "Josiah"
     ]
@@ -3047,6 +3422,7 @@
   {
     "twarticle": "jotham",
     "file": "jotham.md",
+    "category": "names",
     "headwords": [
       "Jotham"
     ]
@@ -3054,6 +3430,7 @@
   {
     "twarticle": "judah",
     "file": "judah.md",
+    "category": "names",
     "headwords": [
       "Judah"
     ]
@@ -3061,6 +3438,7 @@
   {
     "twarticle": "judasiscariot",
     "file": "judasiscariot.md",
+    "category": "names",
     "headwords": [
       "Judas Iscariot"
     ]
@@ -3068,6 +3446,7 @@
   {
     "twarticle": "judassonofjames",
     "file": "judassonofjames.md",
+    "category": "names",
     "headwords": [
       "Judas son of James"
     ]
@@ -3075,6 +3454,7 @@
   {
     "twarticle": "judea",
     "file": "judea.md",
+    "category": "names",
     "headwords": [
       "Judea",
       "Judah"
@@ -3083,15 +3463,17 @@
   {
     "twarticle": "kadesh",
     "file": "kadesh.md",
+    "category": "names",
     "headwords": [
       "Kadesh",
-      "Kadesh-Barnea",
+      "Kadesh Barnea",
       "Meribah Kadesh"
     ]
   },
   {
     "twarticle": "kedar",
     "file": "kedar.md",
+    "category": "names",
     "headwords": [
       "Kedar"
     ]
@@ -3099,6 +3481,7 @@
   {
     "twarticle": "kedesh",
     "file": "kedesh.md",
+    "category": "names",
     "headwords": [
       "Kedesh"
     ]
@@ -3106,6 +3489,7 @@
   {
     "twarticle": "kidronvalley",
     "file": "kidronvalley.md",
+    "category": "names",
     "headwords": [
       "Kidron Valley"
     ]
@@ -3113,6 +3497,7 @@
   {
     "twarticle": "kingdomofisrael",
     "file": "kingdomofisrael.md",
+    "category": "names",
     "headwords": [
       "kingdom of Israel"
     ]
@@ -3120,6 +3505,7 @@
   {
     "twarticle": "kingdomofjudah",
     "file": "kingdomofjudah.md",
+    "category": "names",
     "headwords": [
       "Judah",
       "kingdom of Judah"
@@ -3128,6 +3514,7 @@
   {
     "twarticle": "korah",
     "file": "korah.md",
+    "category": "names",
     "headwords": [
       "Korah",
       "Korahite"
@@ -3136,6 +3523,7 @@
   {
     "twarticle": "laban",
     "file": "laban.md",
+    "category": "names",
     "headwords": [
       "Laban"
     ]
@@ -3143,6 +3531,7 @@
   {
     "twarticle": "lamech",
     "file": "lamech.md",
+    "category": "names",
     "headwords": [
       "Lamech"
     ]
@@ -3150,6 +3539,7 @@
   {
     "twarticle": "lazarus",
     "file": "lazarus.md",
+    "category": "names",
     "headwords": [
       "Lazarus"
     ]
@@ -3157,6 +3547,7 @@
   {
     "twarticle": "leah",
     "file": "leah.md",
+    "category": "names",
     "headwords": [
       "Leah"
     ]
@@ -3164,6 +3555,7 @@
   {
     "twarticle": "lebanon",
     "file": "lebanon.md",
+    "category": "names",
     "headwords": [
       "Lebanon"
     ]
@@ -3171,6 +3563,7 @@
   {
     "twarticle": "leviathan",
     "file": "leviathan.md",
+    "category": "names",
     "headwords": [
       "Leviathan"
     ]
@@ -3178,6 +3571,7 @@
   {
     "twarticle": "levite",
     "file": "levite.md",
+    "category": "names",
     "headwords": [
       "Levi",
       "Levite"
@@ -3186,6 +3580,7 @@
   {
     "twarticle": "lot",
     "file": "lot.md",
+    "category": "names",
     "headwords": [
       "Lot"
     ]
@@ -3193,6 +3588,7 @@
   {
     "twarticle": "luke",
     "file": "luke.md",
+    "category": "names",
     "headwords": [
       "Luke"
     ]
@@ -3200,6 +3596,7 @@
   {
     "twarticle": "lystra",
     "file": "lystra.md",
+    "category": "names",
     "headwords": [
       "Lystra"
     ]
@@ -3207,6 +3604,7 @@
   {
     "twarticle": "maacah",
     "file": "maacah.md",
+    "category": "names",
     "headwords": [
       "Maacah"
     ]
@@ -3214,6 +3612,7 @@
   {
     "twarticle": "macedonia",
     "file": "macedonia.md",
+    "category": "names",
     "headwords": [
       "Macedonia"
     ]
@@ -3221,6 +3620,7 @@
   {
     "twarticle": "maker",
     "file": "maker.md",
+    "category": "names",
     "headwords": [
       "Maker"
     ]
@@ -3228,6 +3628,7 @@
   {
     "twarticle": "malachi",
     "file": "malachi.md",
+    "category": "names",
     "headwords": [
       "Malachi"
     ]
@@ -3235,6 +3636,7 @@
   {
     "twarticle": "manasseh",
     "file": "manasseh.md",
+    "category": "names",
     "headwords": [
       "Manasseh"
     ]
@@ -3242,6 +3644,7 @@
   {
     "twarticle": "manofgod",
     "file": "manofgod.md",
+    "category": "names",
     "headwords": [
       "man of God"
     ]
@@ -3249,6 +3652,7 @@
   {
     "twarticle": "martha",
     "file": "martha.md",
+    "category": "names",
     "headwords": [
       "Martha"
     ]
@@ -3256,14 +3660,15 @@
   {
     "twarticle": "mary",
     "file": "mary.md",
+    "category": "names",
     "headwords": [
-      "Mary",
-      "the mother of Jesus"
+      "Mary (the mother of Jesus)"
     ]
   },
   {
     "twarticle": "marymagdalene",
     "file": "marymagdalene.md",
+    "category": "names",
     "headwords": [
       "Mary Magdalene"
     ]
@@ -3271,6 +3676,7 @@
   {
     "twarticle": "marysisterofmartha",
     "file": "marysisterofmartha.md",
+    "category": "names",
     "headwords": [
       "Mary (sister of Martha)"
     ]
@@ -3278,6 +3684,7 @@
   {
     "twarticle": "matthew",
     "file": "matthew.md",
+    "category": "names",
     "headwords": [
       "Matthew",
       "Levi"
@@ -3286,6 +3693,7 @@
   {
     "twarticle": "mede",
     "file": "mede.md",
+    "category": "names",
     "headwords": [
       "Mede",
       "Medes",
@@ -3293,18 +3701,9 @@
     ]
   },
   {
-    "twarticle": "mediterranean",
-    "file": "mediterranean.md",
-    "headwords": [
-      "the sea",
-      "the Great Sea",
-      "the western sea",
-      "Mediterranean Sea"
-    ]
-  },
-  {
     "twarticle": "melchizedek",
     "file": "melchizedek.md",
+    "category": "names",
     "headwords": [
       "Melchizedek"
     ]
@@ -3312,6 +3711,7 @@
   {
     "twarticle": "memphis",
     "file": "memphis.md",
+    "category": "names",
     "headwords": [
       "Memphis"
     ]
@@ -3319,6 +3719,7 @@
   {
     "twarticle": "meshech",
     "file": "meshech.md",
+    "category": "names",
     "headwords": [
       "Meshech"
     ]
@@ -3326,6 +3727,7 @@
   {
     "twarticle": "mesopotamia",
     "file": "mesopotamia.md",
+    "category": "names",
     "headwords": [
       "Mesopotamia",
       "Aram Naharaim"
@@ -3334,6 +3736,7 @@
   {
     "twarticle": "micah",
     "file": "micah.md",
+    "category": "names",
     "headwords": [
       "Micah"
     ]
@@ -3341,6 +3744,7 @@
   {
     "twarticle": "michael",
     "file": "michael.md",
+    "category": "names",
     "headwords": [
       "Michael"
     ]
@@ -3348,6 +3752,7 @@
   {
     "twarticle": "midian",
     "file": "midian.md",
+    "category": "names",
     "headwords": [
       "Midian",
       "Midianite"
@@ -3356,6 +3761,7 @@
   {
     "twarticle": "miriam",
     "file": "miriam.md",
+    "category": "names",
     "headwords": [
       "Miriam"
     ]
@@ -3363,6 +3769,7 @@
   {
     "twarticle": "mishael",
     "file": "mishael.md",
+    "category": "names",
     "headwords": [
       "Mishael"
     ]
@@ -3370,6 +3777,7 @@
   {
     "twarticle": "mizpah",
     "file": "mizpah.md",
+    "category": "names",
     "headwords": [
       "Mizpah"
     ]
@@ -3377,6 +3785,7 @@
   {
     "twarticle": "moab",
     "file": "moab.md",
+    "category": "names",
     "headwords": [
       "Moab",
       "Moabite"
@@ -3385,6 +3794,7 @@
   {
     "twarticle": "molech",
     "file": "molech.md",
+    "category": "names",
     "headwords": [
       "Molech",
       "Moloch"
@@ -3393,6 +3803,7 @@
   {
     "twarticle": "mordecai",
     "file": "mordecai.md",
+    "category": "names",
     "headwords": [
       "Mordecai"
     ]
@@ -3400,6 +3811,7 @@
   {
     "twarticle": "moses",
     "file": "moses.md",
+    "category": "names",
     "headwords": [
       "Moses"
     ]
@@ -3407,6 +3819,7 @@
   {
     "twarticle": "mounthermon",
     "file": "mounthermon.md",
+    "category": "names",
     "headwords": [
       "Mount Hermon"
     ]
@@ -3414,6 +3827,7 @@
   {
     "twarticle": "mountofolives",
     "file": "mountofolives.md",
+    "category": "names",
     "headwords": [
       "Mount of Olives"
     ]
@@ -3421,6 +3835,7 @@
   {
     "twarticle": "naaman",
     "file": "naaman.md",
+    "category": "names",
     "headwords": [
       "Naaman"
     ]
@@ -3428,6 +3843,7 @@
   {
     "twarticle": "nahor",
     "file": "nahor.md",
+    "category": "names",
     "headwords": [
       "Nahor"
     ]
@@ -3435,6 +3851,7 @@
   {
     "twarticle": "nahum",
     "file": "nahum.md",
+    "category": "names",
     "headwords": [
       "Nahum"
     ]
@@ -3442,6 +3859,7 @@
   {
     "twarticle": "naphtali",
     "file": "naphtali.md",
+    "category": "names",
     "headwords": [
       "Naphtali"
     ]
@@ -3449,6 +3867,7 @@
   {
     "twarticle": "nathan",
     "file": "nathan.md",
+    "category": "names",
     "headwords": [
       "Nathan"
     ]
@@ -3456,6 +3875,7 @@
   {
     "twarticle": "nazareth",
     "file": "nazareth.md",
+    "category": "names",
     "headwords": [
       "Nazareth",
       "Nazarene"
@@ -3464,6 +3884,7 @@
   {
     "twarticle": "nebuchadnezzar",
     "file": "nebuchadnezzar.md",
+    "category": "names",
     "headwords": [
       "Nebuchadnezzar"
     ]
@@ -3471,6 +3892,7 @@
   {
     "twarticle": "negev",
     "file": "negev.md",
+    "category": "names",
     "headwords": [
       "Negev"
     ]
@@ -3478,6 +3900,7 @@
   {
     "twarticle": "nehemiah",
     "file": "nehemiah.md",
+    "category": "names",
     "headwords": [
       "Nehemiah"
     ]
@@ -3485,15 +3908,17 @@
   {
     "twarticle": "nephils",
     "file": "nephils.md",
+    "category": "names",
     "headwords": [
-      "Rapha",
-      "Rephaites",
-      "Rephaim"
+      "Nephils",
+      "Nephilim",
+      "Nephilites"
     ]
   },
   {
     "twarticle": "nileriver",
     "file": "nileriver.md",
+    "category": "names",
     "headwords": [
       "Nile River",
       "River of Egypt",
@@ -3503,6 +3928,7 @@
   {
     "twarticle": "nineveh",
     "file": "nineveh.md",
+    "category": "names",
     "headwords": [
       "Nineveh",
       "Ninevite"
@@ -3511,6 +3937,7 @@
   {
     "twarticle": "noah",
     "file": "noah.md",
+    "category": "names",
     "headwords": [
       "Noah"
     ]
@@ -3518,6 +3945,7 @@
   {
     "twarticle": "obadiah",
     "file": "obadiah.md",
+    "category": "names",
     "headwords": [
       "Obadiah"
     ]
@@ -3525,6 +3953,7 @@
   {
     "twarticle": "og",
     "file": "og.md",
+    "category": "names",
     "headwords": [
       "Og"
     ]
@@ -3532,6 +3961,7 @@
   {
     "twarticle": "omri",
     "file": "omri.md",
+    "category": "names",
     "headwords": [
       "Omri"
     ]
@@ -3539,6 +3969,7 @@
   {
     "twarticle": "paddanaram",
     "file": "paddanaram.md",
+    "category": "names",
     "headwords": [
       "Paddan Aram"
     ]
@@ -3546,6 +3977,7 @@
   {
     "twarticle": "paran",
     "file": "paran.md",
+    "category": "names",
     "headwords": [
       "Paran"
     ]
@@ -3553,6 +3985,7 @@
   {
     "twarticle": "paul",
     "file": "paul.md",
+    "category": "names",
     "headwords": [
       "Paul",
       "Saul"
@@ -3561,6 +3994,7 @@
   {
     "twarticle": "peor",
     "file": "peor.md",
+    "category": "names",
     "headwords": [
       "Peor",
       "Mount Peor",
@@ -3570,6 +4004,7 @@
   {
     "twarticle": "perizzite",
     "file": "perizzite.md",
+    "category": "names",
     "headwords": [
       "Perizzite"
     ]
@@ -3577,6 +4012,7 @@
   {
     "twarticle": "persia",
     "file": "persia.md",
+    "category": "names",
     "headwords": [
       "Persia",
       "Persians"
@@ -3585,6 +4021,7 @@
   {
     "twarticle": "peter",
     "file": "peter.md",
+    "category": "names",
     "headwords": [
       "Peter",
       "Simon Peter",
@@ -3594,6 +4031,7 @@
   {
     "twarticle": "pharaoh",
     "file": "pharaoh.md",
+    "category": "names",
     "headwords": [
       "Pharaoh",
       "king of Egypt"
@@ -3602,14 +4040,15 @@
   {
     "twarticle": "philip",
     "file": "philip.md",
+    "category": "names",
     "headwords": [
-      "Philip",
-      "the evangelist"
+      "Philip (the evangelist)"
     ]
   },
   {
     "twarticle": "philippi",
     "file": "philippi.md",
+    "category": "names",
     "headwords": [
       "Philippi",
       "Philippians"
@@ -3618,14 +4057,15 @@
   {
     "twarticle": "philiptheapostle",
     "file": "philiptheapostle.md",
+    "category": "names",
     "headwords": [
-      "Philip",
-      "the apostle"
+      "Philip (the apostle)"
     ]
   },
   {
     "twarticle": "philistia",
     "file": "philistia.md",
+    "category": "names",
     "headwords": [
       "Philistia"
     ]
@@ -3633,6 +4073,7 @@
   {
     "twarticle": "philistines",
     "file": "philistines.md",
+    "category": "names",
     "headwords": [
       "Philistines"
     ]
@@ -3640,6 +4081,7 @@
   {
     "twarticle": "phinehas",
     "file": "phinehas.md",
+    "category": "names",
     "headwords": [
       "Phinehas"
     ]
@@ -3647,6 +4089,7 @@
   {
     "twarticle": "phonecia",
     "file": "phonecia.md",
+    "category": "names",
     "headwords": [
       "Phoenicia",
       "Syrophoenician"
@@ -3655,6 +4098,7 @@
   {
     "twarticle": "pilate",
     "file": "pilate.md",
+    "category": "names",
     "headwords": [
       "Pilate"
     ]
@@ -3662,6 +4106,7 @@
   {
     "twarticle": "pontus",
     "file": "pontus.md",
+    "category": "names",
     "headwords": [
       "Pontus"
     ]
@@ -3669,6 +4114,7 @@
   {
     "twarticle": "potiphar",
     "file": "potiphar.md",
+    "category": "names",
     "headwords": [
       "Potiphar"
     ]
@@ -3676,6 +4122,7 @@
   {
     "twarticle": "priscilla",
     "file": "priscilla.md",
+    "category": "names",
     "headwords": [
       "Priscilla",
       "Prisca"
@@ -3684,6 +4131,7 @@
   {
     "twarticle": "rabbah",
     "file": "rabbah.md",
+    "category": "names",
     "headwords": [
       "Rabbah"
     ]
@@ -3691,6 +4139,7 @@
   {
     "twarticle": "rachel",
     "file": "rachel.md",
+    "category": "names",
     "headwords": [
       "Rachel"
     ]
@@ -3698,6 +4147,7 @@
   {
     "twarticle": "rahab",
     "file": "rahab.md",
+    "category": "names",
     "headwords": [
       "Rahab"
     ]
@@ -3705,6 +4155,7 @@
   {
     "twarticle": "ramah",
     "file": "ramah.md",
+    "category": "names",
     "headwords": [
       "Ramah"
     ]
@@ -3712,6 +4163,7 @@
   {
     "twarticle": "ramoth",
     "file": "ramoth.md",
+    "category": "names",
     "headwords": [
       "Ramoth"
     ]
@@ -3719,6 +4171,7 @@
   {
     "twarticle": "rapha",
     "file": "rapha.md",
+    "category": "names",
     "headwords": [
       "Rapha",
       "Raphaites",
@@ -3728,6 +4181,7 @@
   {
     "twarticle": "rebekah",
     "file": "rebekah.md",
+    "category": "names",
     "headwords": [
       "Rebekah"
     ]
@@ -3735,8 +4189,8 @@
   {
     "twarticle": "redsea",
     "file": "redsea.md",
+    "category": "names",
     "headwords": [
-      "sea of reeds",
       "Sea of Reeds",
       "Red Sea"
     ]
@@ -3744,6 +4198,7 @@
   {
     "twarticle": "rehoboam",
     "file": "rehoboam.md",
+    "category": "names",
     "headwords": [
       "Rehoboam"
     ]
@@ -3751,6 +4206,7 @@
   {
     "twarticle": "reuben",
     "file": "reuben.md",
+    "category": "names",
     "headwords": [
       "Reuben"
     ]
@@ -3758,6 +4214,7 @@
   {
     "twarticle": "rimmon",
     "file": "rimmon.md",
+    "category": "names",
     "headwords": [
       "Rimmon"
     ]
@@ -3765,6 +4222,7 @@
   {
     "twarticle": "rome",
     "file": "rome.md",
+    "category": "names",
     "headwords": [
       "Rome",
       "Roman"
@@ -3773,6 +4231,7 @@
   {
     "twarticle": "ruth",
     "file": "ruth.md",
+    "category": "names",
     "headwords": [
       "Ruth"
     ]
@@ -3780,6 +4239,7 @@
   {
     "twarticle": "saltsea",
     "file": "saltsea.md",
+    "category": "names",
     "headwords": [
       "Salt Sea",
       "Dead Sea"
@@ -3788,6 +4248,7 @@
   {
     "twarticle": "samaria",
     "file": "samaria.md",
+    "category": "names",
     "headwords": [
       "Samaria",
       "Samaritan"
@@ -3796,6 +4257,7 @@
   {
     "twarticle": "samson",
     "file": "samson.md",
+    "category": "names",
     "headwords": [
       "Samson"
     ]
@@ -3803,6 +4265,7 @@
   {
     "twarticle": "samuel",
     "file": "samuel.md",
+    "category": "names",
     "headwords": [
       "Samuel"
     ]
@@ -3810,6 +4273,7 @@
   {
     "twarticle": "sarah",
     "file": "sarah.md",
+    "category": "names",
     "headwords": [
       "Sarah",
       "Sarai"
@@ -3818,6 +4282,7 @@
   {
     "twarticle": "saul",
     "file": "saul.md",
+    "category": "names",
     "headwords": [
       "Saul (OT)"
     ]
@@ -3825,6 +4290,7 @@
   {
     "twarticle": "seaofgalilee",
     "file": "seaofgalilee.md",
+    "category": "names",
     "headwords": [
       "Sea of Galilee",
       "Sea of Kinnereth",
@@ -3835,6 +4301,7 @@
   {
     "twarticle": "seir",
     "file": "seir.md",
+    "category": "names",
     "headwords": [
       "Seir",
       "sons of Seir",
@@ -3846,6 +4313,7 @@
   {
     "twarticle": "sennacherib",
     "file": "sennacherib.md",
+    "category": "names",
     "headwords": [
       "Sennacherib"
     ]
@@ -3853,6 +4321,7 @@
   {
     "twarticle": "seth",
     "file": "seth.md",
+    "category": "names",
     "headwords": [
       "Seth"
     ]
@@ -3860,6 +4329,7 @@
   {
     "twarticle": "sharon",
     "file": "sharon.md",
+    "category": "names",
     "headwords": [
       "Sharon",
       "Plain of Sharon"
@@ -3868,6 +4338,7 @@
   {
     "twarticle": "sheba",
     "file": "sheba.md",
+    "category": "names",
     "headwords": [
       "Sheba"
     ]
@@ -3875,6 +4346,7 @@
   {
     "twarticle": "shechem",
     "file": "shechem.md",
+    "category": "names",
     "headwords": [
       "Shechem"
     ]
@@ -3882,6 +4354,7 @@
   {
     "twarticle": "shem",
     "file": "shem.md",
+    "category": "names",
     "headwords": [
       "Shem"
     ]
@@ -3889,6 +4362,7 @@
   {
     "twarticle": "shiloh",
     "file": "shiloh.md",
+    "category": "names",
     "headwords": [
       "Shiloh"
     ]
@@ -3896,6 +4370,7 @@
   {
     "twarticle": "shimei",
     "file": "shimei.md",
+    "category": "names",
     "headwords": [
       "Shimei"
     ]
@@ -3903,6 +4378,7 @@
   {
     "twarticle": "shinar",
     "file": "shinar.md",
+    "category": "names",
     "headwords": [
       "Shinar"
     ]
@@ -3910,6 +4386,7 @@
   {
     "twarticle": "sidon",
     "file": "sidon.md",
+    "category": "names",
     "headwords": [
       "Sidon",
       "Sidonians"
@@ -3918,6 +4395,7 @@
   {
     "twarticle": "sihon",
     "file": "sihon.md",
+    "category": "names",
     "headwords": [
       "Sihon"
     ]
@@ -3925,6 +4403,7 @@
   {
     "twarticle": "silas",
     "file": "silas.md",
+    "category": "names",
     "headwords": [
       "Silas",
       "Silvanus"
@@ -3933,6 +4412,7 @@
   {
     "twarticle": "simeon",
     "file": "simeon.md",
+    "category": "names",
     "headwords": [
       "Simeon"
     ]
@@ -3940,6 +4420,7 @@
   {
     "twarticle": "simonthezealot",
     "file": "simonthezealot.md",
+    "category": "names",
     "headwords": [
       "Simon the Zealot"
     ]
@@ -3947,6 +4428,7 @@
   {
     "twarticle": "sinai",
     "file": "sinai.md",
+    "category": "names",
     "headwords": [
       "Sinai",
       "Horeb"
@@ -3955,6 +4437,7 @@
   {
     "twarticle": "sodom",
     "file": "sodom.md",
+    "category": "names",
     "headwords": [
       "Sodom"
     ]
@@ -3962,6 +4445,7 @@
   {
     "twarticle": "solomon",
     "file": "solomon.md",
+    "category": "names",
     "headwords": [
       "Solomon"
     ]
@@ -3969,6 +4453,7 @@
   {
     "twarticle": "stephen",
     "file": "stephen.md",
+    "category": "names",
     "headwords": [
       "Stephen"
     ]
@@ -3976,6 +4461,7 @@
   {
     "twarticle": "succoth",
     "file": "succoth.md",
+    "category": "names",
     "headwords": [
       "Succoth"
     ]
@@ -3983,6 +4469,7 @@
   {
     "twarticle": "syria",
     "file": "syria.md",
+    "category": "names",
     "headwords": [
       "Syria",
       "Ashur"
@@ -3991,6 +4478,7 @@
   {
     "twarticle": "tamar",
     "file": "tamar.md",
+    "category": "names",
     "headwords": [
       "Tamar"
     ]
@@ -3998,6 +4486,7 @@
   {
     "twarticle": "tarshish",
     "file": "tarshish.md",
+    "category": "names",
     "headwords": [
       "Tarshish"
     ]
@@ -4005,6 +4494,7 @@
   {
     "twarticle": "tarsus",
     "file": "tarsus.md",
+    "category": "names",
     "headwords": [
       "Tarsus"
     ]
@@ -4012,13 +4502,25 @@
   {
     "twarticle": "terah",
     "file": "terah.md",
+    "category": "names",
     "headwords": [
       "Terah"
     ]
   },
   {
+    "twarticle": "thegreatsea",
+    "file": "thegreatsea.md",
+    "category": "names",
+    "headwords": [
+      "the sea",
+      "the Great Sea",
+      "the western sea"
+    ]
+  },
+  {
     "twarticle": "thessalonica",
     "file": "thessalonica.md",
+    "category": "names",
     "headwords": [
       "Thessalonica",
       "Thessalonian"
@@ -4027,6 +4529,7 @@
   {
     "twarticle": "thomas",
     "file": "thomas.md",
+    "category": "names",
     "headwords": [
       "Thomas"
     ]
@@ -4034,6 +4537,7 @@
   {
     "twarticle": "timothy",
     "file": "timothy.md",
+    "category": "names",
     "headwords": [
       "Timothy"
     ]
@@ -4041,6 +4545,7 @@
   {
     "twarticle": "tirzah",
     "file": "tirzah.md",
+    "category": "names",
     "headwords": [
       "Tirzah"
     ]
@@ -4048,6 +4553,7 @@
   {
     "twarticle": "titus",
     "file": "titus.md",
+    "category": "names",
     "headwords": [
       "Titus"
     ]
@@ -4055,6 +4561,7 @@
   {
     "twarticle": "troas",
     "file": "troas.md",
+    "category": "names",
     "headwords": [
       "Troas"
     ]
@@ -4062,6 +4569,7 @@
   {
     "twarticle": "tubal",
     "file": "tubal.md",
+    "category": "names",
     "headwords": [
       "Tubal"
     ]
@@ -4069,6 +4577,7 @@
   {
     "twarticle": "tychicus",
     "file": "tychicus.md",
+    "category": "names",
     "headwords": [
       "Tychicus"
     ]
@@ -4076,6 +4585,7 @@
   {
     "twarticle": "tyre",
     "file": "tyre.md",
+    "category": "names",
     "headwords": [
       "Tyre",
       "Tyrians"
@@ -4084,6 +4594,7 @@
   {
     "twarticle": "ur",
     "file": "ur.md",
+    "category": "names",
     "headwords": [
       "Ur"
     ]
@@ -4091,6 +4602,7 @@
   {
     "twarticle": "uriah",
     "file": "uriah.md",
+    "category": "names",
     "headwords": [
       "Uriah"
     ]
@@ -4098,6 +4610,7 @@
   {
     "twarticle": "uzziah",
     "file": "uzziah.md",
+    "category": "names",
     "headwords": [
       "Uzziah",
       "Azariah"
@@ -4106,6 +4619,7 @@
   {
     "twarticle": "vashti",
     "file": "vashti.md",
+    "category": "names",
     "headwords": [
       "Vashti"
     ]
@@ -4113,6 +4627,7 @@
   {
     "twarticle": "zacchaeus",
     "file": "zacchaeus.md",
+    "category": "names",
     "headwords": [
       "Zacchaeus"
     ]
@@ -4120,6 +4635,7 @@
   {
     "twarticle": "zadok",
     "file": "zadok.md",
+    "category": "names",
     "headwords": [
       "Zadok"
     ]
@@ -4127,6 +4643,7 @@
   {
     "twarticle": "zebedee",
     "file": "zebedee.md",
+    "category": "names",
     "headwords": [
       "Zebedee"
     ]
@@ -4134,6 +4651,7 @@
   {
     "twarticle": "zebulun",
     "file": "zebulun.md",
+    "category": "names",
     "headwords": [
       "Zebulun"
     ]
@@ -4141,6 +4659,7 @@
   {
     "twarticle": "zechariahnt",
     "file": "zechariahnt.md",
+    "category": "names",
     "headwords": [
       "Zechariah (NT)"
     ]
@@ -4148,6 +4667,7 @@
   {
     "twarticle": "zechariahot",
     "file": "zechariahot.md",
+    "category": "names",
     "headwords": [
       "Zechariah (OT)"
     ]
@@ -4155,6 +4675,7 @@
   {
     "twarticle": "zedekiah",
     "file": "zedekiah.md",
+    "category": "names",
     "headwords": [
       "Zedekiah"
     ]
@@ -4162,6 +4683,7 @@
   {
     "twarticle": "zephaniah",
     "file": "zephaniah.md",
+    "category": "names",
     "headwords": [
       "Zephaniah"
     ]
@@ -4169,6 +4691,7 @@
   {
     "twarticle": "zerubbabel",
     "file": "zerubbabel.md",
+    "category": "names",
     "headwords": [
       "Zerubbabel"
     ]
@@ -4176,6 +4699,7 @@
   {
     "twarticle": "zilpah",
     "file": "zilpah.md",
+    "category": "names",
     "headwords": [
       "Zilpah"
     ]
@@ -4183,6 +4707,7 @@
   {
     "twarticle": "zoar",
     "file": "zoar.md",
+    "category": "names",
     "headwords": [
       "Zoar"
     ]
@@ -4190,6 +4715,7 @@
   {
     "twarticle": "12tribesofisrael",
     "file": "12tribesofisrael.md",
+    "category": "other",
     "headwords": [
       "twelve tribes of Israel",
       "twelve tribes"
@@ -4198,6 +4724,7 @@
   {
     "twarticle": "abyss",
     "file": "abyss.md",
+    "category": "other",
     "headwords": [
       "abyss",
       "bottomless pit"
@@ -4206,6 +4733,7 @@
   {
     "twarticle": "acacia",
     "file": "acacia.md",
+    "category": "other",
     "headwords": [
       "acacia"
     ]
@@ -4213,6 +4741,7 @@
   {
     "twarticle": "acknowledge",
     "file": "acknowledge.md",
+    "category": "other",
     "headwords": [
       "acknowledge",
       "admit",
@@ -4222,6 +4751,7 @@
   {
     "twarticle": "admonish",
     "file": "admonish.md",
+    "category": "other",
     "headwords": [
       "admonish",
       "warned",
@@ -4231,6 +4761,7 @@
   {
     "twarticle": "adversary",
     "file": "adversary.md",
+    "category": "other",
     "headwords": [
       "adversary",
       "enemy"
@@ -4239,6 +4770,7 @@
   {
     "twarticle": "afflict",
     "file": "afflict.md",
+    "category": "other",
     "headwords": [
       "afflict",
       "affliction",
@@ -4248,6 +4780,7 @@
   {
     "twarticle": "age-timeperiod",
     "file": "age-timeperiod.md",
+    "category": "other",
     "headwords": [
       "age",
       "era",
@@ -4257,6 +4790,7 @@
   {
     "twarticle": "age",
     "file": "age.md",
+    "category": "other",
     "headwords": [
       "age",
       "aged",
@@ -4268,6 +4802,7 @@
   {
     "twarticle": "alarm",
     "file": "alarm.md",
+    "category": "other",
     "headwords": [
       "alarm",
       "alarmed"
@@ -4276,6 +4811,7 @@
   {
     "twarticle": "alms",
     "file": "alms.md",
+    "category": "other",
     "headwords": [
       "alms"
     ]
@@ -4283,6 +4819,7 @@
   {
     "twarticle": "altarofincense",
     "file": "altarofincense.md",
+    "category": "other",
     "headwords": [
       "altar of incense",
       "incense altar"
@@ -4291,6 +4828,7 @@
   {
     "twarticle": "anguish",
     "file": "anguish.md",
+    "category": "other",
     "headwords": [
       "anguish"
     ]
@@ -4298,6 +4836,7 @@
   {
     "twarticle": "archer",
     "file": "archer.md",
+    "category": "other",
     "headwords": [
       "archer"
     ]
@@ -4305,6 +4844,7 @@
   {
     "twarticle": "armor",
     "file": "armor.md",
+    "category": "other",
     "headwords": [
       "armor",
       "armory"
@@ -4313,6 +4853,7 @@
   {
     "twarticle": "arrogant",
     "file": "arrogant.md",
+    "category": "other",
     "headwords": [
       "arrogant",
       "presumptuous"
@@ -4321,6 +4862,7 @@
   {
     "twarticle": "assembly",
     "file": "assembly.md",
+    "category": "other",
     "headwords": [
       "assembly",
       "assemble",
@@ -4333,6 +4875,7 @@
   {
     "twarticle": "assign",
     "file": "assign.md",
+    "category": "other",
     "headwords": [
       "assign",
       "assigned",
@@ -4341,8 +4884,17 @@
     ]
   },
   {
+    "twarticle": "astrologers",
+    "file": "astrologers.md",
+    "category": "other",
+    "headwords": [
+      "astrologer"
+    ]
+  },
+  {
     "twarticle": "avenge",
     "file": "avenge.md",
+    "category": "other",
     "headwords": [
       "avenge",
       "avenger",
@@ -4353,6 +4905,7 @@
   {
     "twarticle": "awe",
     "file": "awe.md",
+    "category": "other",
     "headwords": [
       "awe",
       "awesome"
@@ -4361,6 +4914,7 @@
   {
     "twarticle": "ax",
     "file": "ax.md",
+    "category": "other",
     "headwords": [
       "ax"
     ]
@@ -4368,6 +4922,7 @@
   {
     "twarticle": "banquet",
     "file": "banquet.md",
+    "category": "other",
     "headwords": [
       "banquet"
     ]
@@ -4375,6 +4930,7 @@
   {
     "twarticle": "barley",
     "file": "barley.md",
+    "category": "other",
     "headwords": [
       "barley"
     ]
@@ -4382,6 +4938,7 @@
   {
     "twarticle": "barren",
     "file": "barren.md",
+    "category": "other",
     "headwords": [
       "barren",
       "dry"
@@ -4390,12 +4947,12 @@
   {
     "twarticle": "bear-carryburden",
     "file": "bear-carryburden.md",
+    "category": "other",
     "headwords": [
       "bear",
       "bears",
       "bore",
       "borne",
-      "bearers",
       "bearer",
       "bearing",
       "carry"
@@ -4404,6 +4961,7 @@
   {
     "twarticle": "bear-heldresponsiblefor",
     "file": "bear-heldresponsiblefor.md",
+    "category": "other",
     "headwords": [
       "bear",
       "bore",
@@ -4413,6 +4971,7 @@
   {
     "twarticle": "bear-witness_testify",
     "file": "bear-witness_testify.md",
+    "category": "other",
     "headwords": [
       "bear",
       "bear witness",
@@ -4424,6 +4983,7 @@
   {
     "twarticle": "bear",
     "file": "bear.md",
+    "category": "other",
     "headwords": [
       "bear",
       "bearer",
@@ -4436,6 +4996,7 @@
   {
     "twarticle": "bearanimal",
     "file": "bearanimal.md",
+    "category": "other",
     "headwords": [
       "bear"
     ]
@@ -4443,6 +5004,7 @@
   {
     "twarticle": "beast",
     "file": "beast.md",
+    "category": "other",
     "headwords": [
       "beast"
     ]
@@ -4450,6 +5012,7 @@
   {
     "twarticle": "beg-formoney",
     "file": "beg-formoney.md",
+    "category": "other",
     "headwords": [
       "beg",
       "beggar",
@@ -4459,6 +5022,7 @@
   {
     "twarticle": "beg",
     "file": "beg.md",
+    "category": "other",
     "headwords": [
       "beg",
       "begging",
@@ -4468,6 +5032,7 @@
   {
     "twarticle": "betray",
     "file": "betray.md",
+    "category": "other",
     "headwords": [
       "betray",
       "betrayer"
@@ -4476,6 +5041,7 @@
   {
     "twarticle": "biblicaltimeday",
     "file": "biblicaltimeday.md",
+    "category": "other",
     "headwords": [
       "day"
     ]
@@ -4483,16 +5049,16 @@
   {
     "twarticle": "biblicaltimehour",
     "file": "biblicaltimehour.md",
+    "category": "other",
     "headwords": [
       "hour",
-      "moment",
-      "immediately",
-      "for a while"
+      "moment"
     ]
   },
   {
     "twarticle": "biblicaltimemonth",
     "file": "biblicaltimemonth.md",
+    "category": "other",
     "headwords": [
       "month",
       "monthly"
@@ -4501,6 +5067,7 @@
   {
     "twarticle": "biblicaltimewatch",
     "file": "biblicaltimewatch.md",
+    "category": "other",
     "headwords": [
       "watch (biblical time)"
     ]
@@ -4508,6 +5075,7 @@
   {
     "twarticle": "biblicaltimeweek",
     "file": "biblicaltimeweek.md",
+    "category": "other",
     "headwords": [
       "week"
     ]
@@ -4515,6 +5083,7 @@
   {
     "twarticle": "biblicaltimeyear",
     "file": "biblicaltimeyear.md",
+    "category": "other",
     "headwords": [
       "year"
     ]
@@ -4522,6 +5091,7 @@
   {
     "twarticle": "blemish",
     "file": "blemish.md",
+    "category": "other",
     "headwords": [
       "blemish",
       "unblemished",
@@ -4531,6 +5101,7 @@
   {
     "twarticle": "bloodshed",
     "file": "bloodshed.md",
+    "category": "other",
     "headwords": [
       "bloodshed"
     ]
@@ -4538,6 +5109,7 @@
   {
     "twarticle": "blotout",
     "file": "blotout.md",
+    "category": "other",
     "headwords": [
       "blot out",
       "wipe out"
@@ -4546,6 +5118,7 @@
   {
     "twarticle": "bookoflife",
     "file": "bookoflife.md",
+    "category": "other",
     "headwords": [
       "Book of Life"
     ]
@@ -4553,6 +5126,7 @@
   {
     "twarticle": "bow",
     "file": "bow.md",
+    "category": "other",
     "headwords": [
       "bow",
       "bow down",
@@ -4564,6 +5138,7 @@
   {
     "twarticle": "bowweapon",
     "file": "bowweapon.md",
+    "category": "other",
     "headwords": [
       "bow and arrow",
       "a bow"
@@ -4572,6 +5147,7 @@
   {
     "twarticle": "bread",
     "file": "bread.md",
+    "category": "other",
     "headwords": [
       "bread"
     ]
@@ -4579,6 +5155,7 @@
   {
     "twarticle": "breastplate",
     "file": "breastplate.md",
+    "category": "other",
     "headwords": [
       "breastplate",
       "breastpiece"
@@ -4587,15 +5164,18 @@
   {
     "twarticle": "bribe",
     "file": "bribe.md",
+    "category": "other",
     "headwords": [
       "bribe",
       "bribery",
+      "payoff",
       "payoffs"
     ]
   },
   {
     "twarticle": "bride",
     "file": "bride.md",
+    "category": "other",
     "headwords": [
       "bride",
       "bridal"
@@ -4604,6 +5184,7 @@
   {
     "twarticle": "bridegroom",
     "file": "bridegroom.md",
+    "category": "other",
     "headwords": [
       "bridegroom",
       "groom"
@@ -4612,6 +5193,7 @@
   {
     "twarticle": "bronze",
     "file": "bronze.md",
+    "category": "other",
     "headwords": [
       "bronze"
     ]
@@ -4619,6 +5201,7 @@
   {
     "twarticle": "burntoffering",
     "file": "burntoffering.md",
+    "category": "other",
     "headwords": [
       "burnt offering",
       "offering by fire"
@@ -4627,6 +5210,7 @@
   {
     "twarticle": "bury",
     "file": "bury.md",
+    "category": "other",
     "headwords": [
       "bury",
       "buried",
@@ -4636,6 +5220,7 @@
   {
     "twarticle": "camel",
     "file": "camel.md",
+    "category": "other",
     "headwords": [
       "camel"
     ]
@@ -4643,6 +5228,7 @@
   {
     "twarticle": "captive",
     "file": "captive.md",
+    "category": "other",
     "headwords": [
       "captive",
       "captivate",
@@ -4653,6 +5239,7 @@
   {
     "twarticle": "castout",
     "file": "castout.md",
+    "category": "other",
     "headwords": [
       "cast out",
       "driving out",
@@ -4660,15 +5247,9 @@
     ]
   },
   {
-    "twarticle": "caughtup",
-    "file": "caughtup.md",
-    "headwords": [
-      "caught up"
-    ]
-  },
-  {
     "twarticle": "cedar",
     "file": "cedar.md",
+    "category": "other",
     "headwords": [
       "cedar",
       "cedarwood"
@@ -4677,6 +5258,7 @@
   {
     "twarticle": "census",
     "file": "census.md",
+    "category": "other",
     "headwords": [
       "census"
     ]
@@ -4684,6 +5266,7 @@
   {
     "twarticle": "chaff",
     "file": "chaff.md",
+    "category": "other",
     "headwords": [
       "chaff"
     ]
@@ -4691,36 +5274,34 @@
   {
     "twarticle": "chariot",
     "file": "chariot.md",
+    "category": "other",
     "headwords": [
       "chariot",
-      "charioteers"
+      "charioteer"
     ]
   },
   {
     "twarticle": "cherubim",
     "file": "cherubim.md",
+    "category": "other",
     "headwords": [
-      "cherub"
+      "cherub",
+      "cherubim"
     ]
   },
   {
     "twarticle": "chief",
     "file": "chief.md",
+    "category": "other",
     "headwords": [
       "chief",
       "leader"
     ]
   },
   {
-    "twarticle": "chronicles",
-    "file": "chronicles.md",
-    "headwords": [
-      "chronicles"
-    ]
-  },
-  {
     "twarticle": "citizen",
     "file": "citizen.md",
+    "category": "other",
     "headwords": [
       "citizen",
       "citizenship"
@@ -4729,23 +5310,15 @@
   {
     "twarticle": "clan",
     "file": "clan.md",
+    "category": "other",
     "headwords": [
       "clan"
     ]
   },
   {
-    "twarticle": "comfort",
-    "file": "comfort.md",
-    "headwords": [
-      "comfort",
-      "comforts",
-      "comforter",
-      "uncomforted"
-    ]
-  },
-  {
     "twarticle": "commander",
     "file": "commander.md",
+    "category": "other",
     "headwords": [
       "commander"
     ]
@@ -4753,6 +5326,7 @@
   {
     "twarticle": "commit",
     "file": "commit.md",
+    "category": "other",
     "headwords": [
       "commit",
       "committed"
@@ -4761,6 +5335,7 @@
   {
     "twarticle": "companion",
     "file": "companion.md",
+    "category": "other",
     "headwords": [
       "companion",
       "fellow worker",
@@ -4770,6 +5345,7 @@
   {
     "twarticle": "conceive",
     "file": "conceive.md",
+    "category": "other",
     "headwords": [
       "conceive",
       "conceived",
@@ -4779,6 +5355,7 @@
   {
     "twarticle": "concubine",
     "file": "concubine.md",
+    "category": "other",
     "headwords": [
       "concubine"
     ]
@@ -4786,15 +5363,16 @@
   {
     "twarticle": "confirm",
     "file": "confirm.md",
+    "category": "other",
     "headwords": [
       "confirm",
-      "confirmation",
-      "legal"
+      "confirmation"
     ]
   },
   {
     "twarticle": "consume",
     "file": "consume.md",
+    "category": "other",
     "headwords": [
       "consume",
       "devour"
@@ -4803,6 +5381,7 @@
   {
     "twarticle": "contempt",
     "file": "contempt.md",
+    "category": "other",
     "headwords": [
       "contempt",
       "contemptible",
@@ -4812,6 +5391,7 @@
   {
     "twarticle": "corrupt",
     "file": "corrupt.md",
+    "category": "other",
     "headwords": [
       "corrupt",
       "corrupted",
@@ -4823,6 +5403,7 @@
   {
     "twarticle": "council",
     "file": "council.md",
+    "category": "other",
     "headwords": [
       "council"
     ]
@@ -4830,6 +5411,7 @@
   {
     "twarticle": "counselor",
     "file": "counselor.md",
+    "category": "other",
     "headwords": [
       "advice",
       "advise",
@@ -4842,6 +5424,7 @@
   {
     "twarticle": "courage",
     "file": "courage.md",
+    "category": "other",
     "headwords": [
       "courage",
       "courageous"
@@ -4850,6 +5433,7 @@
   {
     "twarticle": "court-legal",
     "file": "court-legal.md",
+    "category": "other",
     "headwords": [
       "court"
     ]
@@ -4857,6 +5441,7 @@
   {
     "twarticle": "court",
     "file": "court.md",
+    "category": "other",
     "headwords": [
       "court",
       "courtyard"
@@ -4865,6 +5450,7 @@
   {
     "twarticle": "cow",
     "file": "cow.md",
+    "category": "other",
     "headwords": [
       "cow",
       "bull",
@@ -4877,6 +5463,7 @@
   {
     "twarticle": "creation",
     "file": "creation.md",
+    "category": "other",
     "headwords": [
       "create",
       "created",
@@ -4887,6 +5474,7 @@
   {
     "twarticle": "creature",
     "file": "creature.md",
+    "category": "other",
     "headwords": [
       "creature",
       "creation"
@@ -4895,6 +5483,7 @@
   {
     "twarticle": "crown",
     "file": "crown.md",
+    "category": "other",
     "headwords": [
       "crown",
       "crowned"
@@ -4903,16 +5492,17 @@
   {
     "twarticle": "cry",
     "file": "cry.md",
+    "category": "other",
     "headwords": [
       "cry",
       "cry out",
-      "call out",
       "outcry"
     ]
   },
   {
     "twarticle": "cupbearer",
     "file": "cupbearer.md",
+    "category": "other",
     "headwords": [
       "cupbearer"
     ]
@@ -4920,21 +5510,15 @@
   {
     "twarticle": "curtain",
     "file": "curtain.md",
+    "category": "other",
     "headwords": [
       "curtain"
     ]
   },
   {
-    "twarticle": "cutoff",
-    "file": "cutoff.md",
-    "headwords": [
-      "cut off",
-      "cut down"
-    ]
-  },
-  {
     "twarticle": "cypress",
     "file": "cypress.md",
+    "category": "other",
     "headwords": [
       "cypress"
     ]
@@ -4942,16 +5526,18 @@
   {
     "twarticle": "deceive",
     "file": "deceive.md",
+    "category": "other",
     "headwords": [
       "deceive",
       "lie",
       "deception",
-      "illusions"
+      "illusion"
     ]
   },
   {
     "twarticle": "declare",
     "file": "declare.md",
+    "category": "other",
     "headwords": [
       "declare",
       "proclaim",
@@ -4961,6 +5547,7 @@
   {
     "twarticle": "decree",
     "file": "decree.md",
+    "category": "other",
     "headwords": [
       "decree",
       "decreed"
@@ -4969,6 +5556,7 @@
   {
     "twarticle": "dedicate",
     "file": "dedicate.md",
+    "category": "other",
     "headwords": [
       "dedicate",
       "dedication",
@@ -4979,17 +5567,19 @@
   {
     "twarticle": "deer",
     "file": "deer.md",
+    "category": "other",
     "headwords": [
       "deer",
       "doe",
-      "does",
-      "fawns",
-      "roebuck"
+      "fawn",
+      "roebuck",
+      "stag"
     ]
   },
   {
     "twarticle": "defile",
     "file": "defile.md",
+    "category": "other",
     "headwords": [
       "defile",
       "defiled",
@@ -4999,6 +5589,7 @@
   {
     "twarticle": "delight",
     "file": "delight.md",
+    "category": "other",
     "headwords": [
       "delight"
     ]
@@ -5006,6 +5597,7 @@
   {
     "twarticle": "deliver-toharm",
     "file": "deliver-toharm.md",
+    "category": "other",
     "headwords": [
       "deliver",
       "hand over",
@@ -5016,6 +5608,7 @@
   {
     "twarticle": "deliverer",
     "file": "deliverer.md",
+    "category": "other",
     "headwords": [
       "deliver",
       "deliverer",
@@ -5026,6 +5619,7 @@
   {
     "twarticle": "descendant",
     "file": "descendant.md",
+    "category": "other",
     "headwords": [
       "descend",
       "descendant"
@@ -5034,6 +5628,7 @@
   {
     "twarticle": "desecrate",
     "file": "desecrate.md",
+    "category": "other",
     "headwords": [
       "desecrate",
       "desecrated"
@@ -5042,6 +5637,7 @@
   {
     "twarticle": "desert",
     "file": "desert.md",
+    "category": "other",
     "headwords": [
       "desert",
       "wilderness"
@@ -5050,11 +5646,11 @@
   {
     "twarticle": "desolate",
     "file": "desolate.md",
+    "category": "other",
     "headwords": [
       "desolate",
       "desolated",
       "desolation",
-      "desolations",
       "deserted",
       "desolator"
     ]
@@ -5062,6 +5658,7 @@
   {
     "twarticle": "destroyer",
     "file": "destroyer.md",
+    "category": "other",
     "headwords": [
       "destroy",
       "destruction",
@@ -5071,6 +5668,7 @@
   {
     "twarticle": "detestable",
     "file": "detestable.md",
+    "category": "other",
     "headwords": [
       "detest",
       "detested",
@@ -5080,6 +5678,7 @@
   {
     "twarticle": "devastated",
     "file": "devastated.md",
+    "category": "other",
     "headwords": [
       "devastate",
       "devastation"
@@ -5088,6 +5687,7 @@
   {
     "twarticle": "devour",
     "file": "devour.md",
+    "category": "other",
     "headwords": [
       "devour"
     ]
@@ -5095,6 +5695,7 @@
   {
     "twarticle": "discernment",
     "file": "discernment.md",
+    "category": "other",
     "headwords": [
       "discern",
       "discernment",
@@ -5104,6 +5705,7 @@
   {
     "twarticle": "discourage",
     "file": "discourage.md",
+    "category": "other",
     "headwords": [
       "discourage",
       "discouraged",
@@ -5113,6 +5715,7 @@
   {
     "twarticle": "dishonor-object",
     "file": "dishonor-object.md",
+    "category": "other",
     "headwords": [
       "dishonor"
     ]
@@ -5120,6 +5723,7 @@
   {
     "twarticle": "dishonor",
     "file": "dishonor.md",
+    "category": "other",
     "headwords": [
       "dishonor",
       "dishonored",
@@ -5129,6 +5733,7 @@
   {
     "twarticle": "disperse",
     "file": "disperse.md",
+    "category": "other",
     "headwords": [
       "disperse",
       "dispersion",
@@ -5139,6 +5744,7 @@
   {
     "twarticle": "divination",
     "file": "divination.md",
+    "category": "other",
     "headwords": [
       "divination",
       "diviner",
@@ -5149,17 +5755,20 @@
   {
     "twarticle": "doctrine",
     "file": "doctrine.md",
+    "category": "other",
     "headwords": [
       "doctrine",
       "teaching",
+      "belief",
       "beliefs",
-      "instructions",
+      "instruction",
       "knowledge"
     ]
   },
   {
     "twarticle": "donkey",
     "file": "donkey.md",
+    "category": "other",
     "headwords": [
       "donkey",
       "mule"
@@ -5168,6 +5777,7 @@
   {
     "twarticle": "doom",
     "file": "doom.md",
+    "category": "other",
     "headwords": [
       "doom"
     ]
@@ -5175,6 +5785,7 @@
   {
     "twarticle": "doorpost",
     "file": "doorpost.md",
+    "category": "other",
     "headwords": [
       "doorpost"
     ]
@@ -5182,6 +5793,7 @@
   {
     "twarticle": "dove",
     "file": "dove.md",
+    "category": "other",
     "headwords": [
       "dove",
       "pigeon",
@@ -5191,6 +5803,7 @@
   {
     "twarticle": "dream",
     "file": "dream.md",
+    "category": "other",
     "headwords": [
       "dream"
     ]
@@ -5198,6 +5811,7 @@
   {
     "twarticle": "drinkoffering",
     "file": "drinkoffering.md",
+    "category": "other",
     "headwords": [
       "drink offering"
     ]
@@ -5205,6 +5819,7 @@
   {
     "twarticle": "drunk",
     "file": "drunk.md",
+    "category": "other",
     "headwords": [
       "drunk",
       "drunkard"
@@ -5213,6 +5828,7 @@
   {
     "twarticle": "dung",
     "file": "dung.md",
+    "category": "other",
     "headwords": [
       "dung",
       "manure"
@@ -5221,6 +5837,7 @@
   {
     "twarticle": "eagle",
     "file": "eagle.md",
+    "category": "other",
     "headwords": [
       "eagle"
     ]
@@ -5228,6 +5845,7 @@
   {
     "twarticle": "earth",
     "file": "earth.md",
+    "category": "other",
     "headwords": [
       "earth",
       "land"
@@ -5236,6 +5854,7 @@
   {
     "twarticle": "elder",
     "file": "elder.md",
+    "category": "other",
     "headwords": [
       "elder"
     ]
@@ -5243,6 +5862,7 @@
   {
     "twarticle": "encourage",
     "file": "encourage.md",
+    "category": "other",
     "headwords": [
       "encourage",
       "encouraged",
@@ -5253,6 +5873,7 @@
   {
     "twarticle": "endure",
     "file": "endure.md",
+    "category": "other",
     "headwords": [
       "endure",
       "endurance"
@@ -5261,20 +5882,25 @@
   {
     "twarticle": "enslave",
     "file": "enslave.md",
+    "category": "other",
     "headwords": [
       "enslave",
       "slave",
       "bondservant",
       "bondage",
       "bound",
+      "bond",
       "bonds",
       "young man",
+      "young men",
+      "young woman",
       "young women"
     ]
   },
   {
     "twarticle": "envy",
     "file": "envy.md",
+    "category": "other",
     "headwords": [
       "envy",
       "covet",
@@ -5285,6 +5911,7 @@
   {
     "twarticle": "exile",
     "file": "exile.md",
+    "category": "other",
     "headwords": [
       "exile",
       "exiled"
@@ -5293,6 +5920,7 @@
   {
     "twarticle": "exult",
     "file": "exult.md",
+    "category": "other",
     "headwords": [
       "exult",
       "exultant"
@@ -5301,6 +5929,7 @@
   {
     "twarticle": "falseprophet",
     "file": "falseprophet.md",
+    "category": "other",
     "headwords": [
       "false prophet"
     ]
@@ -5308,6 +5937,7 @@
   {
     "twarticle": "falsewitness",
     "file": "falsewitness.md",
+    "category": "other",
     "headwords": [
       "corrupt witness",
       "false report",
@@ -5318,6 +5948,7 @@
   {
     "twarticle": "family",
     "file": "family.md",
+    "category": "other",
     "headwords": [
       "family",
       "household"
@@ -5326,6 +5957,7 @@
   {
     "twarticle": "famine",
     "file": "famine.md",
+    "category": "other",
     "headwords": [
       "famine"
     ]
@@ -5333,6 +5965,7 @@
   {
     "twarticle": "fast",
     "file": "fast.md",
+    "category": "other",
     "headwords": [
       "fast",
       "fasting"
@@ -5341,6 +5974,7 @@
   {
     "twarticle": "feast",
     "file": "feast.md",
+    "category": "other",
     "headwords": [
       "feast",
       "feasting"
@@ -5349,6 +5983,7 @@
   {
     "twarticle": "fellowshipoffering",
     "file": "fellowshipoffering.md",
+    "category": "other",
     "headwords": [
       "fellowship offering"
     ]
@@ -5356,6 +5991,7 @@
   {
     "twarticle": "festival",
     "file": "festival.md",
+    "category": "other",
     "headwords": [
       "festival",
       "feast",
@@ -5365,6 +6001,7 @@
   {
     "twarticle": "fig",
     "file": "fig.md",
+    "category": "other",
     "headwords": [
       "fig"
     ]
@@ -5372,6 +6009,7 @@
   {
     "twarticle": "fir",
     "file": "fir.md",
+    "category": "other",
     "headwords": [
       "fir",
       "firs"
@@ -5380,6 +6018,7 @@
   {
     "twarticle": "firstborn",
     "file": "firstborn.md",
+    "category": "other",
     "headwords": [
       "firstborn"
     ]
@@ -5387,21 +6026,26 @@
   {
     "twarticle": "firstfruit",
     "file": "firstfruit.md",
+    "category": "other",
     "headwords": [
+      "firstfruit",
       "firstfruits"
     ]
   },
   {
     "twarticle": "fisherman",
     "file": "fisherman.md",
+    "category": "other",
     "headwords": [
+      "fisherman",
       "fishermen",
-      "fishers"
+      "fisher"
     ]
   },
   {
     "twarticle": "flock",
     "file": "flock.md",
+    "category": "other",
     "headwords": [
       "flock",
       "herd"
@@ -5410,6 +6054,7 @@
   {
     "twarticle": "flood",
     "file": "flood.md",
+    "category": "other",
     "headwords": [
       "flood"
     ]
@@ -5417,6 +6062,7 @@
   {
     "twarticle": "flute",
     "file": "flute.md",
+    "category": "other",
     "headwords": [
       "flute",
       "pipe"
@@ -5425,6 +6071,7 @@
   {
     "twarticle": "footstool",
     "file": "footstool.md",
+    "category": "other",
     "headwords": [
       "footstool"
     ]
@@ -5432,6 +6079,7 @@
   {
     "twarticle": "foreigner",
     "file": "foreigner.md",
+    "category": "other",
     "headwords": [
       "alien",
       "foreigner",
@@ -5441,6 +6089,7 @@
   {
     "twarticle": "foreordain",
     "file": "foreordain.md",
+    "category": "other",
     "headwords": [
       "foreknew",
       "foreknowledge"
@@ -5449,6 +6098,7 @@
   {
     "twarticle": "fornication",
     "file": "fornication.md",
+    "category": "other",
     "headwords": [
       "sexual immorality",
       "immorality",
@@ -5459,6 +6109,7 @@
   {
     "twarticle": "forsaken",
     "file": "forsaken.md",
+    "category": "other",
     "headwords": [
       "forsake",
       "forsaken",
@@ -5468,6 +6119,7 @@
   {
     "twarticle": "foundation",
     "file": "foundation.md",
+    "category": "other",
     "headwords": [
       "foundation",
       "founder",
@@ -5477,6 +6129,7 @@
   {
     "twarticle": "fountain",
     "file": "fountain.md",
+    "category": "other",
     "headwords": [
       "fountain",
       "source",
@@ -5486,6 +6139,7 @@
   {
     "twarticle": "frankincense",
     "file": "frankincense.md",
+    "category": "other",
     "headwords": [
       "frankincense"
     ]
@@ -5493,6 +6147,7 @@
   {
     "twarticle": "free",
     "file": "free.md",
+    "category": "other",
     "headwords": [
       "free",
       "freed",
@@ -5505,6 +6160,7 @@
   {
     "twarticle": "freewilloffering",
     "file": "freewilloffering.md",
+    "category": "other",
     "headwords": [
       "freewill offering"
     ]
@@ -5512,6 +6168,7 @@
   {
     "twarticle": "fruit",
     "file": "fruit.md",
+    "category": "other",
     "headwords": [
       "fruit",
       "fruitful",
@@ -5521,6 +6178,7 @@
   {
     "twarticle": "furnace",
     "file": "furnace.md",
+    "category": "other",
     "headwords": [
       "furnace"
     ]
@@ -5528,17 +6186,35 @@
   {
     "twarticle": "gate",
     "file": "gate.md",
+    "category": "other",
     "headwords": [
       "gate",
-      "gate bars",
+      "gate bar",
       "gatekeeper",
-      "gateposts",
+      "gatepost",
       "gateway"
+    ]
+  },
+  {
+    "twarticle": "generation-character",
+    "file": "generation-character.md",
+    "category": "other",
+    "headwords": [
+      "generation"
     ]
   },
   {
     "twarticle": "generation-groupofdescendants",
     "file": "generation-groupofdescendants.md",
+    "category": "other",
+    "headwords": [
+      "generation"
+    ]
+  },
+  {
+    "twarticle": "generation-lifetime",
+    "file": "generation-lifetime.md",
+    "category": "other",
     "headwords": [
       "generation"
     ]
@@ -5546,13 +6222,7 @@
   {
     "twarticle": "generation-peoplewholiveinsametimeperiod",
     "file": "generation-peoplewholiveinsametimeperiod.md",
-    "headwords": [
-      "generation"
-    ]
-  },
-  {
-    "twarticle": "generation",
-    "file": "generation.md",
+    "category": "other",
     "headwords": [
       "generation"
     ]
@@ -5560,6 +6230,7 @@
   {
     "twarticle": "giant",
     "file": "giant.md",
+    "category": "other",
     "headwords": [
       "giant"
     ]
@@ -5567,6 +6238,7 @@
   {
     "twarticle": "gird",
     "file": "gird.md",
+    "category": "other",
     "headwords": [
       "gird",
       "girded",
@@ -5580,24 +6252,28 @@
   {
     "twarticle": "glean",
     "file": "glean.md",
+    "category": "other",
     "headwords": [
       "glean",
+      "gleaning",
       "gleanings"
     ]
   },
   {
     "twarticle": "goat",
     "file": "goat.md",
+    "category": "other",
     "headwords": [
       "goat",
-      "goatskins",
+      "goatskin",
       "scapegoat",
-      "kids"
+      "kid"
     ]
   },
   {
     "twarticle": "gold",
     "file": "gold.md",
+    "category": "other",
     "headwords": [
       "gold",
       "golden"
@@ -5606,6 +6282,7 @@
   {
     "twarticle": "gossip",
     "file": "gossip.md",
+    "category": "other",
     "headwords": [
       "gossip",
       "gossips",
@@ -5615,6 +6292,7 @@
   {
     "twarticle": "governor",
     "file": "governor.md",
+    "category": "other",
     "headwords": [
       "govern",
       "governor",
@@ -5625,6 +6303,7 @@
   {
     "twarticle": "grain",
     "file": "grain.md",
+    "category": "other",
     "headwords": [
       "grain",
       "grainfields"
@@ -5633,6 +6312,7 @@
   {
     "twarticle": "grainoffering",
     "file": "grainoffering.md",
+    "category": "other",
     "headwords": [
       "grain offering"
     ]
@@ -5640,6 +6320,7 @@
   {
     "twarticle": "grape",
     "file": "grape.md",
+    "category": "other",
     "headwords": [
       "grape",
       "grapevine"
@@ -5648,6 +6329,7 @@
   {
     "twarticle": "guiltoffering",
     "file": "guiltoffering.md",
+    "category": "other",
     "headwords": [
       "guilt offering"
     ]
@@ -5655,6 +6337,7 @@
   {
     "twarticle": "hail",
     "file": "hail.md",
+    "category": "other",
     "headwords": [
       "hail",
       "hailstone",
@@ -5664,6 +6347,7 @@
   {
     "twarticle": "hang",
     "file": "hang.md",
+    "category": "other",
     "headwords": [
       "hang",
       "hung"
@@ -5672,6 +6356,7 @@
   {
     "twarticle": "hard-unyielding",
     "file": "hard-unyielding.md",
+    "category": "other",
     "headwords": [
       "hard",
       "harden",
@@ -5682,6 +6367,7 @@
   {
     "twarticle": "hard",
     "file": "hard.md",
+    "category": "other",
     "headwords": [
       "hard",
       "harder"
@@ -5690,6 +6376,7 @@
   {
     "twarticle": "harp",
     "file": "harp.md",
+    "category": "other",
     "headwords": [
       "harp",
       "harpist"
@@ -5698,6 +6385,7 @@
   {
     "twarticle": "harvest",
     "file": "harvest.md",
+    "category": "other",
     "headwords": [
       "harvest",
       "reap"
@@ -5706,6 +6394,7 @@
   {
     "twarticle": "haughty",
     "file": "haughty.md",
+    "category": "other",
     "headwords": [
       "haughty",
       "lofty"
@@ -5714,6 +6403,7 @@
   {
     "twarticle": "heir",
     "file": "heir.md",
+    "category": "other",
     "headwords": [
       "heir"
     ]
@@ -5721,6 +6411,7 @@
   {
     "twarticle": "highplaces",
     "file": "highplaces.md",
+    "category": "other",
     "headwords": [
       "high place"
     ]
@@ -5728,6 +6419,7 @@
   {
     "twarticle": "holycity",
     "file": "holycity.md",
+    "category": "other",
     "headwords": [
       "holy city"
     ]
@@ -5735,6 +6427,7 @@
   {
     "twarticle": "honey",
     "file": "honey.md",
+    "category": "other",
     "headwords": [
       "honey",
       "honeycomb"
@@ -5743,15 +6436,16 @@
   {
     "twarticle": "horn",
     "file": "horn.md",
+    "category": "other",
     "headwords": [
       "horn",
-      "horns",
       "horned"
     ]
   },
   {
     "twarticle": "horror",
     "file": "horror.md",
+    "category": "other",
     "headwords": [
       "horror",
       "horrible",
@@ -5761,29 +6455,28 @@
   {
     "twarticle": "horse",
     "file": "horse.md",
+    "category": "other",
     "headwords": [
       "horse",
       "warhorse",
-      "horseback"
+      "horseback",
+      "stallion",
+      "steed",
+      "mare"
     ]
   },
   {
     "twarticle": "horsemen",
     "file": "horsemen.md",
+    "category": "other",
     "headwords": [
       "horseman"
     ]
   },
   {
-    "twarticle": "hour",
-    "file": "hour.md",
-    "headwords": [
-      "hour"
-    ]
-  },
-  {
     "twarticle": "house-descendants_nation",
     "file": "house-descendants_nation.md",
+    "category": "other",
     "headwords": [
       "house",
       "household",
@@ -5794,6 +6487,7 @@
   {
     "twarticle": "house",
     "file": "house.md",
+    "category": "other",
     "headwords": [
       "house"
     ]
@@ -5801,6 +6495,7 @@
   {
     "twarticle": "household",
     "file": "household.md",
+    "category": "other",
     "headwords": [
       "household",
       "house"
@@ -5809,10 +6504,11 @@
   {
     "twarticle": "image",
     "file": "image.md",
+    "category": "other",
     "headwords": [
       "image",
       "carved image",
-      "cast metal images",
+      "cast metal image",
       "figure",
       "carved figure",
       "statue"
@@ -5821,6 +6517,7 @@
   {
     "twarticle": "incense",
     "file": "incense.md",
+    "category": "other",
     "headwords": [
       "incense"
     ]
@@ -5828,23 +6525,26 @@
   {
     "twarticle": "inquire",
     "file": "inquire.md",
+    "category": "other",
     "headwords": [
       "inquire",
-      "inquiries"
+      "inquiry"
     ]
   },
   {
     "twarticle": "instruct",
     "file": "instruct.md",
+    "category": "other",
     "headwords": [
       "instruct",
       "instruction",
-      "instructors"
+      "instructor"
     ]
   },
   {
     "twarticle": "integrity",
     "file": "integrity.md",
+    "category": "other",
     "headwords": [
       "integrity"
     ]
@@ -5852,6 +6552,7 @@
   {
     "twarticle": "interpret",
     "file": "interpret.md",
+    "category": "other",
     "headwords": [
       "interpret",
       "interpretation",
@@ -5861,6 +6562,7 @@
   {
     "twarticle": "iron",
     "file": "iron.md",
+    "category": "other",
     "headwords": [
       "iron"
     ]
@@ -5868,6 +6570,7 @@
   {
     "twarticle": "jewishleaders",
     "file": "jewishleaders.md",
+    "category": "other",
     "headwords": [
       "Jewish authorities",
       "Jewish leader"
@@ -5876,6 +6579,7 @@
   {
     "twarticle": "joy",
     "file": "joy.md",
+    "category": "other",
     "headwords": [
       "joy",
       "joyful",
@@ -5886,6 +6590,7 @@
   {
     "twarticle": "judaism",
     "file": "judaism.md",
+    "category": "other",
     "headwords": [
       "Judaism",
       "Jewish religion"
@@ -5894,6 +6599,7 @@
   {
     "twarticle": "judgeposition",
     "file": "judgeposition.md",
+    "category": "other",
     "headwords": [
       "judge"
     ]
@@ -5901,6 +6607,7 @@
   {
     "twarticle": "kin",
     "file": "kin.md",
+    "category": "other",
     "headwords": [
       "kin",
       "kinfolk",
@@ -5911,6 +6618,7 @@
   {
     "twarticle": "king",
     "file": "king.md",
+    "category": "other",
     "headwords": [
       "king",
       "kingship"
@@ -5919,6 +6627,7 @@
   {
     "twarticle": "kingdom",
     "file": "kingdom.md",
+    "category": "other",
     "headwords": [
       "kingdom"
     ]
@@ -5926,6 +6635,7 @@
   {
     "twarticle": "kiss",
     "file": "kiss.md",
+    "category": "other",
     "headwords": [
       "kiss"
     ]
@@ -5933,6 +6643,7 @@
   {
     "twarticle": "know-relationship",
     "file": "know-relationship.md",
+    "category": "other",
     "headwords": [
       "know",
       "knew",
@@ -5943,10 +6654,12 @@
   {
     "twarticle": "know",
     "file": "know.md",
+    "category": "other",
     "headwords": [
       "know",
       "knew",
       "knowledge",
+      "known",
       "unknown",
       "distinguish"
     ]
@@ -5954,6 +6667,7 @@
   {
     "twarticle": "labor-birthing",
     "file": "labor-birthing.md",
+    "category": "other",
     "headwords": [
       "labor",
       "labors"
@@ -5962,6 +6676,7 @@
   {
     "twarticle": "labor",
     "file": "labor.md",
+    "category": "other",
     "headwords": [
       "labor",
       "labors",
@@ -5975,6 +6690,7 @@
   {
     "twarticle": "lamp",
     "file": "lamp.md",
+    "category": "other",
     "headwords": [
       "lamp"
     ]
@@ -5982,6 +6698,7 @@
   {
     "twarticle": "lampstand",
     "file": "lampstand.md",
+    "category": "other",
     "headwords": [
       "lampstand"
     ]
@@ -5989,6 +6706,7 @@
   {
     "twarticle": "law",
     "file": "law.md",
+    "category": "other",
     "headwords": [
       "law",
       "principle"
@@ -5997,6 +6715,7 @@
   {
     "twarticle": "lawful",
     "file": "lawful.md",
+    "category": "other",
     "headwords": [
       "lawful",
       "unlawful",
@@ -6006,16 +6725,9 @@
     ]
   },
   {
-    "twarticle": "learnedmen",
-    "file": "learnedmen.md",
-    "headwords": [
-      "learned men",
-      "astrologers"
-    ]
-  },
-  {
     "twarticle": "leopard",
     "file": "leopard.md",
+    "category": "other",
     "headwords": [
       "leopard"
     ]
@@ -6023,6 +6735,7 @@
   {
     "twarticle": "leprosy",
     "file": "leprosy.md",
+    "category": "other",
     "headwords": [
       "skin disease",
       "leper",
@@ -6030,21 +6743,17 @@
     ]
   },
   {
-    "twarticle": "like",
-    "file": "like.md",
+    "twarticle": "likeness",
+    "file": "likeness.md",
+    "category": "other",
     "headwords": [
-      "like",
-      "likeminded",
-      "likeness",
-      "likewise",
-      "alike",
-      "unlike",
-      "as if"
+      "likeness"
     ]
   },
   {
     "twarticle": "lion",
     "file": "lion.md",
+    "category": "other",
     "headwords": [
       "lion",
       "lioness"
@@ -6053,6 +6762,7 @@
   {
     "twarticle": "livestock",
     "file": "livestock.md",
+    "category": "other",
     "headwords": [
       "livestock",
       "animals"
@@ -6061,6 +6771,7 @@
   {
     "twarticle": "locust",
     "file": "locust.md",
+    "category": "other",
     "headwords": [
       "locust"
     ]
@@ -6068,14 +6779,15 @@
   {
     "twarticle": "loins",
     "file": "loins.md",
+    "category": "other",
     "headwords": [
-      "loins",
-      "waist"
+      "loins"
     ]
   },
   {
     "twarticle": "lots",
     "file": "lots.md",
+    "category": "other",
     "headwords": [
       "lots",
       "casting lots"
@@ -6084,6 +6796,7 @@
   {
     "twarticle": "lover",
     "file": "lover.md",
+    "category": "other",
     "headwords": [
       "lover"
     ]
@@ -6091,6 +6804,7 @@
   {
     "twarticle": "lowly",
     "file": "lowly.md",
+    "category": "other",
     "headwords": [
       "lowly",
       "lowliness"
@@ -6099,16 +6813,18 @@
   {
     "twarticle": "lust",
     "file": "lust.md",
+    "category": "other",
     "headwords": [
       "lust",
       "lustful",
-      "passions",
-      "desires"
+      "passion",
+      "desire"
     ]
   },
   {
     "twarticle": "lute",
     "file": "lute.md",
+    "category": "other",
     "headwords": [
       "lute",
       "lyre"
@@ -6117,6 +6833,7 @@
   {
     "twarticle": "magic",
     "file": "magic.md",
+    "category": "other",
     "headwords": [
       "magic",
       "magical",
@@ -6127,6 +6844,7 @@
   {
     "twarticle": "magistrate",
     "file": "magistrate.md",
+    "category": "other",
     "headwords": [
       "magistrate"
     ]
@@ -6134,6 +6852,7 @@
   {
     "twarticle": "manager",
     "file": "manager.md",
+    "category": "other",
     "headwords": [
       "manager",
       "steward",
@@ -6143,6 +6862,7 @@
   {
     "twarticle": "marriage",
     "file": "marriage.md",
+    "category": "other",
     "headwords": [
       "marriage",
       "marry",
@@ -6153,14 +6873,16 @@
   {
     "twarticle": "mealoffering",
     "file": "mealoffering.md",
+    "category": "other",
     "headwords": [
       "grain offering",
-      "meal offerings"
+      "meal offering"
     ]
   },
   {
     "twarticle": "mediator",
     "file": "mediator.md",
+    "category": "other",
     "headwords": [
       "mediator"
     ]
@@ -6168,6 +6890,7 @@
   {
     "twarticle": "meditate",
     "file": "meditate.md",
+    "category": "other",
     "headwords": [
       "meditate",
       "meditation"
@@ -6176,6 +6899,7 @@
   {
     "twarticle": "meek",
     "file": "meek.md",
+    "category": "other",
     "headwords": [
       "meek",
       "meekness"
@@ -6184,14 +6908,16 @@
   {
     "twarticle": "member",
     "file": "member.md",
+    "category": "other",
     "headwords": [
       "member",
-      "body parts"
+      "body part"
     ]
   },
   {
     "twarticle": "memorialoffering",
     "file": "memorialoffering.md",
+    "category": "other",
     "headwords": [
       "memorial",
       "memorial offering"
@@ -6200,6 +6926,7 @@
   {
     "twarticle": "messenger",
     "file": "messenger.md",
+    "category": "other",
     "headwords": [
       "messenger"
     ]
@@ -6207,6 +6934,7 @@
   {
     "twarticle": "mighty",
     "file": "mighty.md",
+    "category": "other",
     "headwords": [
       "might",
       "mighty",
@@ -6216,6 +6944,7 @@
   {
     "twarticle": "mind",
     "file": "mind.md",
+    "category": "other",
     "headwords": [
       "mind",
       "mindful",
@@ -6227,6 +6956,7 @@
   {
     "twarticle": "mock",
     "file": "mock.md",
+    "category": "other",
     "headwords": [
       "mock",
       "mocker",
@@ -6239,6 +6969,7 @@
   {
     "twarticle": "mold",
     "file": "mold.md",
+    "category": "other",
     "headwords": [
       "mold",
       "molded",
@@ -6249,6 +6980,7 @@
   {
     "twarticle": "mourn",
     "file": "mourn.md",
+    "category": "other",
     "headwords": [
       "mourn",
       "mourner",
@@ -6258,6 +6990,7 @@
   {
     "twarticle": "multiply",
     "file": "multiply.md",
+    "category": "other",
     "headwords": [
       "multiply",
       "multiplied",
@@ -6267,6 +7000,7 @@
   {
     "twarticle": "mystery",
     "file": "mystery.md",
+    "category": "other",
     "headwords": [
       "mystery",
       "hidden truth"
@@ -6275,6 +7009,7 @@
   {
     "twarticle": "nation",
     "file": "nation.md",
+    "category": "other",
     "headwords": [
       "nation"
     ]
@@ -6282,6 +7017,7 @@
   {
     "twarticle": "neighbor",
     "file": "neighbor.md",
+    "category": "other",
     "headwords": [
       "neighbor",
       "neighborhood",
@@ -6291,6 +7027,7 @@
   {
     "twarticle": "newmoon",
     "file": "newmoon.md",
+    "category": "other",
     "headwords": [
       "new moon"
     ]
@@ -6298,6 +7035,7 @@
   {
     "twarticle": "noble",
     "file": "noble.md",
+    "category": "other",
     "headwords": [
       "noble",
       "nobleman",
@@ -6307,6 +7045,7 @@
   {
     "twarticle": "oak",
     "file": "oak.md",
+    "category": "other",
     "headwords": [
       "oak"
     ]
@@ -6314,6 +7053,7 @@
   {
     "twarticle": "oath",
     "file": "oath.md",
+    "category": "other",
     "headwords": [
       "oath",
       "vow",
@@ -6325,6 +7065,7 @@
   {
     "twarticle": "oil",
     "file": "oil.md",
+    "category": "other",
     "headwords": [
       "oil"
     ]
@@ -6332,21 +7073,15 @@
   {
     "twarticle": "olive",
     "file": "olive.md",
+    "category": "other",
     "headwords": [
       "olive"
     ]
   },
   {
-    "twarticle": "onhigh",
-    "file": "onhigh.md",
-    "headwords": [
-      "on high",
-      "in the highest"
-    ]
-  },
-  {
     "twarticle": "ordain",
     "file": "ordain.md",
+    "category": "other",
     "headwords": [
       "ordain",
       "ordained",
@@ -6359,17 +7094,19 @@
   {
     "twarticle": "ordinance",
     "file": "ordinance.md",
+    "category": "other",
     "headwords": [
       "ordinance",
-      "regulations",
-      "requirements",
+      "regulation",
+      "requirement",
       "strict law",
-      "customs"
+      "custom"
     ]
   },
   {
     "twarticle": "overseer",
     "file": "overseer.md",
+    "category": "other",
     "headwords": [
       "oversee",
       "overseer",
@@ -6379,6 +7116,7 @@
   {
     "twarticle": "overtake",
     "file": "overtake.md",
+    "category": "other",
     "headwords": [
       "overtake"
     ]
@@ -6386,6 +7124,7 @@
   {
     "twarticle": "pagan",
     "file": "pagan.md",
+    "category": "other",
     "headwords": [
       "pagan"
     ]
@@ -6393,6 +7132,7 @@
   {
     "twarticle": "palace",
     "file": "palace.md",
+    "category": "other",
     "headwords": [
       "palace",
       "house"
@@ -6401,6 +7141,7 @@
   {
     "twarticle": "palm",
     "file": "palm.md",
+    "category": "other",
     "headwords": [
       "palm"
     ]
@@ -6408,6 +7149,7 @@
   {
     "twarticle": "partial",
     "file": "partial.md",
+    "category": "other",
     "headwords": [
       "partial",
       "partiality"
@@ -6416,6 +7158,7 @@
   {
     "twarticle": "patient",
     "file": "patient.md",
+    "category": "other",
     "headwords": [
       "patient",
       "patience",
@@ -6425,6 +7168,7 @@
   {
     "twarticle": "patriarchs",
     "file": "patriarchs.md",
+    "category": "other",
     "headwords": [
       "patriarch"
     ]
@@ -6432,30 +7176,25 @@
   {
     "twarticle": "peace",
     "file": "peace.md",
+    "category": "other",
     "headwords": [
       "peace",
       "peaceful",
-      "peacemakers"
+      "peacemaker"
     ]
   },
   {
     "twarticle": "peaceoffering",
     "file": "peaceoffering.md",
+    "category": "other",
     "headwords": [
       "peace offering"
     ]
   },
   {
-    "twarticle": "peoplegroup",
-    "file": "peoplegroup.md",
-    "headwords": [
-      "people",
-      "people group"
-    ]
-  },
-  {
     "twarticle": "perfect",
     "file": "perfect.md",
+    "category": "other",
     "headwords": [
       "perfect",
       "complete"
@@ -6464,6 +7203,7 @@
   {
     "twarticle": "persecute",
     "file": "persecute.md",
+    "category": "other",
     "headwords": [
       "persecute"
     ]
@@ -6471,6 +7211,7 @@
   {
     "twarticle": "perseverance",
     "file": "perseverance.md",
+    "category": "other",
     "headwords": [
       "persevere",
       "perseverance"
@@ -6479,6 +7220,7 @@
   {
     "twarticle": "perverse",
     "file": "perverse.md",
+    "category": "other",
     "headwords": [
       "perverse",
       "perversion",
@@ -6493,6 +7235,7 @@
   {
     "twarticle": "pig",
     "file": "pig.md",
+    "category": "other",
     "headwords": [
       "pig",
       "pork",
@@ -6502,6 +7245,7 @@
   {
     "twarticle": "pillar",
     "file": "pillar.md",
+    "category": "other",
     "headwords": [
       "column",
       "pillar"
@@ -6510,16 +7254,18 @@
   {
     "twarticle": "pit",
     "file": "pit.md",
+    "category": "other",
     "headwords": [
       "pit",
       "pitfall",
-      "trenches",
+      "trench",
       "cistern"
     ]
   },
   {
     "twarticle": "plague",
     "file": "plague.md",
+    "category": "other",
     "headwords": [
       "plague"
     ]
@@ -6527,6 +7273,7 @@
   {
     "twarticle": "plead",
     "file": "plead.md",
+    "category": "other",
     "headwords": [
       "plea",
       "plead",
@@ -6538,28 +7285,28 @@
   {
     "twarticle": "pledge",
     "file": "pledge.md",
+    "category": "other",
     "headwords": [
-      "pledge",
-      "pledged",
-      "pledging",
-      "pledges"
+      "pledge"
     ]
   },
   {
     "twarticle": "plow",
     "file": "plow.md",
+    "category": "other",
     "headwords": [
       "plow",
-      "plowed",
-      "plowers",
+      "plower",
       "plowman",
-      "plowshares",
+      "plowmen",
+      "plowshare",
       "unplowed"
     ]
   },
   {
     "twarticle": "plunder",
     "file": "plunder.md",
+    "category": "other",
     "headwords": [
       "plunder",
       "plundered",
@@ -6570,6 +7317,7 @@
   {
     "twarticle": "pomegranate",
     "file": "pomegranate.md",
+    "category": "other",
     "headwords": [
       "pomegranate"
     ]
@@ -6577,6 +7325,7 @@
   {
     "twarticle": "possess",
     "file": "possess.md",
+    "category": "other",
     "headwords": [
       "possess",
       "possessed",
@@ -6587,6 +7336,7 @@
   {
     "twarticle": "praise",
     "file": "praise.md",
+    "category": "other",
     "headwords": [
       "praise",
       "praised",
@@ -6596,6 +7346,7 @@
   {
     "twarticle": "preach",
     "file": "preach.md",
+    "category": "other",
     "headwords": [
       "preach",
       "preaching",
@@ -6607,6 +7358,7 @@
   {
     "twarticle": "prey",
     "file": "prey.md",
+    "category": "other",
     "headwords": [
       "prey",
       "prey on"
@@ -6615,12 +7367,14 @@
   {
     "twarticle": "prince",
     "file": "prince.md",
+    "category": "other",
     "headwords": [
       "prince",
       "princess",
-      "governors",
-      "provincial governors",
-      "officials",
+      "governor",
+      "provincial governor",
+      "official",
+      "nobleman",
       "noblemen",
       "nobility"
     ]
@@ -6628,6 +7382,7 @@
   {
     "twarticle": "profane",
     "file": "profane.md",
+    "category": "other",
     "headwords": [
       "profane",
       "profaned"
@@ -6636,6 +7391,7 @@
   {
     "twarticle": "profit-spiritual",
     "file": "profit-spiritual.md",
+    "category": "other",
     "headwords": [
       "profit",
       "profits",
@@ -6647,6 +7403,7 @@
   {
     "twarticle": "profit",
     "file": "profit.md",
+    "category": "other",
     "headwords": [
       "profit",
       "profits",
@@ -6657,6 +7414,7 @@
   {
     "twarticle": "prosper",
     "file": "prosper.md",
+    "category": "other",
     "headwords": [
       "prosper",
       "prosperity",
@@ -6666,6 +7424,7 @@
   {
     "twarticle": "prostitute",
     "file": "prostitute.md",
+    "category": "other",
     "headwords": [
       "prostitute",
       "harlot",
@@ -6675,6 +7434,7 @@
   {
     "twarticle": "prostrate",
     "file": "prostrate.md",
+    "category": "other",
     "headwords": [
       "prostrate"
     ]
@@ -6682,6 +7442,7 @@
   {
     "twarticle": "proud-positivesense",
     "file": "proud-positivesense.md",
+    "category": "other",
     "headwords": [
       "pride",
       "boastful"
@@ -6690,6 +7451,7 @@
   {
     "twarticle": "proud",
     "file": "proud.md",
+    "category": "other",
     "headwords": [
       "proud",
       "pride",
@@ -6702,6 +7464,7 @@
   {
     "twarticle": "proverb",
     "file": "proverb.md",
+    "category": "other",
     "headwords": [
       "proverb"
     ]
@@ -6709,6 +7472,7 @@
   {
     "twarticle": "province",
     "file": "province.md",
+    "category": "other",
     "headwords": [
       "province",
       "provincial"
@@ -6717,6 +7481,7 @@
   {
     "twarticle": "provoke",
     "file": "provoke.md",
+    "category": "other",
     "headwords": [
       "provoke",
       "provoked",
@@ -6726,6 +7491,7 @@
   {
     "twarticle": "prudent",
     "file": "prudent.md",
+    "category": "other",
     "headwords": [
       "prudence",
       "prudent"
@@ -6734,6 +7500,7 @@
   {
     "twarticle": "punish",
     "file": "punish.md",
+    "category": "other",
     "headwords": [
       "punish",
       "punished",
@@ -6744,6 +7511,7 @@
   {
     "twarticle": "purple",
     "file": "purple.md",
+    "category": "other",
     "headwords": [
       "purple"
     ]
@@ -6751,6 +7519,7 @@
   {
     "twarticle": "qualify",
     "file": "qualify.md",
+    "category": "other",
     "headwords": [
       "qualify",
       "qualified",
@@ -6760,6 +7529,7 @@
   {
     "twarticle": "queen",
     "file": "queen.md",
+    "category": "other",
     "headwords": [
       "queen"
     ]
@@ -6767,6 +7537,7 @@
   {
     "twarticle": "quench",
     "file": "quench.md",
+    "category": "other",
     "headwords": [
       "quench",
       "quenched",
@@ -6776,6 +7547,7 @@
   {
     "twarticle": "rage",
     "file": "rage.md",
+    "category": "other",
     "headwords": [
       "rage"
     ]
@@ -6783,6 +7555,7 @@
   {
     "twarticle": "rebel",
     "file": "rebel.md",
+    "category": "other",
     "headwords": [
       "rebel",
       "rebellion",
@@ -6793,6 +7566,7 @@
   {
     "twarticle": "rebuke",
     "file": "rebuke.md",
+    "category": "other",
     "headwords": [
       "rebuke",
       "reprove"
@@ -6801,6 +7575,7 @@
   {
     "twarticle": "receive",
     "file": "receive.md",
+    "category": "other",
     "headwords": [
       "receive",
       "welcome",
@@ -6811,6 +7586,7 @@
   {
     "twarticle": "reed",
     "file": "reed.md",
+    "category": "other",
     "headwords": [
       "reed"
     ]
@@ -6818,6 +7594,7 @@
   {
     "twarticle": "refuge",
     "file": "refuge.md",
+    "category": "other",
     "headwords": [
       "refuge",
       "refugee",
@@ -6828,6 +7605,7 @@
   {
     "twarticle": "reign",
     "file": "reign.md",
+    "category": "other",
     "headwords": [
       "reign",
       "rule"
@@ -6836,6 +7614,7 @@
   {
     "twarticle": "reject",
     "file": "reject.md",
+    "category": "other",
     "headwords": [
       "reject",
       "rejected",
@@ -6845,6 +7624,7 @@
   {
     "twarticle": "renown",
     "file": "renown.md",
+    "category": "other",
     "headwords": [
       "renown",
       "renowned",
@@ -6854,6 +7634,7 @@
   {
     "twarticle": "report",
     "file": "report.md",
+    "category": "other",
     "headwords": [
       "report",
       "reported",
@@ -6864,6 +7645,7 @@
   {
     "twarticle": "reverence",
     "file": "reverence.md",
+    "category": "other",
     "headwords": [
       "revere",
       "revered",
@@ -6874,6 +7656,7 @@
   {
     "twarticle": "reward",
     "file": "reward.md",
+    "category": "other",
     "headwords": [
       "reward",
       "prize",
@@ -6883,6 +7666,7 @@
   {
     "twarticle": "robe",
     "file": "robe.md",
+    "category": "other",
     "headwords": [
       "robe",
       "robed"
@@ -6891,6 +7675,7 @@
   {
     "twarticle": "rod",
     "file": "rod.md",
+    "category": "other",
     "headwords": [
       "rod"
     ]
@@ -6898,6 +7683,7 @@
   {
     "twarticle": "royal",
     "file": "royal.md",
+    "category": "other",
     "headwords": [
       "royal",
       "royalty",
@@ -6908,6 +7694,7 @@
   {
     "twarticle": "ruin",
     "file": "ruin.md",
+    "category": "other",
     "headwords": [
       "ruin",
       "ruins",
@@ -6917,6 +7704,7 @@
   {
     "twarticle": "ruler",
     "file": "ruler.md",
+    "category": "other",
     "headwords": [
       "rule",
       "reign",
@@ -6929,6 +7717,7 @@
   {
     "twarticle": "sackcloth",
     "file": "sackcloth.md",
+    "category": "other",
     "headwords": [
       "sackcloth"
     ]
@@ -6936,15 +7725,16 @@
   {
     "twarticle": "sacrifice",
     "file": "sacrifice.md",
+    "category": "other",
     "headwords": [
       "sacrifice",
-      "sacrifices",
       "offering"
     ]
   },
   {
     "twarticle": "sandal",
     "file": "sandal.md",
+    "category": "other",
     "headwords": [
       "sandal"
     ]
@@ -6952,6 +7742,7 @@
   {
     "twarticle": "scepter",
     "file": "scepter.md",
+    "category": "other",
     "headwords": [
       "scepter"
     ]
@@ -6959,6 +7750,7 @@
   {
     "twarticle": "scroll",
     "file": "scroll.md",
+    "category": "other",
     "headwords": [
       "scroll"
     ]
@@ -6966,6 +7758,7 @@
   {
     "twarticle": "seal",
     "file": "seal.md",
+    "category": "other",
     "headwords": [
       "seal",
       "sealed",
@@ -6975,14 +7768,15 @@
   {
     "twarticle": "seed",
     "file": "seed.md",
+    "category": "other",
     "headwords": [
-      "seed",
-      "semen"
+      "seed"
     ]
   },
   {
     "twarticle": "seek",
     "file": "seek.md",
+    "category": "other",
     "headwords": [
       "seek",
       "search",
@@ -6992,6 +7786,7 @@
   {
     "twarticle": "seize",
     "file": "seize.md",
+    "category": "other",
     "headwords": [
       "seize",
       "seizure",
@@ -7001,6 +7796,7 @@
   {
     "twarticle": "selah",
     "file": "selah.md",
+    "category": "other",
     "headwords": [
       "selah"
     ]
@@ -7008,6 +7804,7 @@
   {
     "twarticle": "selfcontrol",
     "file": "selfcontrol.md",
+    "category": "other",
     "headwords": [
       "self-control",
       "self-controlled"
@@ -7016,6 +7813,7 @@
   {
     "twarticle": "seraphim",
     "file": "seraphim.md",
+    "category": "other",
     "headwords": [
       "seraphim",
       "seraphs"
@@ -7024,6 +7822,7 @@
   {
     "twarticle": "serpent",
     "file": "serpent.md",
+    "category": "other",
     "headwords": [
       "serpent",
       "snake",
@@ -7033,6 +7832,7 @@
   {
     "twarticle": "servant",
     "file": "servant.md",
+    "category": "other",
     "headwords": [
       "servant",
       "serve",
@@ -7044,6 +7844,7 @@
   {
     "twarticle": "shame",
     "file": "shame.md",
+    "category": "other",
     "headwords": [
       "shame",
       "ashamed",
@@ -7055,18 +7856,20 @@
   {
     "twarticle": "sheep",
     "file": "sheep.md",
+    "category": "other",
     "headwords": [
       "ewe",
       "ram",
       "sheep",
       "sheepfold",
-      "sheepshearers",
-      "sheepskins"
+      "sheepshearer",
+      "sheepskin"
     ]
   },
   {
     "twarticle": "shepherd",
     "file": "shepherd.md",
+    "category": "other",
     "headwords": [
       "shepherd",
       "herder",
@@ -7076,6 +7879,7 @@
   {
     "twarticle": "shield",
     "file": "shield.md",
+    "category": "other",
     "headwords": [
       "shield"
     ]
@@ -7083,6 +7887,7 @@
   {
     "twarticle": "shrewd",
     "file": "shrewd.md",
+    "category": "other",
     "headwords": [
       "shrewd",
       "cunning"
@@ -7091,16 +7896,19 @@
   {
     "twarticle": "siege",
     "file": "siege.md",
+    "category": "other",
     "headwords": [
       "siege",
       "besiege",
       "besieged",
+      "siegework",
       "siegeworks"
     ]
   },
   {
     "twarticle": "silver",
     "file": "silver.md",
+    "category": "other",
     "headwords": [
       "silver"
     ]
@@ -7108,6 +7916,7 @@
   {
     "twarticle": "sinoffering",
     "file": "sinoffering.md",
+    "category": "other",
     "headwords": [
       "sin offering",
       "purification offering"
@@ -7116,6 +7925,7 @@
   {
     "twarticle": "slain",
     "file": "slain.md",
+    "category": "other",
     "headwords": [
       "slay",
       "slain",
@@ -7127,9 +7937,10 @@
   {
     "twarticle": "slander",
     "file": "slander.md",
+    "category": "other",
     "headwords": [
       "slander",
-      "slanderers",
+      "slanderer",
       "revile",
       "insult"
     ]
@@ -7137,6 +7948,7 @@
   {
     "twarticle": "slaughter",
     "file": "slaughter.md",
+    "category": "other",
     "headwords": [
       "slaughter",
       "slaughtered"
@@ -7145,6 +7957,7 @@
   {
     "twarticle": "snare",
     "file": "snare.md",
+    "category": "other",
     "headwords": [
       "snare",
       "ensnare",
@@ -7157,6 +7970,7 @@
   {
     "twarticle": "snow",
     "file": "snow.md",
+    "category": "other",
     "headwords": [
       "snow"
     ]
@@ -7164,6 +7978,7 @@
   {
     "twarticle": "sorcery",
     "file": "sorcery.md",
+    "category": "other",
     "headwords": [
       "sorcerer",
       "sorceress",
@@ -7176,6 +7991,7 @@
   {
     "twarticle": "sow",
     "file": "sow.md",
+    "category": "other",
     "headwords": [
       "sow",
       "sower",
@@ -7188,6 +8004,7 @@
   {
     "twarticle": "spear",
     "file": "spear.md",
+    "category": "other",
     "headwords": [
       "spear",
       "spearmen"
@@ -7196,6 +8013,7 @@
   {
     "twarticle": "splendor",
     "file": "splendor.md",
+    "category": "other",
     "headwords": [
       "splendor"
     ]
@@ -7203,6 +8021,7 @@
   {
     "twarticle": "staff",
     "file": "staff.md",
+    "category": "other",
     "headwords": [
       "staff",
       "clubs"
@@ -7211,6 +8030,7 @@
   {
     "twarticle": "statute",
     "file": "statute.md",
+    "category": "other",
     "headwords": [
       "statute"
     ]
@@ -7218,6 +8038,7 @@
   {
     "twarticle": "storehouse",
     "file": "storehouse.md",
+    "category": "other",
     "headwords": [
       "storehouse"
     ]
@@ -7225,6 +8046,7 @@
   {
     "twarticle": "strife",
     "file": "strife.md",
+    "category": "other",
     "headwords": [
       "strife",
       "disputes",
@@ -7236,6 +8058,7 @@
   {
     "twarticle": "strongdrink",
     "file": "strongdrink.md",
+    "category": "other",
     "headwords": [
       "strong drink"
     ]
@@ -7243,9 +8066,10 @@
   {
     "twarticle": "stronghold",
     "file": "stronghold.md",
+    "category": "other",
     "headwords": [
       "stronghold",
-      "fortifications",
+      "fortification",
       "fortress",
       "citadel"
     ]
@@ -7253,6 +8077,7 @@
   {
     "twarticle": "stumble",
     "file": "stumble.md",
+    "category": "other",
     "headwords": [
       "stumble",
       "reeling"
@@ -7261,6 +8086,7 @@
   {
     "twarticle": "subject-topic",
     "file": "subject-topic.md",
+    "category": "other",
     "headwords": [
       "subject"
     ]
@@ -7268,6 +8094,7 @@
   {
     "twarticle": "subject",
     "file": "subject.md",
+    "category": "other",
     "headwords": [
       "subject",
       "be subject to",
@@ -7279,6 +8106,7 @@
   {
     "twarticle": "submit",
     "file": "submit.md",
+    "category": "other",
     "headwords": [
       "submit",
       "submitted",
@@ -7290,6 +8118,7 @@
   {
     "twarticle": "suffer",
     "file": "suffer.md",
+    "category": "other",
     "headwords": [
       "suffer",
       "suffering"
@@ -7298,6 +8127,7 @@
   {
     "twarticle": "sulfur",
     "file": "sulfur.md",
+    "category": "other",
     "headwords": [
       "sulfur",
       "sulfurous"
@@ -7306,6 +8136,7 @@
   {
     "twarticle": "sweep",
     "file": "sweep.md",
+    "category": "other",
     "headwords": [
       "sweep"
     ]
@@ -7313,6 +8144,7 @@
   {
     "twarticle": "sword",
     "file": "sword.md",
+    "category": "other",
     "headwords": [
       "sword",
       "swordsmen"
@@ -7321,17 +8153,19 @@
   {
     "twarticle": "tax",
     "file": "tax.md",
+    "category": "other",
     "headwords": [
       "tax",
       "tribute",
       "taxation",
-      "taxpayers",
+      "taxpayer",
       "tax collector"
     ]
   },
   {
     "twarticle": "teacher",
     "file": "teacher.md",
+    "category": "other",
     "headwords": [
       "teacher",
       "Teacher"
@@ -7340,6 +8174,7 @@
   {
     "twarticle": "tencommandments",
     "file": "tencommandments.md",
+    "category": "other",
     "headwords": [
       "Ten Commandments"
     ]
@@ -7347,14 +8182,16 @@
   {
     "twarticle": "tent",
     "file": "tent.md",
+    "category": "other",
     "headwords": [
       "tent",
-      "tentmakers"
+      "tentmaker"
     ]
   },
   {
     "twarticle": "tenth",
     "file": "tenth.md",
+    "category": "other",
     "headwords": [
       "tenth",
       "tithe"
@@ -7363,6 +8200,7 @@
   {
     "twarticle": "tentofmeeting",
     "file": "tentofmeeting.md",
+    "category": "other",
     "headwords": [
       "tent of meeting"
     ]
@@ -7370,6 +8208,7 @@
   {
     "twarticle": "terror",
     "file": "terror.md",
+    "category": "other",
     "headwords": [
       "terror",
       "terrorize",
@@ -7381,17 +8220,20 @@
   {
     "twarticle": "thief",
     "file": "thief.md",
+    "category": "other",
     "headwords": [
       "thief",
+      "thieves",
       "rob",
       "robber",
       "robbery",
-      "bandits"
+      "bandit"
     ]
   },
   {
     "twarticle": "thorn",
     "file": "thorn.md",
+    "category": "other",
     "headwords": [
       "thorn",
       "thorn bush",
@@ -7401,6 +8243,7 @@
   {
     "twarticle": "thresh",
     "file": "thresh.md",
+    "category": "other",
     "headwords": [
       "thresh"
     ]
@@ -7408,6 +8251,7 @@
   {
     "twarticle": "threshold",
     "file": "threshold.md",
+    "category": "other",
     "headwords": [
       "threshold",
       "doorway"
@@ -7416,26 +8260,19 @@
   {
     "twarticle": "throne",
     "file": "throne.md",
+    "category": "other",
     "headwords": [
       "throne",
       "enthroned"
     ]
   },
   {
-    "twarticle": "time",
-    "file": "time.md",
-    "headwords": [
-      "time",
-      "untimely",
-      "date"
-    ]
-  },
-  {
     "twarticle": "tomb",
     "file": "tomb.md",
+    "category": "other",
     "headwords": [
       "grave",
-      "gravediggers",
+      "gravedigger",
       "tomb",
       "burial place"
     ]
@@ -7443,6 +8280,7 @@
   {
     "twarticle": "tongue",
     "file": "tongue.md",
+    "category": "other",
     "headwords": [
       "tongue",
       "language"
@@ -7451,15 +8289,17 @@
   {
     "twarticle": "torment",
     "file": "torment.md",
+    "category": "other",
     "headwords": [
       "torment",
       "tormented",
-      "tormentors"
+      "tormentor"
     ]
   },
   {
     "twarticle": "tradition",
     "file": "tradition.md",
+    "category": "other",
     "headwords": [
       "tradition"
     ]
@@ -7467,6 +8307,7 @@
   {
     "twarticle": "trample",
     "file": "trample.md",
+    "category": "other",
     "headwords": [
       "trample"
     ]
@@ -7474,6 +8315,7 @@
   {
     "twarticle": "tremble",
     "file": "tremble.md",
+    "category": "other",
     "headwords": [
       "tremble",
       "stagger",
@@ -7483,6 +8325,7 @@
   {
     "twarticle": "trial",
     "file": "trial.md",
+    "category": "other",
     "headwords": [
       "trial",
       "proving"
@@ -7491,6 +8334,7 @@
   {
     "twarticle": "tribe",
     "file": "tribe.md",
+    "category": "other",
     "headwords": [
       "tribe",
       "tribal",
@@ -7500,8 +8344,10 @@
   {
     "twarticle": "tribulation",
     "file": "tribulation.md",
+    "category": "other",
     "headwords": [
       "tribulation",
+      "distress",
       "distresses",
       "trouble"
     ]
@@ -7509,15 +8355,16 @@
   {
     "twarticle": "tribute",
     "file": "tribute.md",
+    "category": "other",
     "headwords": [
       "tribute",
-      "contribution",
-      "fined"
+      "contribution"
     ]
   },
   {
     "twarticle": "trouble",
     "file": "trouble.md",
+    "category": "other",
     "headwords": [
       "trouble",
       "disturb",
@@ -7530,14 +8377,16 @@
   {
     "twarticle": "trumpet",
     "file": "trumpet.md",
+    "category": "other",
     "headwords": [
       "trumpet",
-      "trumpeters"
+      "trumpeter"
     ]
   },
   {
     "twarticle": "tunic",
     "file": "tunic.md",
+    "category": "other",
     "headwords": [
       "tunic"
     ]
@@ -7545,6 +8394,7 @@
   {
     "twarticle": "understand",
     "file": "understand.md",
+    "category": "other",
     "headwords": [
       "understand",
       "understanding",
@@ -7554,6 +8404,7 @@
   {
     "twarticle": "vain",
     "file": "vain.md",
+    "category": "other",
     "headwords": [
       "vain",
       "vanity"
@@ -7562,6 +8413,7 @@
   {
     "twarticle": "veil",
     "file": "veil.md",
+    "category": "other",
     "headwords": [
       "veil",
       "veiled",
@@ -7571,22 +8423,23 @@
   {
     "twarticle": "vine",
     "file": "vine.md",
+    "category": "other",
     "headwords": [
-      "vine",
-      "vines"
+      "vine"
     ]
   },
   {
     "twarticle": "vineyard",
     "file": "vineyard.md",
+    "category": "other",
     "headwords": [
-      "vineyard",
-      "vineyards"
+      "vineyard"
     ]
   },
   {
     "twarticle": "virgin",
     "file": "virgin.md",
+    "category": "other",
     "headwords": [
       "virgin",
       "virginity"
@@ -7595,6 +8448,7 @@
   {
     "twarticle": "vision",
     "file": "vision.md",
+    "category": "other",
     "headwords": [
       "vision",
       "envision"
@@ -7603,6 +8457,7 @@
   {
     "twarticle": "wadi",
     "file": "wadi.md",
+    "category": "other",
     "headwords": [
       "wadi"
     ]
@@ -7610,6 +8465,7 @@
   {
     "twarticle": "warrior",
     "file": "warrior.md",
+    "category": "other",
     "headwords": [
       "soldier",
       "warrior"
@@ -7618,6 +8474,7 @@
   {
     "twarticle": "waste",
     "file": "waste.md",
+    "category": "other",
     "headwords": [
       "waste",
       "wasted",
@@ -7628,10 +8485,10 @@
   {
     "twarticle": "watch",
     "file": "watch.md",
+    "category": "other",
     "headwords": [
       "watch",
       "guard",
-      "keep",
       "take heed",
       "beware"
     ]
@@ -7639,6 +8496,7 @@
   {
     "twarticle": "watchtower",
     "file": "watchtower.md",
+    "category": "other",
     "headwords": [
       "watchtower",
       "tower"
@@ -7647,6 +8505,7 @@
   {
     "twarticle": "well",
     "file": "well.md",
+    "category": "other",
     "headwords": [
       "cistern",
       "well"
@@ -7655,6 +8514,7 @@
   {
     "twarticle": "wheat",
     "file": "wheat.md",
+    "category": "other",
     "headwords": [
       "wheat"
     ]
@@ -7662,6 +8522,7 @@
   {
     "twarticle": "wine",
     "file": "wine.md",
+    "category": "other",
     "headwords": [
       "wine",
       "wineskin",
@@ -7671,6 +8532,7 @@
   {
     "twarticle": "winepress",
     "file": "winepress.md",
+    "category": "other",
     "headwords": [
       "winepress"
     ]
@@ -7678,6 +8540,7 @@
   {
     "twarticle": "winnow",
     "file": "winnow.md",
+    "category": "other",
     "headwords": [
       "winnow",
       "sift"
@@ -7686,6 +8549,7 @@
   {
     "twarticle": "wisemen",
     "file": "wisemen.md",
+    "category": "other",
     "headwords": [
       "wise men",
       "advisor"
@@ -7694,14 +8558,17 @@
   {
     "twarticle": "wolf",
     "file": "wolf.md",
+    "category": "other",
     "headwords": [
       "wolf",
+      "wild dog",
       "wild dogs"
     ]
   },
   {
     "twarticle": "womb",
     "file": "womb.md",
+    "category": "other",
     "headwords": [
       "womb"
     ]
@@ -7709,6 +8576,7 @@
   {
     "twarticle": "wrong",
     "file": "wrong.md",
+    "category": "other",
     "headwords": [
       "wrong",
       "wronged",
@@ -7721,6 +8589,7 @@
   {
     "twarticle": "yeast",
     "file": "yeast.md",
+    "category": "other",
     "headwords": [
       "yeast",
       "leaven",
@@ -7730,6 +8599,7 @@
   {
     "twarticle": "yoke",
     "file": "yoke.md",
+    "category": "other",
     "headwords": [
       "yoke",
       "yoked",

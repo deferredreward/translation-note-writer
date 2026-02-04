@@ -190,9 +190,28 @@ class ConfigManager:
             'max_items_per_work_cycle': self.get('processing.max_items_per_work_cycle', 0),  # 0 means no limit
             'watch_columns': self.get('processing.watch_columns', ['Go?', 'SRef']),
             'process_go_values': self.get('processing.process_go_values', ['YES', 'GO']),
-            'skip_go_values': self.get('processing.skip_go_values', ['AI']),
+            'skip_go_values': self.get('processing.skip_go_values', ['AI', 'L-done']),
             'skip_ai_completed': self.get('processing.skip_ai_completed', True),
             'auto_convert_sref': self.get('processing.auto_convert_sref', True),
+            # Language processing mode settings
+            'language_only_go_values': self.get('processing.language_only_go_values', ['L']),
+            'language_and_ai_go_values': self.get('processing.language_and_ai_go_values', ['LA']),
+            'language_only_completion_marker': self.get('processing.language_only_completion_marker', 'L-done'),
+        }
+
+    def get_language_trigger_config(self) -> Dict[str, Any]:
+        """Get language conversion trigger configuration.
+
+        This configures the sheet-level trigger for bulk language conversion.
+        When the trigger cell (e.g., J1 on 'output for converter') is set to
+        the trigger value ('YES'), language conversion runs on ALL rows.
+        """
+        return {
+            'enabled': self.get('processing.language_trigger.enabled', True),
+            'sheet_name': self.get('processing.language_trigger.sheet_name', 'output for converter'),
+            'trigger_cell': self.get('processing.language_trigger.trigger_cell', 'J1'),
+            'trigger_value': self.get('processing.language_trigger.trigger_value', 'YES'),
+            'reset_value': self.get('processing.language_trigger.reset_value', 'NO'),
         }
     
     def get_logging_config(self) -> Dict[str, Any]:

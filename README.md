@@ -369,7 +369,25 @@ anthropic:
 
 ## 🔧 Recovery Scripts
 
-When processing is interrupted, two specialized recovery scripts help recover lost work:
+When processing is interrupted, multiple recovery options help recover lost work:
+
+### --resume Flag - Automatic Batch Recovery (NEW!)
+**Purpose**: Recover pending batches after app crashes or timeouts
+
+```bash
+# Recover batches from previous run
+python main.py --resume
+```
+
+**How it works**:
+- Running batches are automatically persisted to `cache/pending_batches.json`
+- After a crash or timeout, use `--resume` to fetch results from Anthropic API
+- Results are written to the correct user sheets automatically
+
+**When to use**:
+- App crashed or timed out while batches were running
+- System reboot interrupted processing
+- Any unexpected termination during batch processing
 
 ### recover_notes.py - Recover from Log Files
 **Purpose**: Extract completed AI responses from logs that failed to write to sheets
@@ -575,6 +593,7 @@ Options:
   --clear-cache {all,templates,ult_chapters,ust_chapters,support_references,system_prompts}
                            Clear specified cache and exit
   --convert-sref           Convert short SRef values to full support reference names and exit
+  --resume                 Recover pending batches from previous crash/timeout and exit
   --help                   Show help message
 ```
 
@@ -609,6 +628,9 @@ python main.py --clear-cache all          # Clear all caches
 # SRef Conversion
 python main.py --convert-sref             # Convert short SRef values to full names
 python main.py --convert-sref --dry-run   # Preview SRef conversions without applying
+
+# Batch Recovery
+python main.py --resume                   # Recover pending batches after crash/timeout
 ```
 
 ## 📊 Monitoring and Logs
@@ -702,11 +724,15 @@ translation_notes_ai/
 │   ├── config_manager.py           # Configuration management
 │   ├── ai_service.py               # Anthropic API integration
 │   ├── batch_processor.py          # Legacy batch processing logic
-│   ├── continuous_batch_manager.py # New continuous batch processing
+│   ├── continuous_batch_manager.py # Continuous batch processing with persistence
+│   ├── item_processor.py           # Unified item processing pipeline
+│   ├── processing_pipeline.py      # Processing orchestration
+│   ├── language_converter.py       # GL-OL roundtrip conversion
 │   ├── sheet_manager.py            # Google Sheets integration
 │   ├── cache_manager.py            # Caching system
 │   ├── prompt_manager.py           # Prompt management
-│   ├── biblical_text_scraper.py    # ULT/UST text scraping
+│   ├── biblical_text_scraper.py    # ULT/UST text scraping (with user branch fallback)
+│   ├── tsv_notes_cache.py          # TSV notes caching for language conversion
 │   ├── logger.py                   # Logging setup
 │   └── error_notifier.py           # Error notifications
 ├── tests/

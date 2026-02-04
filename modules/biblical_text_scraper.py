@@ -207,16 +207,22 @@ class BiblicalTextScraper:
     
     def _check_usfm_checkbox(self, driver: webdriver.Chrome) -> bool:
         """Check the USFM checkbox on the page.
-        
+
         Args:
             driver: Chrome WebDriver instance
-            
+
         Returns:
             True if checkbox was found and checked
         """
         retries = 5
         for i in range(retries):
             try:
+                # Check for error page BEFORE waiting for checkbox
+                # Door43 JS may have rendered the error by now
+                if self._is_error_page(driver):
+                    self.logger.info("Error page detected, skipping USFM checkbox retries")
+                    return False
+
                 # Wait for the page to fully load, increasing wait time with each retry
                 wait_time = 10 + (i * 5)
                 self.logger.info(f"Attempt {i+1}/{retries}: Waiting up to {wait_time} seconds for USFM checkbox.")
